@@ -38,7 +38,7 @@ public class ActivityController extends BaseController{
 		
 		model.addAttribute("user", getCurrentUser() );
 		//List<ActivityDto> activities = activityService.findAllActivityByUserPaging( getCurrentUser().getId() , new PaginationUtil(offSet , limit , keyword));
-		//Add comment
+		//Add comment 234
 		//model.addAttribute("activities", activities);
 		
 		return "/admin/manage/activities";
