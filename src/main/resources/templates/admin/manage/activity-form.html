@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}">
+</head>
+<body>
+	<div th:replace="~{includes/sidebar :: sidebar}"></div>
+	
+	<div class="wrapper d-flex flex-column min-vh-100 bg-light">
+		<div th:replace="~{includes/subheader :: subheader}"></div>
+		
+		<div class="body flex-grow-1 px-3">
+			<div class="container-lg">
+				<div class="card mb-4 col-md-12 ">
+					<div class="card-body ">
+						<div class="col-md-12 text-center m-0" >
+							<nav aria-label="breadcrumb">
+							  <ol class="breadcrumb">
+							    <li class="breadcrumb-item"><a href="#">Manage</a></li>
+							    <li class="breadcrumb-item active" aria-current="page">Activity</li>
+							  </ol>
+							</nav>
+						</div>
+						<div class="col-md-12 text-center m-0" >
+							<div class="row mb-3">
+								<form class="col-md-4">
+									<div class="input-group ">
+									  <input type="text" class="form-control" placeholder="Search by code" 
+									  	aria-label="Recipient's username" aria-describedby="basic-addon2">
+									  <span class="input-group-text p-0 border-0" id="basic-addon2">
+									  	<button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+									  </span>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="card mb-4 col-md-12 ">
+					<div class="card-body ">
+						<div class="col-md-12 text-center m-0" >
+							<div class="row mb-3 text-start">
+								<form method="post" th:object="${activity}" th:action="@{/admin/activity-form/{action}(action=${action.getName})}">
+									<input type="hidden" th:value="${activity.id}" th:field="*{id}"/>
+									<div class="row align-items-center" th:if="${param.id != null}">
+										<h4>Edit Activity </h4>
+									</div>
+									<div class="row align-items-center" th:if="${param.id == null}">
+										<h4>Create Activity </h4>
+									</div>
+									
+									<div class="row align-items-center mt-2 mb-3">
+										<div class="col-sm-2">
+											<label for="courseTitle" class="form-label m-0">Activity Title</label>
+										</div>
+										<div class="col-md-6">
+		 									<input type="text" class="form-control" id="courseTitle"  
+		 									placeholder="Course Title" th:value="${activity.title}" th:field="*{title}" required>
+					              		</div>
+									</div>
+									
+									<div class="row align-items-center mt-2 mb-3">
+										<div class="col-sm-2">
+											<label for="due" class="form-label m-0">Due Date</label>
+										</div>
+										<div class="col-md-6">
+		 									<input type="datetime-local" class="form-control" id="due"  
+		 									placeholder="Course Title" th:value="${activity.dueDate}" th:field="*{dueDate}" required>
+		 									
+					              		</div>
+									</div>
+									
+									
+									<div class="row align-items-start mb-3">
+										<div class="col-sm-2">
+											<label for="description" class="form-label m-0">Instructions</label>
+										</div>
+										<div class="col-md-6">
+		 									<textarea class="form-control" id="description" th:field="*{instruction}" th:value="${activity.instruction}" rows="7"></textarea>
+					              		</div>
+									</div>
+									
+									<div class="row align-items-center mb-3 mt-2">
+										<div class="col-sm-2">
+											<label for="courseLevel" class="form-label m-0">Subject</label>
+										</div>
+										<div class="col-md-6">
+		 									<select class="form-control form-select" th:field="*{subjectId}">
+		 										<option value="">Select Subject</option>
+						                		<option th:each="subject : ${subjects}"
+						                         th:value="${subject.id}" th:text="${subject.code}"></option>
+						               		</select>
+		 									
+					              		</div>
+									</div>
+									
+									<div class="row align-items-start mb-3 mt-2">
+										<div class="col-sm-2">
+											<label for="courseLevel" class="form-label m-0">Student Action</label>
+										</div>
+										<div class="col-md-3">
+											<div class="form-check" th:each="type : ${T(com.opms.enums.TaskType).values()}">
+											  <input class="form-check-input" type="radio" th:field="*{taskType}"
+											  	 th:attr="id='inlineRadio'+${type}" th:value="${type}">
+											  <label class="form-check-label" th:attr="for='inlineRadio'+${type}" th:text="${type.getName}"></label>
+											</div>
+										</div>
+									</div>
+									
+									
+									<div class="row align-items-center mb-3">
+										<div class="col-sm-2">
+					              		</div>
+					              		<div class="col-sm-6 d-flex justify-content-end">
+					              			<input class="btn btn-block btn-primary text-capitalize" 
+					              				type="submit" th:value="${action.getName}+' '+Activity"/>
+					              		</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		
+	</div>
+	<script>
+		jQuery('#dueDate').datetimepicker({
+	        icons: {
+	            previous: 'bi-caret-left-fill',
+	            next: 'bi-caret-right-fill',
+	            time: 'bi-clock-fill',
+	            up: 'bi-caret-up',
+	            down: 'bi-caret-down',
+	            date: 'bi-calendar-fill'
+	        },
+	        format:'L'
+	    });
+	</script>
+	<footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>

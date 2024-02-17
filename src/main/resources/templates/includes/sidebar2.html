@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div class="sidebar sidebar-dark sidebar-fixed" id="sidebar" th:fragment="sidebar2">
+     <div class="sidebar-brand d-none d-md-flex">
+       <img alt="" src="/images/opms-logo-new.png" width="150">
+     </div>
+     <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
+       <li class="nav-item">
+       		<a class="nav-link" th:href="@{/student/dashboard}">Dashboard</a>
+       </li>
+       
+       <li class="nav-group">
+       		<a class="nav-link nav-group-toggle" href="#"> Manage</a>
+	        <ul class="nav-group-items">
+	           <li class="nav-item"><a class="nav-link p-left" th:href="@{/student/mysubjects}">My Subjects</a></li>
+	        </ul>
+       </li>
+       
+       <li class="nav-group">
+       	<a class="nav-link nav-group-toggle" href="#"> Modules</a>
+         <ul class="nav-group-items">
+           <li class="nav-item"><a class="nav-link p-left" href="buttons/buttons.html">Files</a></li>
+         </ul>
+       </li>
+       
+       <li class="nav-item">
+       		<a class="nav-link" href="#">About</a>
+       </li>
+       
+	</ul>
+</div>
+</body>
+</html>

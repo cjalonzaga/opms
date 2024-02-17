@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}">
+</head>
+<body>
+	<div th:replace="~{includes/sidebar :: sidebar}"></div>
+	
+	<div class="wrapper d-flex flex-column min-vh-100 bg-light">
+		<div th:replace="~{includes/subheader :: subheader}"></div>
+		
+		<div class="body flex-grow-1 px-3">
+			<div class="container-lg">
+				
+				<div class="alert alert-success" role="alert" th:if="${param.success != null && param.success}">
+  					<div>Saved successfully!</div>
+				</div>
+				<div class="alert alert-danger" role="alert" th:if="${param.success != null && !param.success}">
+  					<div>Error on save!</div>
+				</div>
+					
+				
+				<div class="card mb-4 col-md-12 ">
+					<div class="card-body ">
+						<div class="col-md-12 text-center m-0" >
+							<nav aria-label="breadcrumb">
+							  <ol class="breadcrumb">
+							    <li class="breadcrumb-item"><a href="#">Manage</a></li>
+							    <li class="breadcrumb-item active" aria-current="page">Courses</li>
+							  </ol>
+							</nav>
+						</div>
+						<div class="col-md-12 text-center m-0" >
+							<div class="row mb-3">
+								<form class="col-md-6">
+									<div class="d-flex">
+									  <input type="text" class="form-control" name="keyword" placeholder="Search by course title , initials" 
+									  	aria-label="Recipient's username" aria-describedby="basic-addon2">
+									  	
+									  <input type="date" class="form-control ms-2" placeholder="Date" name="createdOn"
+									  	aria-describedby="basic-addon2">
+									  	
+									  <span class="p-0 border-0 ms-2" id="basic-addon2 ">
+									  	<button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+									  </span>
+									</div>
+								</form>
+								<div class="col-md-6 d-flex justify-content-end">
+									<a class="btn btn-primary col-md-3" th:href="@{/admin/course-form}">Add Course</a>
+								</div>
+							</div>
+							
+							<table class="table text-start table-striped table-bordered mt-3">
+								<thead>
+								    <tr>
+								      <th scope="col">Course Title</th>
+								      <th scope="col">Initials</th>
+								      <th scope="col">Description</th>
+								      <th scope="col">Created By</th>
+								      <th scope="col">Date Created</th>
+								      <th scope="col" class="text-center">Action</th>
+								    </tr>
+								</thead>
+								
+								<tbody>
+    								<tr th:each="course: ${courses}">
+									    <td th:text="${course.name}" />
+									    <td th:text="${course.abbreviation}" />
+									    <td th:text="${course.description}" />
+									    <td th:text="${course.getCreatedBy}" />
+									   	<td th:text="${#temporals.format(course.createdOn, 'dd/MM/yyyy HH:mm a')}" />
+										<td class="text-center">
+								      		<a th:href="@{/admin/course-form?id={id}(id=${course.id})}" class="text-decoration-none">
+								      			<i class="far fa-edit"></i>
+								      		</a>
+								      		<a class="ms-2 text-decoration-none" href="#" data-coreui-toggle="modal" 
+								      			th:attr="data-coreui-target='#confirmDeleteModal'+${course.id}"><i class="far fa-trash-alt"></i></a>
+								      	</td>
+									</tr>
+									
+									<tr th:unless="${courses.size() > 0}">
+										<td colspan="5" class="text-center">No courses found.</td>
+									</tr>
+    							</tbody>
+							</table>
+							
+							<div class="col-md-12 m-2 d-flex justify-content-end">
+								<nav aria-label="Pagination" th:replace="~{ includes/nav-paging :: nav-paging}"></nav>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		
+	</div>
+	
+	
+	<div th:each="course: ${courses}" >
+		<div class="modal" tabindex="-1" th:attr="id='confirmDeleteModal'+${course.id}" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Delete Course?</h5>
+		        <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		      	<form method="post" th:action="@{/admin/courses/delete?id={id}(id=${course.id})}" >
+		      		 <p th:text="${'Sure to delete '+course.name+' ?'}"></p>
+		      		 <div class="row justify-content-end">
+			      		 <button type="button" class="btn btn-secondary col-md-2" data-coreui-dismiss="modal">Close</button>
+			      		 <input type="submit" class="btn btn-primary col-md-2 ms-2" value="Delete" />
+		      		 </div>
+		      	</form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	</div>
+	
+	<footer th:replace="~{includes/footer :: footer}"></footer>
+	
+	
+</body>
+</html>

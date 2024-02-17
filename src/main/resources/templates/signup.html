@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}">
+</head>
+<body>
+	<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-10">
+          	
+          	<div class="card mb-4 mx-4" th:if="${param.type == null}">
+          		<div class="card-body p-4 row">
+          			<h1>I am a?</h1>
+          			
+          			<form id="redirectForm">
+          				<div class="wrapper-custom col-md-12">
+          					   <input type="hidden" value="" id="type" name="type"/>
+          					   
+          					   <input type="radio" value="" id="option-1" name="select"/>
+							   <label for="option-1" class="option opt option-1" data-target="Teacher">
+							  		<div class="dot"></div>
+							    	<span><i class="fas fa-user-graduate"></i>Teacher</span>
+							   </label>
+							   
+							   <input type="radio" value="" id="option-2" name="select"/>
+							   <label for="option-2" class="option opt option-2" data-target="Student">
+							     <div class="dot"></div>
+							      <span><i class="fas fa-chalkboard-teacher"></i>Student</span>
+							   </label>
+							   
+							   <input type="radio" value="" id="option-3" name="select"/>
+							   <label for="option-3" class="option opt option-3" data-target="Parent">
+							     <div class="dot"></div>
+							      <span><i class="fas fa-user-friends"></i>Guardian</span>
+							   </label>
+							
+					    </div>
+					     
+					    <div class="col-md-12 mt-3 d-flex justify-content-end">
+					   		<a href="/login" class="btn btn-block btn-secondary"><i class="fa-solid fa-angles-left"></i> Back to login</a>
+					   		<button class="btn btn-block btn-primary ms-2" id="next" onclick="nextClick(event);">Next</button>
+					   </div>
+          			</form>
+          		</div>
+          	</div>
+          	
+            <div class="card mb-4 mx-4" th:if="${param.type != null && #strings.toString(param.type) == 'Teacher'}">
+              <div class="card-body p-4">
+                <h1>Register</h1>
+                <p class="text-medium-emphasis">Create your account</p>
+                <form th:action="@{/signup/save/teacher}" method="post" th:object="${teacher}" autocomplete="off">
+	              <div class="row"> 
+	              	<div class="col-md-4">
+		                <div class="input-group mb-3">
+		                  <input class="form-control" type="text" placeholder="First Name" th:field="*{firstName}">
+		                </div>
+		            </div>
+	              
+	                <div class="col-md-4">
+		                <div class="input-group mb-3">
+		                  <input class="form-control" type="text" placeholder="Middle Name" th:field="*{middleName}">
+		                </div>
+		            </div>
+		            
+	                <div class="col-md-4">
+		                <div class="input-group mb-3">
+		                  <input class="form-control" type="text" placeholder="Last Name" th:field="*{lastName}">
+		                </div>
+		            </div>
+		            
+	               </div>
+	               
+	               <div class="row">
+		                <div class="col-md-4">
+			                <div class="input-group mb-3">
+			                  <input class="form-control" type="text" placeholder="Address" th:field="*{address}">
+			                </div>
+		                </div>
+	               
+		               <div class="col-md-4">
+			                <div class="input-group mb-3">
+			                  <input class="form-control" type="text" placeholder="City/Municipality" th:field="*{userData.city}">
+			                </div>
+			            </div>
+			            
+			            <div class="col-md-4">
+			                <div class="input-group mb-3">
+			                  <input class="form-control" type="text" placeholder="Zip Code" th:field="*{userData.zipCode}">
+			                </div>
+			            </div>
+		            </div>
+		            
+		            <div class="row">
+		                <div class="col-md-6">
+			                <div class="input-group mb-3">
+			                  <input class="form-control" type="text" placeholder="State/Province" th:field="*{userData.province}">
+			                </div>
+		                </div>
+	               
+		               <div class="col-md-6">
+			                <div class="input-group mb-3">
+			                  <input class="form-control" type="text" placeholder="Country" th:field="*{userData.country}">
+			                </div>
+			            </div>
+		            </div>
+		            
+		            <div class="row">
+		            	<div class="col-md-4 d-none">
+		            		<div class="input-group mb-3">
+		            		<!-- th:field="*{roleId}" -->
+		            			<input type="hidden" id="roleId" value="" th:field="*{userRoles}">
+		                		<select class="form-select form-select-lg select-custom" id="selectRole" th:disabled="${param.type != null}"
+		                			 aria-label=".form-select-lg example" required>
+							  		<option value="">Select Designation</option>
+	        						<option th:each="role : ${T(com.opms.enums.UserRoles).values()}" th:selected="${#strings.equals(role.getName, #strings.toString(param.type))}"
+			            			th:value="${role}">[[${role.getName}]]</option>
+	        						
+								</select>
+	                		</div>
+		            	</div>
+		            	
+		            </div>
+		            
+		            <div class="row">
+		            	
+		            	<div class="col-md-4">
+		            		<div class="input-group mb-3">
+	                  			<input class="form-control" id="email" type="email" placeholder="Email" 
+	                  				th:field="*{email}" autocomplete="new-email">
+	                		</div>
+		            	</div>
+		            
+		            	<div class="col-md-4">
+		            		<div class="input-group mb-3">
+	                  			<input class="form-control" id="password" type="password" placeholder="Password" 
+	                  				th:field="*{password}" autocomplete="new-password">
+	                		</div>
+		            	</div>
+		            	<div class="col-md-4">
+		            		<div class="input-group mb-4">
+	                  			<input class="form-control" type="password" placeholder="Repeat password">
+	                		</div>
+		            	</div>
+		            	
+		            </div>
+		            
+	                <div class="d-flex mb-4 justify-content-end">
+	                	<input class="btn btn-block btn-primary " type="submit" value="Create Account"/>
+	                	<a class="btn btn-block btn-secondary ms-2" href="/signup">Back</a>
+	                </div>
+	             </form>
+              </div>
+            </div>
+            
+            <!-- Student Login Form-->
+            <div class="card mb-4 mx-4" th:if="${param.type != null && #strings.toString(param.type) == 'Student'}">
+              <div class="card-body p-4">
+                <h1>Register</h1>
+                <p class="text-medium-emphasis">Create your account</p>
+                <form th:action="@{/signup/save/student}" method="post" th:object="${student}" autocomplete="off">
+	              <div class="row"> 
+	              	<div class="col-md-4">
+		                <div class="input-group mb-3">
+		                  <input class="form-control" type="text" placeholder="First Name" th:field="*{firstName}">
+		                </div>
+		            </div>
+	              
+	                <div class="col-md-4">
+		                <div class="input-group mb-3">
+		                  <input class="form-control" type="text" placeholder="Middle Name" th:field="*{middleName}">
+		                </div>
+		            </div>
+		            
+	                <div class="col-md-4">
+		                <div class="input-group mb-3">
+		                  <input class="form-control" type="text" placeholder="Last Name" th:field="*{lastName}">
+		                </div>
+		            </div>
+		            
+	               </div>
+	               
+	               <div class="row">
+		                <div class="col-md-4">
+			                <div class="input-group mb-3">
+			                  <input class="form-control" type="text" placeholder="Address" th:field="*{address}" required>
+			                </div>
+		                </div>
+	               
+		               <div class="col-md-4">
+			                <div class="input-group mb-3">
+			                  <input class="form-control" type="text" placeholder="City/Municipality" th:field="*{userData.city}">
+			                </div>
+			            </div>
+			            
+			            <div class="col-md-4">
+			                <div class="input-group mb-3">
+			                  <input class="form-control" type="text" placeholder="Zip Code" th:field="*{userData.zipCode}">
+			                </div>
+			            </div>
+		            </div>
+		            
+		            <div class="row">
+		                <div class="col-md-6">
+			                <div class="input-group mb-3">
+			                  <input class="form-control" type="text" placeholder="State/Province" th:field="*{userData.province}">
+			                </div>
+		                </div>
+	               
+		               <div class="col-md-6">
+			                <div class="input-group mb-3">
+			                  <input class="form-control" type="text" placeholder="Country" th:field="*{userData.country}">
+			                </div>
+			            </div>
+		            </div>
+		            
+		            <div class="row">
+		            	<div class="col-md-4 d-none">
+		            		<div class="input-group mb-3">
+		            		<!-- th:field="*{roleId}" -->
+		            			<input type="hidden" id="roleId" value="" th:field="*{userRole}">
+		                		<select class="form-select form-select-lg select-custom" id="selectRole" th:disabled="${param.type != null}"
+		                			 aria-label=".form-select-lg example" required>
+							  		<option value="">Select Designation</option>
+	        						<option th:each="role : ${T(com.opms.enums.UserRoles).values()}" th:selected="${#strings.equals(role.getName, #strings.toString(param.type))}"
+			            			th:value="${role}">[[${role.getName}]]</option>
+	        						
+								</select>
+	                		</div>
+		            	</div>
+		            	
+		            	<div class="col-md-6">
+		            		<div class="input-group mb-3">
+			            		<select class="form-select form-select-lg select-custom" id="courseLevel" th:field="*{councilType}"
+			            		aria-label=".form-select-lg example" required>
+			            			<option value="">Select Counsil</option>
+			            			<option th:each="c : ${T(com.opms.enums.CouncilType).values()}" 
+			            			th:value="${c}">[[${'('+c+') ' + c.getName}]]</option>
+			            		</select>
+		            		</div>
+		            	</div>
+		            	
+		            	<div class="col-md-6">
+		            		<div class="input-group mb-3">
+			            		<select class="form-select form-select-lg select-custom" id="selectCourse" th:field="*{courseId}"
+			            			aria-label=".form-select-lg example" required>
+			            			<option value="">Select Course</option>
+			            			<option th:each="course : ${courses}" th:value="${course.id}">
+			            				[[${course.name}]]
+			            			</option>
+			            		</select>
+		            		</div>
+		            	</div>
+		            	
+		            	<div class="col-md-6">
+		            		<div class="input-group mb-3">
+			            		<select class="form-select form-select-lg select-custom" id="courseLevel" th:field="*{courseLevel}" 
+			            		aria-label=".form-select-lg example" required>
+			            			<option value="">Select Year Level</option>
+			            			<option th:each="level : ${T(com.opms.enums.CourseLevel).values()}" 
+			            			th:value="${level}">[[${level.getName}]]</option>
+			            		</select>
+		            		</div>
+		            	</div>
+		            	
+		            	<div class="col-md-6">
+		            		<div class="input-group mb-3">
+			            		<select class="form-select form-select-lg select-custom" id="section" th:field="*{sectionId}" 
+			            		aria-label=".form-select-lg example" required>
+			            			<option value="">Select Year Level</option>
+			            			<option th:each="s : ${sections}" 
+			            			th:value="${s.id}">[[${s.name}]]</option>
+			            		</select>
+		            		</div>
+		            	</div>
+		            	
+		            </div>
+		            
+		            <div class="row">
+		            	
+		            	<div class="col-md-4">
+		            		<div class="input-group mb-3">
+	                  			<input class="form-control" id="email" type="email" placeholder="Email" 
+	                  				th:field="*{email}" autocomplete="new-email">
+	                		</div>
+		            	</div>
+		            
+		            	<div class="col-md-4">
+		            		<div class="input-group mb-3">
+	                  			<input class="form-control" id="password" type="password" placeholder="Password" 
+	                  				th:field="*{password}" autocomplete="new-password">
+	                		</div>
+		            	</div>
+		            	<div class="col-md-4">
+		            		<div class="input-group mb-4">
+	                  			<input class="form-control" type="password" placeholder="Repeat password">
+	                		</div>
+		            	</div>
+		            	
+		            </div>
+		            
+	                <div class="d-flex mb-4 justify-content-end">
+	                	<input class="btn btn-block btn-primary " type="submit" value="Create Account"/>
+	                	<a class="btn btn-block btn-secondary ms-2" href="/signup">Back</a>
+	                </div>
+	             </form>
+              </div>
+            </div>
+            
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script th:inline="javascript">
+		jQuery(document).ready(function($){
+			$('#selectCourse').select2({
+				  placeholder: 'Select Course'
+			});
+		});
+	</script>
+    
+    <footer th:replace="~{includes/footer :: footer}"></footer>
+    
+    <script>
+    	const emailField = document.getElementById('email');
+    	if(emailField != null){
+        	emailField.value = '';
+    	}
+    	
+    	const passwordField = document.getElementById('password');
+    	if(passwordField != null){
+    		passwordField.value = '';
+    	}
+    	
+    	const labels = document.querySelectorAll('.opt');
+    	const form = document.getElementById('redirectForm');
+    	const type = document.getElementById('type');
+    	labels.forEach( (cur, index) => {
+    		cur.addEventListener('click' , (e) => {
+    			type.value = '';
+    			const data = cur.dataset.target;
+    			type.value = data;
+    		});
+    	});
+    	
+    	function nextClick(e){
+    		e.preventDefault();
+    		if(type.value != ''){
+    			form.submit();
+    		}else{
+    			alert("Select designation")
+    		}
+    	}
+    	
+    	const select = document.getElementById('selectRole');
+    	if(select != null){
+    		 console.log(select.value)
+    		 document.getElementById('roleId').value = select.value;
+    	}
+    </script>
+</body>
+</html>

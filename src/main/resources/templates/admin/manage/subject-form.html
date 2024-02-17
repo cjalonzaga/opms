@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}">
+</head>
+<body>
+	<div th:replace="~{includes/sidebar :: sidebar}"></div>
+	
+	<div class="wrapper d-flex flex-column min-vh-100 bg-light">
+		<div th:replace="~{includes/subheader :: subheader}"></div>
+		
+		<div class="body flex-grow-1 px-3">
+			<div class="container-lg">
+				<div class="card mb-4 col-md-12 ">
+					<div class="card-body ">
+						<div class="col-md-12 text-center m-0" >
+							<nav aria-label="breadcrumb">
+							  <ol class="breadcrumb">
+							    <li class="breadcrumb-item"><a href="#">Manage</a></li>
+							    <li class="breadcrumb-item active" aria-current="page">Subjects</li>
+							  </ol>
+							</nav>
+						</div>
+						<div class="col-md-12 text-center m-0" >
+							<div class="row mb-3">
+								<form class="col-md-4">
+									<div class="input-group ">
+									  <input type="text" class="form-control" placeholder="Search by code" 
+									  	aria-label="Recipient's username" aria-describedby="basic-addon2">
+									  <span class="input-group-text p-0 border-0" id="basic-addon2">
+									  	<button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+									  </span>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="card mb-4 col-md-12 ">
+					<div class="card-body ">
+						<div class="col-md-12 text-center m-0" >
+							<div class="row mb-3 text-start">
+								<div class="row align-items-center" th:if="${param.id != null}">
+									<h4>Edit Course</h4>
+								</div>
+								<div class="row align-items-center" th:if="${param.id == null}">
+									<h4>Add Subject</h4>
+								</div>
+								
+								<form method="post" th:object="${subject}" th:action="@{/admin/subject-form/{action}(action=${action.getName})}">
+									<input type="hidden" th:value="${subject.id}" th:field="*{id}"/>
+									
+									<div class="row align-items-center mb-3 mt-2">
+										<div class="col-sm-2">
+											<label for="code" class="form-label m-0">Code</label>
+										</div>
+										<div class="col-md-6">
+		 									<input type="text" class="form-control" id="code"  
+		 									placeholder="Code" th:value="${subject.code}" th:field="*{code}" required>
+					              		</div>
+									</div>
+									
+									
+									<div class="row align-items-start mb-3 mt-2">
+										<div class="col-sm-2">
+											<label for="description" class="form-label m-0">Description</label>
+										</div>
+										<div class="col-md-6">
+		 									<textarea class="form-control" id="description" th:field="*{description}" 
+		 										th:value="${subject.description}" rows="7"></textarea>
+					              		</div>
+									</div>
+									
+									<div class="row align-items-center mb-3 mt-2">
+										<div class="col-sm-2">
+											<label for="courseLevel" class="form-label m-0">Course Level</label>
+										</div>
+										<div class="col-md-6">
+		 									<select class="form-control form-select" th:field="*{courseLevel}">
+		 										<option value="">Select Course Level</option>
+						                		<option th:each="level : ${T(com.opms.enums.CourseLevel).values()}"
+						                         th:value="${level}" th:text="${level.getName}"></option>
+						               		</select>
+		 									
+					              		</div>
+									</div>
+									
+									<div class="row align-items-center mb-3 mt-2">
+										<div class="col-sm-2">
+											<label for="courseLevel" class="form-label m-0">Course/Program</label>
+										</div>
+										<div class="col-md-6">
+		 									<select class="form-control form-select" id="courseSelect" th:field="*{courseId}" style="height: 40px;">
+		 										<option value=""></option>
+		 										<option th:each="c : ${courseList}"
+						                         th:value="${c.id}" th:text="${c.getName}"></option>
+						               		</select>
+					              		</div>
+									</div>
+									
+									<div class="row align-items-center mb-3 mt-2">
+										<div class="col-sm-2">
+											<label for="courseLevel" class="form-label m-0">Semester</label>
+										</div>
+										<div class="col-md-6">
+		 									<select class="form-control form-select" th:field="*{semester}">
+		 										<option value="">Select Semester</option>
+						                		<option th:each="sem : ${T(com.opms.enums.Semester).values()}"
+						                         th:value="${sem}" th:text="${sem.getName}"></option>
+						               		</select>
+					              		</div>
+									</div>
+									
+									<div class="row align-items-center mb-3">
+										<div class="col-sm-2">
+					              		</div>
+					              		<div class="col-sm-6 d-flex justify-content-end">
+					              			<input class="btn btn-block btn-primary text-capitalize" 
+					              				type="submit" th:value="${action.getName}+' '+Subject"/>
+					              		</div>
+									</div>
+									
+								</form>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
+	<script th:inline="javascript">
+		jQuery(document).ready(function($){
+			$('#courseSelect').select2({
+				  placeholder: 'Select Course'
+			});
+		});
+	</script>
+	
+	<footer th:replace="~{includes/footer :: footer}"></footer>
+	
+</body>

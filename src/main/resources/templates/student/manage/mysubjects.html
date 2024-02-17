@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}"></head>
+<body>
+	<div th:replace="~{includes/sidebar2 :: sidebar2}"></div>
+	<div class="wrapper d-flex flex-column min-vh-100 bg-light">
+      
+      <div th:replace="~{includes/subheader :: subheader}"></div>
+      <div class="body flex-grow-1 px-3">
+		<div class="container-lg">
+			<div class="card mb-4 col-md-12 ">
+				<div class="card-body gradient-body" style="min-height: 300px;">
+					<div>
+						<h1 class="text-white">Welcome ! [[${user.firstName}]]</h1>
+					</div>
+				</div>
+			</div>
+			
+			<div class="card mb-4 col-md-12">
+				<div th:each="s : ${subjects}">
+					<h1 class="">[[${s.code +' ' + s.description}]]</h1>
+				</div>
+			</div>
+		</div>
+	  </div>
+   </div>
+   
+   <footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>

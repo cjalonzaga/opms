@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}">
+</head>
+<body>
+	<div th:replace="~{includes/sidebar :: sidebar}"></div>
+	
+	<div class="wrapper d-flex flex-column min-vh-100 bg-light">
+	
+		<div th:replace="~{includes/subheader :: subheader}"></div>
+		
+		<div class="body flex-grow-1 px-3">
+			<div class="container-lg">
+				<div class="alert alert-success" role="alert" th:if="${param.success != null && param.success}">
+  					<div>Saved successfully!</div>
+				</div>
+				<div class="alert alert-danger" role="alert" th:if="${param.success != null && !param.success}">
+  					<div>Error on save!</div>
+				</div>
+				
+				<div class="card mb-4 col-md-12 ">
+					<div class="card-body ">
+						<div class="col-md-12 text-center m-0" >
+							<nav aria-label="breadcrumb">
+							  <ol class="breadcrumb">
+							    <li class="breadcrumb-item"><a href="#">Manage</a></li>
+							    <li class="breadcrumb-item active" aria-current="page">Sections</li>
+							  </ol>
+							</nav>
+						</div>
+						
+						<div class="col-md-12 text-center m-0" >
+						
+							
+							<div class="row mb-3">
+								<!-- Add Search Form Here -->
+								<div class="col-md-6 d-flex justify-content-end">
+									<a class="btn btn-primary col-md-3" th:href="@{/admin/section-form}">Add Course</a>
+								</div>
+							</div>
+							
+							<table class="table text-start table-striped table-bordered mt-3">
+								<thead>
+								    <tr>
+								      <th scope="col">Name</th>
+								      <th scope="col">Course Level</th>
+								      <th scope="col">Date Created</th>
+								      <th scope="col" class="text-center">Action</th>
+								    </tr>
+								</thead>
+								
+								<tbody>
+    								<tr th:each="section : ${sections}">
+										<td th:text="${section.name}">Ted 1</td>
+										<td th:text="${section.courseLevel.getName}">Course Level</td>
+										<td th:text="${#temporals.format(section.createdOn, 'dd/MM/yyyy HH:mm a')}" />
+										<td class="text-center">
+								      		<a th:href="@{/admin/section-form?id={id}(id=${section.id})}" class="text-decoration-none">
+								      			<i class="far fa-edit"></i>
+								      		</a>
+								      		<a class="ms-2 text-decoration-none" href="#" data-coreui-toggle="modal" 
+								      			th:attr="data-coreui-target='#confirmDeleteModal'+${section.id}">
+								      			<i class="far fa-trash-alt"></i>
+								      		</a>
+								      	</td>
+    								</tr>
+    								
+    							</tbody>
+							</table>
+							
+							
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>

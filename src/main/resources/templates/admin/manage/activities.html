@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}">
+</head>
+<body>
+	
+	<div th:replace="~{includes/sidebar :: sidebar}"></div>
+	
+	<div class="wrapper d-flex flex-column min-vh-100 bg-light">
+		<div th:replace="~{includes/subheader :: subheader}"></div>
+		
+		<div class="body flex-grow-1 px-3">
+			<div class="container-lg">
+			
+				<div class="alert alert-success" role="alert" th:if="${param.success != null && param.success}">
+  					<div>Saved successfully!</div>
+				</div>
+				<div class="alert alert-danger" role="alert" th:if="${param.success != null && !param.success}">
+  					<div>Error on save!</div>
+				</div>
+				
+				<div class="card mb-4 col-md-12 ">
+					<div class="card-body ">
+						<div class="col-md-12 text-center m-0" >
+							<nav aria-label="breadcrumb">
+							  <ol class="breadcrumb">
+							    <li class="breadcrumb-item"><a href="#">Manage</a></li>
+							    <li class="breadcrumb-item active" aria-current="page">Activities</li>
+							  </ol>
+							</nav>
+						</div>
+						
+						<div class="col-md-12 text-center m-0" >
+							<div class="row mb-3">
+								<form class="col-md-4">
+									<div class="input-group ">
+									  <input type="text" class="form-control" placeholder="Search by code" 
+									  	aria-label="Recipient's username" aria-describedby="basic-addon2">
+									  <span class="input-group-text p-0 border-0" id="basic-addon2">
+									  	<button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+									  </span>
+									</div>
+								</form>
+								<div class="col-md-8 d-flex justify-content-end">
+									<a class="btn btn-primary col-md-2" th:href="@{/admin/activity-form}">Add Activity</a>
+								</div>
+							</div>
+							
+							<table class="table text-start table-striped table-bordered mt-3">
+								<thead>
+								    <tr>
+								      <th scope="col">Name</th>
+								      <th scope="col">Due Date</th>
+								      <th scope="col">Subject</th>
+								      <th scope="col">Date Created</th>
+								      <th scope="col" class="text-center">Action</th>
+								    </tr>
+								</thead>
+								
+								<tbody>
+									<!--  <tr th:each="activity: ${activities}">
+									    <td th:text="${activity.name}" />
+									    <td th:text="${activity.dueDate}" />
+									    <td th:text="${activity.subject}" />
+									   	<td th:text="${#temporals.format(activity.createdOn, 'dd/MM/yyyy HH:mm a')}" />
+										<td class="text-center">
+								      		<a th:href="@{/admin/activity-form?id={id}(id=${course.id})}" class="text-decoration-none">
+								      			<i class="far fa-edit"></i>
+								      		</a>
+								      		<a class="ms-2 text-decoration-none" href="#" data-coreui-toggle="modal" 
+								      			th:attr="data-coreui-target='#confirmDeleteModal'+${activity.id}"><i class="far fa-trash-alt"></i></a>
+								      	</td>
+									</tr>
+								</tbody>-->
+								
+							</table>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		
+	</div>
+
+	<footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>
