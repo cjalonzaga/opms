@@ -9,4 +9,5 @@ public interface SectionService {
 	List<SectionDto> findAllByTeacher(Long userId);
 	SectionDto get(Long id);
 	List<SectionDto> getAll();
+	SectionDto update(SectionDto dto , Long userId);
 }

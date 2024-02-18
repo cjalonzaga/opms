@@ -8,7 +8,8 @@ public class SectionDto {
 	
 	private Long id;
 	private String name;
-	private Long courseId;
+	private Long[] courseId;
+	private Long courseid;
 	private Long teacherId;
 	private CourseLevel courseLevel;
 	private LocalDateTime createdOn;
@@ -19,12 +20,7 @@ public class SectionDto {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Long getCourseId() {
-		return courseId;
-	}
-	public void setCourseId(Long courseId) {
-		this.courseId = courseId;
-	}
+	
 	public Long getTeacherId() {
 		return teacherId;
 	}
@@ -48,6 +44,18 @@ public class SectionDto {
 	}
 	public void setCreatedOn(LocalDateTime createdOn) {
 		this.createdOn = createdOn;
+	}
+	public Long[] getCourseId() {
+		return courseId;
+	}
+	public void setCourseId(Long[] courseId) {
+		this.courseId = courseId;
+	}
+	public Long getCourseid() {
+		return courseid;
+	}
+	public void setCourseid(Long courseid) {
+		this.courseid = courseid;
 	}
 	
 }

@@ -34,7 +34,8 @@ public class Activity extends BaseEntity{
     @Column(
         name = "instruction",
         nullable = false,
-        updatable = true
+        updatable = true,
+        columnDefinition = "MEDIUMTEXT"
     )
 	private String instruction;
 	
@@ -61,6 +62,13 @@ public class Activity extends BaseEntity{
     @Enumerated(EnumType.STRING)
 	private TaskType taskType;
 	
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "teacherId",
+            referencedColumnName = "id"
+    )
+	private Teacher teacher;
 
 	public String getTitle() {
 		return title;
@@ -109,5 +117,12 @@ public class Activity extends BaseEntity{
 	public void setTaskType(TaskType taskType) {
 		this.taskType = taskType;
 	}
-	
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
 }

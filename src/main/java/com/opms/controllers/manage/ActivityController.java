@@ -2,11 +2,17 @@ package com.opms.controllers.manage;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.opms.controllers.BaseController;
 import com.opms.db.dtos.ActivityDto;
@@ -14,7 +20,6 @@ import com.opms.db.dtos.CourseDto;
 import com.opms.enums.Actions;
 import com.opms.services.ActivityService;
 import com.opms.services.SubjectService;
-import com.opms.utils.PaginationUtil;
 
 @Controller
 @RequestMapping("/admin")
@@ -37,9 +42,24 @@ public class ActivityController extends BaseController{
 			@RequestParam(required = false) String keyword ) {
 		
 		model.addAttribute("user", getCurrentUser() );
-		//List<ActivityDto> activities = activityService.findAllActivityByUserPaging( getCurrentUser().getId() , new PaginationUtil(offSet , limit , keyword));
-		//Add comment 234
-		//model.addAttribute("activities", activities);
+		Pageable pageable = PageRequest.of(page - 1, size);
+		
+		Page<ActivityDto> paging;
+		
+		if(keyword == null) {
+			paging = activityService.findAllByUserWithPaging(getCurrentUser().getId(), pageable);
+		}else {
+			//final String createdDate = (createdOn == null || createdOn.isEmpty() ) ? null : createdOn;
+			
+			paging = activityService.searchAllByUser(getCurrentUser().getId() , null , keyword, pageable);
+		}
+		
+		model.addAttribute("activities",  paging.getContent());
+		
+		model.addAttribute("currentPage", paging.getNumber() + 1);
+		model.addAttribute("totalItems", paging.getTotalElements());
+     	model.addAttribute("totalPages", paging.getTotalPages());
+     	model.addAttribute("pageSize", size);
 		
 		return "/admin/manage/activities";
 	}
@@ -57,5 +77,15 @@ public class ActivityController extends BaseController{
 		}
 		
 		return "/admin/manage/activity-form";
+	}
+	
+	@PostMapping("/activity-form/save")
+	public String create(@ModelAttribute("activity") ActivityDto activityDto , @RequestParam("file") MultipartFile file) {
+		
+		ActivityDto dto = activityService.createByUser(activityDto, getCurrentUser().getId() , file);
+		
+		String success = (dto != null) ? "true" : "false";
+		
+		return "redirect:/admin/activities?success="+success;
 	}
 }

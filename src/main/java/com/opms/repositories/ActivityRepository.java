@@ -11,14 +11,16 @@ import com.opms.db.entities.Activity;
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity , Long>{
 	
-//	@Query(
-//	value=
-//		"SELECT avt.* FROM activities avt JOIN subjects s ON avt.subject_id = s.id JOIN courses cx ON s.course_id = cx.id "+
-//		"WHERE cx.user_id = :userId LIMIT :limit OFFSET :offSet ", nativeQuery = true)
-//	List<Activity> findAllActivityByUserPaging(Long userId , int offSet , int limit);
-//	
-//	@Query("SELECT COUNT(a) FROM Activity a JOIN Subject ss ON a.subject.id = ss.id JOIN Course cc ON ss.course.id = cc.id "
-//			+ "WHERE cc.user.id = :userId ")
-//	Integer totalSize(Long userId);
+	@Query("SELECT CASE WHEN COUNT(s) > 0 THEN TRUE "
+			+ "ELSE FALSE "
+			+ "END FROM Activity s WHERE s.title = :title")
+	Boolean ifActivityExist(String title);
+	
+	@Query(
+	value= "SELECT a.* FROM activities a WHERE a.teacher_id = :userId ORDER BY a.created_on DESC LIMIT :size OFFSET :page ", nativeQuery = true)
+	List<Activity> findAllActivitiesByUserPaging(Long userId , int page , int size);
+	
+	@Query("SELECT COUNT(a) FROM Activity a WHERE a.teacher.id = :userId")
+	Integer totalSize(Long userId);
 	
 }

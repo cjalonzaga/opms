@@ -22,6 +22,8 @@ public class ActivityDto {
 	private TaskType taskType;
 	
 	private LocalDateTime dueDate;
+	
+	private String subject;
 
 	public Long getId() {
 		return id;
@@ -85,5 +87,13 @@ public class ActivityDto {
 
 	public void setDueDate(LocalDateTime dueDate) {
 		this.dueDate = dueDate;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
 	}
 }

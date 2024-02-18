@@ -70,11 +70,6 @@ public class CourseServiceImpl extends CourseMapper implements CourseService{
 		course.setTeacher(teacher);
 		Course saved = courseRepository.save(course);
 		
-		List<Section> sections = sectionRepository.findAllById( List.of(courseDto.getSectionId()) );
-		sections.forEach( sect -> sect.setCourse(course));
-		
-		sectionRepository.saveAll(sections);
-		
 		return this.toDto(saved);
 	}
 
@@ -85,10 +80,9 @@ public class CourseServiceImpl extends CourseMapper implements CourseService{
 		course.setAbbreviation(courseDto.getAbbreviation());
 		course.setDescription(courseDto.getDescription());
 		
-		List<Section> sections = sectionRepository.findAllById( List.of(courseDto.getSectionId()) );
-		sections.forEach( sect -> sect.setCourse(course));
+		List<Section> sections = sectionRepository.findAllById(List.of(courseDto.getSectionId()));
 		
-		sectionRepository.saveAll(sections);
+		course.setSections(sections);
 		
 		return toDto(courseRepository.save(course));
 	}

@@ -96,7 +96,7 @@ public class TeacherServiceImpl extends TeacherMapper implements TeacherService{
 			
 			image = new Image();
 			image.setFileName(fileName);
-			image.setOriginalFileName(file.getName());
+			image.setOriginalFileName(file.getOriginalFilename());
 			image.setUri(uri);
 			image.setTeacher(user);
 			

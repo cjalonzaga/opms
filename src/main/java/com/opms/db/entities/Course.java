@@ -15,6 +15,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -58,7 +59,7 @@ public class Course extends BaseEntity{
 	private Set<Student> student;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "courses", cascade = CascadeType.MERGE , fetch = FetchType.LAZY)
 	private List<Section> sections;
 	
 	@Basic
@@ -126,7 +127,6 @@ public class Course extends BaseEntity{
 	public void setCouncilType(CouncilType councilType) {
 		this.councilType = councilType;
 	}
-	
 	public List<Section> getSections() {
 		return sections;
 	}

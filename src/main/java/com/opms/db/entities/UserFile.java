@@ -25,6 +25,14 @@ public class UserFile extends BaseEntity{
 	
 	@Basic
     @Column(
+        name = "originalFileName",
+        nullable = false,
+        updatable = true
+    )
+	private String originalFileName;
+	
+	@Basic
+    @Column(
         name = "uri",
         nullable = false,
         updatable = true
@@ -78,5 +86,12 @@ public class UserFile extends BaseEntity{
 	public void setAssignment(Assignment assignment) {
 		this.assignment = assignment;
 	}
-	
+
+	public String getOriginalFileName() {
+		return originalFileName;
+	}
+
+	public void setOriginalFileName(String originalFileName) {
+		this.originalFileName = originalFileName;
+	}
 }

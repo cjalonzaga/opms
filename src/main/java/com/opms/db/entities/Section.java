@@ -15,6 +15,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -32,14 +33,6 @@ public class Section extends BaseEntity{
     )
 	private String name;
 	
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "courseId",
-            referencedColumnName = "id"
-    )
-	private Course course;
-	
 	@Column(name = "courseLevel")
     @Enumerated(EnumType.STRING)
 	private CourseLevel courseLevel;
@@ -55,6 +48,16 @@ public class Section extends BaseEntity{
 	@JsonIgnore
 	@ManyToMany(mappedBy = "sections", cascade = CascadeType.MERGE , fetch = FetchType.LAZY)
 	private List<Student> students;
+	
+	
+	@JsonIgnore
+	@JoinTable(
+			name = "sectionCourse", 
+			joinColumns = @JoinColumn(name = "sectionId"),
+			inverseJoinColumns = @JoinColumn(name = "courseId")
+		)    
+	@ManyToMany(cascade = CascadeType.PERSIST , fetch = FetchType.EAGER)
+	private List<Course> courses;
 
 	public String getName() {
 		return name;
@@ -62,14 +65,6 @@ public class Section extends BaseEntity{
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Course getCourse() {
-		return course;
-	}
-
-	public void setCourse(Course course) {
-		this.course = course;
 	}
 
 	public CourseLevel getCourseLevel() {
@@ -95,5 +90,12 @@ public class Section extends BaseEntity{
 	public void setStudents(List<Student> students) {
 		this.students = students;
 	}
-	
+
+	public List<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(List<Course> courses) {
+		this.courses = courses;
+	}
 }

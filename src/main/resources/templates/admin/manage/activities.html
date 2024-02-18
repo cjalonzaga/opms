@@ -58,22 +58,31 @@
 								</thead>
 								
 								<tbody>
-									<!--  <tr th:each="activity: ${activities}">
-									    <td th:text="${activity.name}" />
+									<tr th:each="activity: ${activities}">
+									    <td th:text="${activity.title}" />
 									    <td th:text="${activity.dueDate}" />
 									    <td th:text="${activity.subject}" />
 									   	<td th:text="${#temporals.format(activity.createdOn, 'dd/MM/yyyy HH:mm a')}" />
 										<td class="text-center">
-								      		<a th:href="@{/admin/activity-form?id={id}(id=${course.id})}" class="text-decoration-none">
+								      		<a th:href="@{/admin/activity-form?id={id}(id=${activity.id})}" class="text-decoration-none">
 								      			<i class="far fa-edit"></i>
 								      		</a>
 								      		<a class="ms-2 text-decoration-none" href="#" data-coreui-toggle="modal" 
 								      			th:attr="data-coreui-target='#confirmDeleteModal'+${activity.id}"><i class="far fa-trash-alt"></i></a>
 								      	</td>
 									</tr>
-								</tbody>-->
+									
+									<tr th:unless="${activities.size() > 0}">
+										<td colspan="5" class="text-center">No activities found.</td>
+									</tr>
+								</tbody>
 								
 							</table>
+							
+							<div class="col-md-12 m-2 d-flex justify-content-end">
+								<nav aria-label="Pagination" th:replace="~{ includes/nav-paging :: nav-paging}"></nav>
+							</div>
+							
 						</div>
 					</div>
 				</div>
