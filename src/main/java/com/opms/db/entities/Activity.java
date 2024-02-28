@@ -8,12 +8,15 @@ import com.opms.db.BaseEntity;
 import com.opms.enums.TaskType;
 
 import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -69,6 +72,15 @@ public class Activity extends BaseEntity{
             referencedColumnName = "id"
     )
 	private Teacher teacher;
+	
+	@JsonIgnore
+	@JoinTable(
+			name = "activitySection", 
+			joinColumns = @JoinColumn(name = "activityId"),
+			inverseJoinColumns = @JoinColumn(name = "sectionId")
+		)    
+	@ManyToMany(cascade = CascadeType.MERGE , fetch = FetchType.EAGER)
+	private List<Section> sections; 
 
 	public String getTitle() {
 		return title;
@@ -125,4 +137,13 @@ public class Activity extends BaseEntity{
 	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
 	}
+
+	public List<Section> getSections() {
+		return sections;
+	}
+
+	public void setSections(List<Section> sections) {
+		this.sections = sections;
+	}
+	
 }

@@ -49,6 +49,9 @@ public class Section extends BaseEntity{
 	@ManyToMany(mappedBy = "sections", cascade = CascadeType.MERGE , fetch = FetchType.LAZY)
 	private List<Student> students;
 	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "sections", cascade = CascadeType.MERGE , fetch = FetchType.LAZY)
+	private List<Activity> activities;
 	
 	@JsonIgnore
 	@JoinTable(
@@ -98,4 +101,13 @@ public class Section extends BaseEntity{
 	public void setCourses(List<Course> courses) {
 		this.courses = courses;
 	}
+
+	public List<Activity> getActivities() {
+		return activities;
+	}
+
+	public void setActivities(List<Activity> activities) {
+		this.activities = activities;
+	}
+
 }

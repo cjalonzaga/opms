@@ -9,10 +9,51 @@
       <div class="body flex-grow-1 px-3">
 		<div class="container-lg">
 			<div class="card mb-4 col-md-12 ">
-				<div class="card-body gradient-body" style="min-height: 300px;">
-					<div>
-						<h1 class="text-white">Welcome ! [[${user.firstName}]]</h1>
-					</div>
+				<div class="card-body">
+					<h2 class="card-title">Recently Added Task</h2>
+					<hr>
+					<h5 class="card-title">Assignments</h5>
+					<table class="table table-stripe">
+						<thead>
+							<tr class="table-secondary">
+						      <th scope="col">Task</th>
+						      <th scope="col">Deadline</th>
+						      <th scope="col">Subject</th>
+						      <th scope="col">By</th>
+						    </tr>
+						</thead>
+						<tbody>
+						
+						</tbody>
+					</table>
+					
+					<h5 class="card-title">Activities</h5>
+					<table class="table table-stripe">
+						<thead>
+							<tr class="table-secondary">
+						      <th scope="col">Task</th>
+						      <th scope="col">Deadline</th>
+						      <th scope="col">Subject</th>
+						      <th scope="col">By</th>
+						    </tr>
+						</thead>
+						<tbody>
+							<tr th:each="act: ${activities}">
+								<td>[[${act.title}]]</td>
+								<td>[[${#temporals.format(act.dueDate, 'dd/MM/yyyy HH:mm a')}]]</td>
+								<td>[[${act.subject}]]</td>
+								<td>[[${act.createdBy}]]</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+			<div class="card mb-4 col-md-12 ">
+				<div class="card-body">
+					<h2 class="card-title">Upcoming Deadlines</h2>
+					<hr>
+					
 				</div>
 			</div>
 		</div>

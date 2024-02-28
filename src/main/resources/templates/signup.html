@@ -266,7 +266,7 @@
 		            		<div class="input-group mb-3">
 			            		<select class="form-select form-select-lg select-custom" id="section" th:field="*{sectionId}" 
 			            		aria-label=".form-select-lg example" required>
-			            			<option value="">Select Year Level</option>
+			            			<option value="">Select Section</option>
 			            			<option th:each="s : ${sections}" 
 			            			th:value="${s.id}">[[${s.name}]]</option>
 			            		</select>

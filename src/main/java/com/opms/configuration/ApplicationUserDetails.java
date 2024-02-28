@@ -1,9 +1,8 @@
 package com.opms.configuration;
 
-import java.io.Serializable;
+
 import java.util.Collection;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,33 +10,29 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.opms.db.entities.User;
 
-public class ApplicationUserDetails<T extends User> implements UserDetails, Serializable{
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5412673984738505761L;
+public class ApplicationUserDetails implements UserDetails{
 	
-	private final T t;
+	private static final long serialVersionUID = -3875088506765024782L;
+	
+	private final User user;
 
-    public ApplicationUserDetails(T t){
-        super();
-        this.t = t;
+    public ApplicationUserDetails(User user){
+        this.user = user;
     }
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {		
-		return Collections.singleton(new SimpleGrantedAuthority( t.getUserRole().getName() ));
+		return Collections.singleton(new SimpleGrantedAuthority( user.getUserRole().getName() ));
 	}
 
 	@Override
 	public String getPassword() {
-		return t.getPassword();
+		return user.getPassword();
 	}
 
 	@Override
 	public String getUsername() {
-		return t.getUsername();
+		return user.getUsername();
 	}
 
 	@Override
@@ -61,6 +56,6 @@ public class ApplicationUserDetails<T extends User> implements UserDetails, Seri
 	}
 	
 	public boolean hasRole(String roleName) {
-        return this.t.hasRole(roleName);
+        return  this.user.hasRole(roleName);
     }
 }

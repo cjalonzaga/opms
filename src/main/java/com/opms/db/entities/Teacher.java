@@ -1,5 +1,6 @@
 package com.opms.db.entities;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +23,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="teachers")
 public class Teacher extends User{
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
 	private List<Course> courses;

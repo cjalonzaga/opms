@@ -18,4 +18,8 @@ public interface ActivityService extends CrudBaseService<ActivityDto, Activity>{
 	
 	Page<ActivityDto> findAllByUserWithPaging(Long userId ,Pageable pageable);
 	Page<ActivityDto> searchAllByUser(Long userId , String createdOn , String keyword , Pageable pageable);
+	
+	List<ActivityDto> findActivitiesByStudent(Long studentId);
+	
+	ActivityDto update(ActivityDto dto , Long userId , MultipartFile file);
 }

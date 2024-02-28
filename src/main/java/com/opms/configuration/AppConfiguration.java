@@ -19,7 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class AppConfiguration {
 	
 	@Autowired
-    private UserDetailsService userDetailsService;
+    private ApplicationUserDetailsService userDetailsService;
 	
 	@Autowired
 	private LoginSuccessHandlers loginSuccessHandlers;

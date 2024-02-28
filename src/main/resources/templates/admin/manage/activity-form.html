@@ -68,7 +68,7 @@
 										</div>
 										<div class="col-md-6">
 		 									<input type="datetime-local" class="form-control" id="due"  
-		 									placeholder="Due Date" th:value="${activity.dueDate}" th:field="*{dueDate}" required>
+		 									placeholder="Due Date" th:value="${#temporals.format(activity.dueDate, 'MM-dd-yyyy HH:mm a')}" th:field="*{dueDate}" required>
 		 									
 					              		</div>
 									</div>
@@ -79,8 +79,8 @@
 										</div>
 										<div class="col-md-6">
 		 									<textarea class="form-control d-none" id="instruct" th:field="*{instruction}" th:value="${activity.instruction}" rows="7"></textarea>
-					              			<div id="editor" style="height: 300px" th:text="${activity.instruction}">
-					              				
+					              			<div id="editor" style="height: 300px">
+					              				[(${activity.instruction})]
 					              			</div>
 					              		</div>
 									</div>
@@ -94,6 +94,18 @@
 		 										<option value="">Select Subject</option>
 						                		<option th:each="subject : ${subjects}"
 						                         th:value="${subject.id}" >[[${subject.code + ' (' + subject.description +')'}]]</option>
+						               		</select>
+					              		</div>
+									</div>
+									
+									<div class="row align-items-center mb-3 mt-2">
+										<div class="col-sm-2">
+											<label for="courseLevel" class="form-label m-0">Add to Section</label>
+										</div>
+										<div class="col-md-6">
+		 									<select class="form-control form-select" id="multi-select" th:field="*{sectionIds}" multiple>
+						                		<option th:each="sect : ${sections}"
+						                         th:value="${sect.id}" >[[${sect.name}]]</option>
 						               		</select>
 					              		</div>
 									</div>
@@ -161,6 +173,12 @@
 	    	document.getElementById('instruct').value = quill.root.innerHTML;
 	    	document.getElementById('formActivity').submit();
 	    }
+	    
+		jQuery(document).ready(function($){
+			$('#multi-select').select2({
+			});
+		});
+	
 	</script>
 	<footer th:replace="~{includes/footer :: footer}"></footer>
 </body>

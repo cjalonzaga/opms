@@ -24,6 +24,10 @@ public class ActivityDto {
 	private LocalDateTime dueDate;
 	
 	private String subject;
+	
+	private String createdBy;
+	
+	private List<Long> sectionIds;
 
 	public Long getId() {
 		return id;
@@ -95,5 +99,21 @@ public class ActivityDto {
 
 	public void setSubject(String subject) {
 		this.subject = subject;
+	}
+
+	public List<Long> getSectionIds() {
+		return sectionIds;
+	}
+
+	public void setSectionIds(List<Long> sectionIds) {
+		this.sectionIds = sectionIds;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 }

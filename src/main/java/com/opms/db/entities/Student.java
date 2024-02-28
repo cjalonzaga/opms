@@ -23,7 +23,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="students")
 public class Student extends User{
-	
+
 	@JsonIgnore
 	@JoinTable(
 			name = "studentCourse", 

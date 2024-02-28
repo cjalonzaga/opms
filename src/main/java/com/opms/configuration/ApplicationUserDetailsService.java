@@ -11,7 +11,7 @@ import com.opms.repositories.StudentRepository;
 import com.opms.repositories.TeacherRepository;
 
 @Service
-public class ApplicationUserDetailsService implements UserDetailsService{
+public class ApplicationUserDetailsService implements UserDetailsService {
 	
 	@Autowired
 	private TeacherRepository teacherRepository;
@@ -25,7 +25,8 @@ public class ApplicationUserDetailsService implements UserDetailsService{
 		if(teacherRepository.ifUserExist(username)) {
 			user = teacherRepository.findByUsername(username);
 		}
-		//this will be a design flaws someday
+		
+		///this will be a design flaws someday
 		if(studentRepository.ifUserExist(username)) {
 			user = studentRepository.findByUsername(username);
 		}
@@ -34,7 +35,7 @@ public class ApplicationUserDetailsService implements UserDetailsService{
             throw new UsernameNotFoundException("User not found!");
         }
         
-        return new ApplicationUserDetails<User>(user);
+        return new ApplicationUserDetails(user);
 	}
 
 }

@@ -24,6 +24,7 @@ public abstract class ActivityMapper extends BaseMapper implements Mapper<Activi
 	PropertyMap<Activity , ActivityDto> mapProperty = new PropertyMap<Activity , ActivityDto>() {
         protected void configure() {
            map().setSubject(source.getSubject().getDescription());
+           map().setCreatedBy(source.getTeacher().getFirstName());
        }
     };
 

@@ -1,8 +1,7 @@
 package com.opms.db.entities;
 
+
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opms.db.BaseEntity;
@@ -14,7 +13,7 @@ import jakarta.persistence.*;
 
 @MappedSuperclass
 public class User{
-	
+
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

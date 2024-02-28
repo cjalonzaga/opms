@@ -17,8 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.opms.controllers.BaseController;
 import com.opms.db.dtos.ActivityDto;
 import com.opms.db.dtos.CourseDto;
+import com.opms.db.dtos.TeacherDto;
 import com.opms.enums.Actions;
 import com.opms.services.ActivityService;
+import com.opms.services.SectionService;
 import com.opms.services.SubjectService;
 
 @Controller
@@ -27,10 +29,12 @@ public class ActivityController extends BaseController{
 	
 	private final ActivityService activityService;
 	private final SubjectService subjectService;
+	private final SectionService sectionService;
 	
-	ActivityController(ActivityService activityService, SubjectService subjectService){
+	ActivityController(ActivityService activityService, SubjectService subjectService , SectionService sectionService){
 		this.activityService = activityService;
 		this.subjectService = subjectService;
+		this.sectionService = sectionService;
 	}
 	
 	@GetMapping("/activities")
@@ -66,8 +70,10 @@ public class ActivityController extends BaseController{
 	
 	@GetMapping("/activity-form")
 	public String createForm(Model model , @RequestParam(required = false) Long id) {
-		model.addAttribute("user", this.getCurrentUser() );
-		model.addAttribute("subjects", subjectService.findAllByUser(getCurrentUser().getId()));
+		TeacherDto user = this.getCurrentUser();
+		model.addAttribute("user", user );
+		model.addAttribute("subjects", subjectService.findAllByUser(user.getId()));
+		model.addAttribute("sections", sectionService.findAllByTeacher(user.getId()));
 		if(id == null) {
 			model.addAttribute("activity" , new ActivityDto());
 			model.addAttribute("action" , Actions.SAVE);
@@ -84,6 +90,15 @@ public class ActivityController extends BaseController{
 		
 		ActivityDto dto = activityService.createByUser(activityDto, getCurrentUser().getId() , file);
 		
+		String success = (dto != null) ? "true" : "false";
+		
+		return "redirect:/admin/activities?success="+success;
+	}
+	
+	@PostMapping("/activity-form/update")
+	public String update(@ModelAttribute("activity") ActivityDto activityDto , @RequestParam("file") MultipartFile file) {
+		
+		ActivityDto dto = activityService.update(activityDto, getCurrentUser().getId() , file);
 		String success = (dto != null) ? "true" : "false";
 		
 		return "redirect:/admin/activities?success="+success;

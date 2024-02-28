@@ -1,11 +1,14 @@
 package com.opms.db.dtos;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import com.opms.enums.UserRoles;
 
-public class TeacherDto {
+public class TeacherDto implements Serializable{
 	
+	private static final long serialVersionUID = 3108679364014199668L;
+
 	private Long id;
 	
 	private String firstName;

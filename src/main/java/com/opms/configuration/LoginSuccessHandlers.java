@@ -19,8 +19,7 @@ public class LoginSuccessHandlers extends SavedRequestAwareAuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws ServletException, IOException {
  
-        @SuppressWarnings("unchecked")
-		ApplicationUserDetails<User> userDetails = (ApplicationUserDetails<User>) authentication.getPrincipal();
+		ApplicationUserDetails userDetails = (ApplicationUserDetails) authentication.getPrincipal();
         //System.out.println("TRIGGERED HERE !!!");
         String redirectURL = request.getContextPath();
          

@@ -33,8 +33,7 @@ public class ProfileController extends BaseController{
 	@PostMapping("/profile/update/{userid}")
 	public String updateProfile(Model model , @ModelAttribute("user") TeacherDto teacherDto, @RequestParam("file") MultipartFile file) {
 		model.addAttribute("user", this.getCurrentUser() );
-		if(file != null) {
-			//imageService.upload(file, this.getCurrentUser());
+		if(!file.isEmpty()) {
 			teacherService.update(file , teacherDto);
 		}
 		

@@ -17,6 +17,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.opms.db.dtos.ActivityDto;
 import com.opms.db.dtos.CourseDto;
 import com.opms.db.entities.Activity;
+import com.opms.db.entities.Section;
 import com.opms.db.entities.Subject;
 import com.opms.db.entities.Teacher;
 import com.opms.db.entities.UserFile;
@@ -38,6 +39,7 @@ public class ActivityServiceImpl extends ActivityMapper implements ActivityServi
 	private final TeacherRepository teacherRepository;
 	private final SubjectRepository subjectRepository;
 	private final UserFileRepository userFileRepository;
+	private final SectionRepository sectionRepository;
 	private final AmazonS3 s3Client;
 	
 	@Value("${application.bucket.name}")
@@ -48,19 +50,20 @@ public class ActivityServiceImpl extends ActivityMapper implements ActivityServi
 			TeacherRepository teacherRepository,
 			SubjectRepository subjectRepository,
 			AmazonS3 s3Client , 
-			UserFileRepository userFileRepository) {
+			UserFileRepository userFileRepository,
+			SectionRepository sectionRepository) {
 		super(modelMapper);
 		this.activityRepository = activityRepository;
 		this.teacherRepository = teacherRepository;
 		this.subjectRepository = subjectRepository;
 		this.s3Client = s3Client;
 		this.userFileRepository = userFileRepository;
+		this.sectionRepository = sectionRepository;
 	}
 
 	@Override
 	public ActivityDto get(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return toDto(activityRepository.findById(id).get());
 	}
 
 	@Override
@@ -110,8 +113,13 @@ public class ActivityServiceImpl extends ActivityMapper implements ActivityServi
 		Subject subject = subjectRepository.findById(dto.getSubjectId()).get();
 		activity.setSubject(subject);
 		
+		List<Section> sections = sectionRepository.findAllById(dto.getSectionIds());
+		
+		activity.setSections(sections);
+		
 		UserFile ufile = null;
 		Activity saved = null;
+		
 		if(!file.isEmpty()) {
 			File fileObject = FileUtil.convertMultiPartFileToFile(file);
 			String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
@@ -122,6 +130,7 @@ public class ActivityServiceImpl extends ActivityMapper implements ActivityServi
 			ufile.setOriginalFileName(file.getOriginalFilename());
 			ufile.setFileName(fileName);
 			ufile.setUri(uri);
+			
 			saved = activityRepository.save(activity);
 			
 			ufile.setActivity(saved);
@@ -130,6 +139,53 @@ public class ActivityServiceImpl extends ActivityMapper implements ActivityServi
 			activity.setFiles(List.of(ufile));
 			
 			fileObject.delete();
+		}else {
+			saved = activityRepository.save(activity);
+		}
+		
+		return toDto(saved);
+	}
+	
+	@Override
+	public ActivityDto update(ActivityDto dto, Long userId, MultipartFile file) {
+		
+		Activity activity = activityRepository.findById(dto.getId()).get();
+		activity.setDueDate(dto.getDueDate());
+		activity.setInstruction(dto.getInstruction());
+		activity.setTitle(dto.getTitle());
+		activity.setTaskType(dto.getTaskType());
+		
+		Subject subject = subjectRepository.findById(dto.getSubjectId()).get();
+		activity.setSubject(subject);
+		
+		List<Section> sections = sectionRepository.findAllById(dto.getSectionIds());
+		
+		activity.setSections(sections);
+		
+		UserFile ufile = null;
+		Activity saved = null;
+		
+		if(!file.isEmpty()) {
+			File fileObject = FileUtil.convertMultiPartFileToFile(file);
+			String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+			s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObject));
+			String uri = s3Client.getUrl(bucketName, fileName).toString();
+			
+			ufile = new UserFile();
+			ufile.setOriginalFileName(file.getOriginalFilename());
+			ufile.setFileName(fileName);
+			ufile.setUri(uri);
+			
+			saved = activityRepository.save(activity);
+			
+			ufile.setActivity(saved);
+			userFileRepository.save(ufile);
+			
+			activity.setFiles(List.of(ufile));
+			
+			fileObject.delete();
+		}else {
+			saved = activityRepository.save(activity);
 		}
 		
 		return toDto(saved);
@@ -147,6 +203,12 @@ public class ActivityServiceImpl extends ActivityMapper implements ActivityServi
 	public Page<ActivityDto> searchAllByUser(Long userId, String createdOn, String keyword, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<ActivityDto> findActivitiesByStudent(Long studentId) {
+		List<Activity> activities = activityRepository.findAllByStudent(studentId);
+		return toDtoList(activities);
 	}
 
 }
