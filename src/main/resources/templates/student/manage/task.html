@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}"></head>
+<body>
+	<div th:replace="~{includes/sidebar2 :: sidebar2}"></div>
+	<div class="wrapper d-flex flex-column min-vh-100 bg-light">
+      
+      <div th:replace="~{includes/subheader :: subheader}"></div>
+      <div class="body flex-grow-1 px-3">
+		<div class="container-lg">
+			<div class="card mb-4 col-md-12" >
+				<div th:object="${activity}">
+					<div class="row">
+						<div class="col-md-3">
+							Instructions:
+						</div>
+						<div class="col-md-9" th:utext="${activity.instruction}"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	  </div>
+   </div>
+   
+   <footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>

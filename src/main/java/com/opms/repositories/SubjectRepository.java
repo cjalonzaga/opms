@@ -23,6 +23,10 @@ public interface SubjectRepository extends JpaRepository<Subject, Long>{
 			+ " ORDER BY s.created_on DESC LIMIT :size OFFSET :page " , nativeQuery = true)
 	List<Subject> findAllByUserWithPaging(Long userId , int page , int size);
 	
+	@Query( value = "SELECT s.* FROM subjects s JOIN courses c ON s.course_id = c.id "
+			+ " ORDER BY s.created_on DESC LIMIT :size OFFSET :page " , nativeQuery = true)
+	List<Subject> findAll( int page , int size );
+	
 	@Query("SELECT COUNT(s) FROM Subject s JOIN Course c ON s.course.id = c.id WHERE c.teacher.id = :userId ")
 	Integer totalSize(Long userId);
 	
@@ -34,6 +38,15 @@ public interface SubjectRepository extends JpaRepository<Subject, Long>{
 					+ " ORDER BY s.created_on DESC LIMIT :size OFFSET :page ",
 			nativeQuery = true)
 	List<Subject> searchAllByUser(Long userId , String createdOn , String keyword , String courseLevel , String semester , int page , int size);
+	
+	@Query(value="SELECT s.* FROM subjects s JOIN courses c ON s.course_id = c.id WHERE "
+			+ " ( LOWER(s.code) LIKE %:keyword% ) "
+			+ " AND (:createdOn IS NULL OR DATE(s.created_on) = :createdOn ) "
+			+ "	AND (:semester IS NULL OR s.semester = :semester) "
+			+ " AND (:courseLevel IS NULL OR s.course_level = :courseLevel) "
+			+ " ORDER BY s.created_on DESC LIMIT :size OFFSET :page ",
+	nativeQuery = true)
+List<Subject> searchAll(String createdOn , String keyword , String courseLevel , String semester , int page , int size);
 
 	@Query("SELECT s FROM Subject s WHERE s.course.id = :courseId")
 	List<Subject> searchAllByStudents(Long courseId);

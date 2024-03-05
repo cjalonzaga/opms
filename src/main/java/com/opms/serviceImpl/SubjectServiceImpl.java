@@ -43,7 +43,7 @@ public class SubjectServiceImpl extends SubjectMapper implements SubjectService{
 
 	@Override
 	public List<SubjectDto> getAll() {
-		return null;
+		return toDtoList(subjectRepository.findAll());
 	}
 
 	@Override
@@ -52,7 +52,6 @@ public class SubjectServiceImpl extends SubjectMapper implements SubjectService{
 		Course course = courseRepository.findById(d.getCourseId()).get();
 		subject.setCourse(course);
 		subject.setCreatedOn(LocalDateTime.now());
-		//TODO
 		
 		if(subjectRepository.ifSubjectExist( d.getCode() , course.getTeacher().getId() )) {
 			return null;
@@ -110,6 +109,26 @@ public class SubjectServiceImpl extends SubjectMapper implements SubjectService{
 		List<Course> courses = studentRepository.findById(userId).get().getCourse();
 		
 		return toDtoList( subjectRepository.searchAllByStudents(courses.get(0).getId()) );
+	}
+
+	@Override
+	public Page<SubjectDto> findAll(Pageable pageable) {
+		int offset = pageable.getPageNumber() * pageable.getPageSize();
+		List<SubjectDto> subjectList = toDtoList(subjectRepository.findAll(offset, pageable.getPageSize() ));
+		int totalSize = (int) subjectRepository.count();
+		
+		return new PageImpl<>(subjectList , pageable , totalSize);
+	}
+
+	@Override
+	public Page<SubjectDto> searchAll(String createdOn, String keyword, String courseLevel, String sem,
+			Pageable pageable) {
+			int offset = pageable.getPageNumber() * pageable.getPageSize();
+		
+		List<SubjectDto> subjectList = toDtoList(
+					subjectRepository.searchAll(createdOn , keyword , courseLevel , sem , offset , pageable.getPageSize() ));
+		
+		return new PageImpl<>(subjectList , pageable , subjectList.size());
 	}
 
 }

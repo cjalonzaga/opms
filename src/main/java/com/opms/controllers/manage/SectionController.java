@@ -34,7 +34,7 @@ public class SectionController extends BaseController{
 		
 		model.addAttribute("user", this.getCurrentUser());
 		
-		model.addAttribute("sections", sectionService.findAllByTeacher(this.getCurrentUser().getId()));
+		model.addAttribute("sections", sectionService.getAll());
 		
 		return "admin/manage/sections";
 	}

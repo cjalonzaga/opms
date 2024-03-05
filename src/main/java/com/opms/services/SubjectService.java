@@ -13,6 +13,8 @@ public interface SubjectService extends CrudBaseService<SubjectDto , Subject>{
 	List<SubjectDto> findAllByUser(Long userId);
 	SubjectDto update(SubjectDto dto);
 	Page<SubjectDto> findAllByUserWithPaging(Long userId, Pageable pageable);
-	public Page<SubjectDto> searchAllByUser(Long userId, String createdOn, String keyword, String courseLevel , String sem , Pageable pageable);
-	public List<SubjectDto> searchAllByStudent(Long userId);
+	Page<SubjectDto> searchAllByUser(Long userId, String createdOn, String keyword, String courseLevel , String sem , Pageable pageable);
+	Page<SubjectDto> findAll(Pageable pageable);
+	Page<SubjectDto> searchAll(String createdOn, String keyword, String courseLevel , String sem , Pageable pageable);
+	List<SubjectDto> searchAllByStudent(Long userId);
 }

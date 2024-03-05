@@ -49,12 +49,12 @@ public class SubjectController extends BaseController{
 		Page<SubjectDto> paging;
 		
 		if(keyword == null && createdOn == null && semester == null && courseLevel == null ) {
-			paging = subjectService.findAllByUserWithPaging( getCurrentUser().getId() , pageable);
+			paging = subjectService.findAll(pageable);
 		}else {
 			final String createdDate = (createdOn == null || createdOn.isEmpty() ) ? null : createdOn;
 			final String level = (courseLevel == null || courseLevel.isEmpty() ) ? null : courseLevel;
 			final String sem = (semester == null || semester.isEmpty() ) ? null : semester;
-			paging = subjectService.searchAllByUser( getCurrentUser().getId() , createdDate, keyword, level, sem, pageable);
+			paging = subjectService.searchAll( createdDate, keyword, level, sem, pageable);
 		}
 		
 		model.addAttribute("subjects", paging.getContent() );
@@ -72,7 +72,7 @@ public class SubjectController extends BaseController{
 	@GetMapping("/subject-form")
 	public String createForm(Model model , @RequestParam(required = false) Long id) {
 		model.addAttribute("user", this.getCurrentUser() );
-		model.addAttribute("courseList", courseService.findAllByUser( this.getCurrentUser().getId() ));
+		model.addAttribute("courseList", courseService.findAll());
 		
 		if(id == null) {
 			

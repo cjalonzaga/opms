@@ -60,7 +60,7 @@ public class SectionServiceImpl extends SectionMapper implements SectionService{
 
 	@Override
 	public List<SectionDto> getAll() {
-		return toDtoList(sectionRepository.findAll());
+		return toDtoList( sectionRepository.findAll() );
 	}
 
 	@Override

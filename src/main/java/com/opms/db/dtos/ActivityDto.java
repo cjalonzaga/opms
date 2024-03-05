@@ -28,6 +28,8 @@ public class ActivityDto {
 	private String createdBy;
 	
 	private List<Long> sectionIds;
+	
+	private List<SectionDto> sections;
 
 	public Long getId() {
 		return id;
@@ -115,5 +117,13 @@ public class ActivityDto {
 
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
+	}
+
+	public List<SectionDto> getSections() {
+		return sections;
+	}
+
+	public void setSections(List<SectionDto> sections) {
+		this.sections = sections;
 	}
 }

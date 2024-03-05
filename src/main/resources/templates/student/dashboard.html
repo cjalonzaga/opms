@@ -35,6 +35,7 @@
 						      <th scope="col">Deadline</th>
 						      <th scope="col">Subject</th>
 						      <th scope="col">By</th>
+						      <th scope="col"></th>
 						    </tr>
 						</thead>
 						<tbody>
@@ -43,6 +44,7 @@
 								<td>[[${#temporals.format(act.dueDate, 'dd/MM/yyyy HH:mm a')}]]</td>
 								<td>[[${act.subject}]]</td>
 								<td>[[${act.createdBy}]]</td>
+								<td><a th:href="@{/student/activity/task?id={id}(id=${act.id})}"><i class="far fa-edit"></i></a></td>
 							</tr>
 						</tbody>
 					</table>

@@ -114,4 +114,9 @@ public class CourseServiceImpl extends CourseMapper implements CourseService{
 		return null;
 	}
 
+	@Override
+	public List<CourseDto> findAll() {
+		return toDtoList(courseRepository.findAll());
+	}
+
 }

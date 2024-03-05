@@ -15,4 +15,5 @@ public interface CourseService extends CrudBaseService<CourseDto , Course> , Pag
 	CourseDto update(CourseDto courseDto);
 	List<CourseDto> findAllByUser(Long userId);
 	List<Course> findAllDistintByCouncil(CouncilType type);
+	List<CourseDto> findAll();
 }
