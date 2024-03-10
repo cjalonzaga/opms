@@ -33,6 +33,15 @@ public class Section extends BaseEntity{
     )
 	private String name;
 	
+	@Basic
+	@Column(
+            name = "unique_id",
+            nullable = true,
+            unique =  true,
+            updatable = true
+    )
+	private String uniqueId;
+	
 	@Column(name = "courseLevel")
     @Enumerated(EnumType.STRING)
 	private CourseLevel courseLevel;
@@ -108,6 +117,14 @@ public class Section extends BaseEntity{
 
 	public void setActivities(List<Activity> activities) {
 		this.activities = activities;
+	}
+
+	public String getUniqueId() {
+		return uniqueId;
+	}
+
+	public void setUniqueId(String uniqueId) {
+		this.uniqueId = uniqueId;
 	}
 
 }

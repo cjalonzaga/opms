@@ -46,6 +46,10 @@ public class Teacher extends User{
 	@OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
 	private List<Activity> activities;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
+	private List<UserFile> files;
+	
 	public Teacher(){
 		super();
 	}
@@ -88,5 +92,13 @@ public class Teacher extends User{
 
 	public void setActivities(List<Activity> activities) {
 		this.activities = activities;
+	}
+
+	public List<UserFile> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<UserFile> files) {
+		this.files = files;
 	}
 }

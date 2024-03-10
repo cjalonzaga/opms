@@ -17,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -59,6 +60,10 @@ public class Student extends User{
         updatable = true
     )
 	private CouncilType councilType;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+	private List<UserFile> files;
 
 	public Image getImage() {
 		return image;
@@ -98,5 +103,13 @@ public class Student extends User{
 
 	public void setSections(List<Section> sections) {
 		this.sections = sections;
+	}
+
+	public List<UserFile> getFiles() {
+		return files;
+	}
+
+	public void setFiles(List<UserFile> files) {
+		this.files = files;
 	}
 }

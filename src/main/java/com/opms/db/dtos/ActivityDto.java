@@ -3,6 +3,8 @@ package com.opms.db.dtos;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.opms.enums.TaskType;
 
 public class ActivityDto {
@@ -21,6 +23,7 @@ public class ActivityDto {
 	
 	private TaskType taskType;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm")
 	private LocalDateTime dueDate;
 	
 	private String subject;
@@ -30,6 +33,8 @@ public class ActivityDto {
 	private List<Long> sectionIds;
 	
 	private List<SectionDto> sections;
+	
+	private List<AnswerDto> answers;
 
 	public Long getId() {
 		return id;
@@ -125,5 +130,13 @@ public class ActivityDto {
 
 	public void setSections(List<SectionDto> sections) {
 		this.sections = sections;
+	}
+
+	public List<AnswerDto> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(List<AnswerDto> answers) {
+		this.answers = answers;
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import com.opms.db.dtos.SectionDto;
 import com.opms.db.entities.Course;
@@ -37,6 +38,7 @@ public class SectionServiceImpl extends SectionMapper implements SectionService{
 	public SectionDto create(SectionDto dto, Long userId) {
 		Section section = new Section();
 		section.setName(dto.getName());
+		section.setUniqueId( generateUniqueId() );
 		section.setCourseLevel(dto.getCourseLevel());
 		Teacher teacher = teacherRepository.findById(userId).get();
 		section.setTeacher(teacher);
@@ -83,6 +85,8 @@ public class SectionServiceImpl extends SectionMapper implements SectionService{
 		return toDto( sectionRepository.save(section) );
 	}
 	
-	
+	private String generateUniqueId() {
+		return RandomStringUtils.random(15 , true , true);
+	}
 
 }

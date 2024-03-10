@@ -55,6 +55,31 @@ public class UserFile extends BaseEntity{
     )
 	private Assignment assignment;
 	
+	
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "studentId",
+            referencedColumnName = "id"
+    )
+	private Student student;
+	
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "teacherId",
+            referencedColumnName = "id"
+    )
+	private Teacher teacher;
+	
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "answerId",
+            referencedColumnName = "id"
+    )
+	private Answer answer;
+	
 	public String getFileName() {
 		return fileName;
 	}
@@ -93,5 +118,29 @@ public class UserFile extends BaseEntity{
 
 	public void setOriginalFileName(String originalFileName) {
 		this.originalFileName = originalFileName;
+	}
+
+	public Answer getAnswer() {
+		return answer;
+	}
+
+	public void setAnswer(Answer answer) {
+		this.answer = answer;
+	}
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
+
+	public Student getStudent() {
+		return student;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
 	}
 }

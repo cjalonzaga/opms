@@ -63,7 +63,8 @@ public class ActivityServiceImpl extends ActivityMapper implements ActivityServi
 
 	@Override
 	public ActivityDto get(Long id) {
-		return toDto(activityRepository.findById(id).get());
+		
+		return toDto( activityRepository.findById(id).get() );
 	}
 
 	@Override

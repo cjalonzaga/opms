@@ -80,7 +80,11 @@ public class Activity extends BaseEntity{
 			inverseJoinColumns = @JoinColumn(name = "sectionId")
 		)    
 	@ManyToMany(cascade = CascadeType.MERGE , fetch = FetchType.EAGER)
-	private List<Section> sections; 
+	private List<Section> sections;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "activity", fetch = FetchType.LAZY)
+	private List<Answer> answers;
 
 	public String getTitle() {
 		return title;

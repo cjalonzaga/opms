@@ -1,6 +1,7 @@
 package com.opms.controllers.manage;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -73,12 +74,21 @@ public class ActivityController extends BaseController{
 		TeacherDto user = this.getCurrentUser();
 		model.addAttribute("user", user );
 		model.addAttribute("subjects", subjectService.getAll());
-		model.addAttribute("sections", sectionService.getAll());
+		model.addAttribute("sectionsAll", sectionService.getAll());
+		
 		if(id == null) {
 			model.addAttribute("activity" , new ActivityDto());
 			model.addAttribute("action" , Actions.SAVE);
 		}else {
-			model.addAttribute("activity" , activityService.get(id));
+			ActivityDto dto = activityService.get(id);
+			model.addAttribute("activity" , dto);
+			
+			List<Long> forSections = dto.getSections().stream().map(
+											sect -> sect.getId()
+									 ).collect(Collectors.toList());
+			
+			model.addAttribute("sections", forSections);
+			
 			model.addAttribute("action" , Actions.UPDATE);
 		}
 		

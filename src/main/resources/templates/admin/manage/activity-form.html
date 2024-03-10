@@ -57,7 +57,7 @@
 											<label for="courseTitle" class="form-label m-0">Activity Title</label>
 										</div>
 										<div class="col-md-6">
-		 									<input type="text" class="form-control" id="courseTitle"  
+		 									<input type="text" class="form-control"  id="courseTitle"  
 		 									placeholder="Activity Title" th:value="${activity.title}" th:field="*{title}" required>
 					              		</div>
 									</div>
@@ -68,8 +68,7 @@
 										</div>
 										<div class="col-md-6">
 		 									<input type="datetime-local" class="form-control" id="due"  
-		 									placeholder="Due Date" th:value="${#temporals.format(activity.dueDate, 'MM-dd-yyyy HH:mm a')}" th:field="*{dueDate}" required>
-		 									
+		 									placeholder="Due Date" th:value="${activity.dueDate}" th:field="*{dueDate}" required>
 					              		</div>
 									</div>
 									
@@ -104,9 +103,11 @@
 										</div>
 										<div class="col-md-6">
 		 									<select class="form-control form-select" id="multi-select" th:field="*{sectionIds}" multiple>
-						                		<option th:each="sect : ${sections}"
-						                         th:value="${sect.id}" >[[${sect.name}]]</option>
+						                		<option th:each="sect : ${sectionsAll}"
+						                		 th:attr="selected=${sections.contains(sect.id)}"
+						                         th:value="${sect.id}" th:text="${sect.name}"></option>
 						               		</select>
+						               		<!-- id="multi-select" -->
 					              		</div>
 									</div>
 									
@@ -114,9 +115,18 @@
 										<div class="col-sm-2">
 											<label for="formFile" class="form-label">Attached file</label>
 										</div>
-										<div class="col-md-6">
+										<div class="col-md-6" th:if="${param.id != null }">
+											<div th:if="${not #lists.isEmpty(activity.files)}" th:each="file : ${activity.files}">
+												<input class="form-control" type="file" name="file" id="formFile" th:value="${file.uri}">
+												<small><a th:href="${file.uri}" target="_blank">[[${file.fileName}]]</a></small>
+											</div>
+	  										<div th:if="${#lists.isEmpty(activity.files)}">
+	  											<input class="form-control" type="file" name="file" id="formFile">
+	  										</div>
+  										</div>
+  										<div class="col-md-6" th:if="${param.id == null && #lists.isEmpty(activity.files) }">
 	  										<input class="form-control" type="file" name="file" id="formFile">
-	  									</div>
+  										</div>
 									</div>
 									
 									<div class="row align-items-start mb-3 mt-2">
@@ -151,7 +161,7 @@
 		</div>
 		
 	</div>
-	<script>
+	<script type="text/javascript" th:inline="javascript"> 
 		/*jQuery('#dueDate').datetimepicker({
 	        icons: {
 	            previous: 'bi-caret-left-fill',
@@ -168,15 +178,34 @@
 		    theme: 'snow'
 		});
 	    
+	    /*<![CDATA[*/
+			var allList = [];
+		    var list = [[${sectionsAll}]]; //neglect the error data is direct from controller
+		    var sectionContain = [[${sections}]];
+		    for (i = 0; i < list.length; i++) {
+		    	if(sectionContain.includes(list[i].id)){
+		    		allList.push(''+list[i].id+'');
+		    	}
+		    }
+	    /*]]>*/
 	    function submitForm(e){
 	    	e.preventDefault();
 	    	document.getElementById('instruct').value = quill.root.innerHTML;
+	    	
+	    	//todo: need to add validation on empty fields
+	    	
 	    	document.getElementById('formActivity').submit();
 	    }
 	    
 		jQuery(document).ready(function($){
-			$('#multi-select').select2({
-			});
+			const select = document.getElementById("multi-select");
+			for (i = 0; i < select.options.length; ++i){
+			    if ( allList.includes( select.options[i].value ) ){
+			    	select.options[i].selected = true;
+			    }
+			}
+			$('#multi-select').select2();
+			$('#multi-select').trigger('change');
 		});
 	
 	</script>

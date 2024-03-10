@@ -8,13 +8,73 @@
       <div th:replace="~{includes/subheader :: subheader}"></div>
       <div class="body flex-grow-1 px-3">
 		<div class="container-lg">
-			<div class="card mb-4 col-md-12" >
+			<div class="card mb-4 col-md-12 p-5" >
 				<div th:object="${activity}">
 					<div class="row">
-						<div class="col-md-3">
-							Instructions:
+						<div class="col-md-9">
+							<div class="mb-3">
+								<h5>[[${activity.title}]]</h5>
+								<div class="d-flex">
+									<h6 class="text-secondary ml-1">[[${activity.subject}]]</h6>
+									&nbsp;
+									<h6 class="text-secondary ml-1" th:text="${#temporals.format(activity.dueDate , 'dd/MM/yyyy HH:mm a')}"></h6>
+									&nbsp;
+									<div th:if="${answer != null}">
+										<span class="badge text-bg-primary">[[${answer.status.name}]]</span>
+									</div>
+								</div>
+							</div>
+							<div><h6 class="mb-3">Instructions</h6></div>
+							<div th:utext="${activity.instruction}"></div>
+							
+							<div class="mb-3" th:if="${not #lists.isEmpty(activity.files)}" th:each="file : ${activity.files}">
+								<div><h6 class="">Attached File</h6></div>
+								<small ><a th:href="${file.uri}" target="_blank">[[${file.fileName}]]</a></small>
+							</div>
+							
+							<div th:if="${answer != null}">
+								<div th:if="${#strings.toString(activity.taskType) == 'SHARE_FILE'}">
+									<h6 class="mb-3">Shared Link</h6>
+									<div class="form-group col-md-6 mb-3">
+								    	<input type="text" class="form-control mb-3" id="fileLink" th:value="${answer.fileUri}" required disabled >
+								  	</div>
+								</div>
+								
+								<div th:if="${#strings.toString(activity.taskType) == 'FILE_UPLOAD'}">
+									<h6 class="mb-3">Shared Link</h6>
+									<div class="form-group col-md-6 mb-3" th:each="file : ${answer.files}">
+								    	<input type="text" class="form-control mb-3" id="fileLink" th:value="${file.fileUri}" required disabled >
+								  	</div>
+								</div>
+							</div>
+							
+							<div th:if="${answer == null}">
+								<form method="post" th:object="${newAnswer}" th:action="@{/student/activity/answer/save}" enctype="multipart/form-data">
+									<input type="hidden" th:value="${activity.id}" name="activityId"/>
+									<input type="hidden" th:value="${user.id}" name="userId"/>
+									<div th:if="${#strings.toString(activity.taskType) == 'FILE_UPLOAD'}">
+										<div class="form-group col-md-6">
+									    	<h6 class="mb-3">[[${activity.taskType.name}]]</h6>
+									    	<input type="file" name="file" class="form-control mb-3" id="exampleFormControlFile1">
+									  	</div>
+									</div>
+									
+									<div th:if="${#strings.toString(activity.taskType) == 'SHARE_FILE'}">
+										<div class="form-group col-md-6 mb-3" >
+									    	<h6 class="mb-3">[[${activity.taskType.name}]]</h6>
+									    	<input type="text" class="form-control mb-3" id="fileLink" th:field="*{fileUri}" required>
+									    	<input type="file" name="file" class="form-control mb-3 d-none" id="exampleFormControlFile1">
+									  	</div>
+									</div>
+									
+									<div class="form-group col-md-6">
+										<div class="mb-3">
+											<input type="submit" value="Submit" class="btn btn-primary"/>
+										</div>
+									</div>
+								</form>
+							</div>
 						</div>
-						<div class="col-md-9" th:utext="${activity.instruction}"></div>
 					</div>
 				</div>
 			</div>
