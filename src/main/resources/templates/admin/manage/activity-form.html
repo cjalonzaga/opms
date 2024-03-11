@@ -104,7 +104,6 @@
 										<div class="col-md-6">
 		 									<select class="form-control form-select" id="multi-select" th:field="*{sectionIds}" multiple>
 						                		<option th:each="sect : ${sectionsAll}"
-						                		 th:attr="selected=${sections.contains(sect.id)}"
 						                         th:value="${sect.id}" th:text="${sect.name}"></option>
 						               		</select>
 						               		<!-- id="multi-select" -->
@@ -182,11 +181,14 @@
 			var allList = [];
 		    var list = [[${sectionsAll}]]; //neglect the error data is direct from controller
 		    var sectionContain = [[${sections}]];
-		    for (i = 0; i < list.length; i++) {
-		    	if(sectionContain.includes(list[i].id)){
-		    		allList.push(''+list[i].id+'');
-		    	}
+		    if(sectionContain != null){
+		    	for (i = 0; i < list.length; i++) {
+			    	if(sectionContain.includes(list[i].id)){
+			    		allList.push(''+list[i].id+'');
+			    	}
+			    }
 		    }
+		    
 	    /*]]>*/
 	    function submitForm(e){
 	    	e.preventDefault();
@@ -198,13 +200,14 @@
 	    }
 	    
 		jQuery(document).ready(function($){
+			$('#multi-select').select2();
 			const select = document.getElementById("multi-select");
 			for (i = 0; i < select.options.length; ++i){
 			    if ( allList.includes( select.options[i].value ) ){
 			    	select.options[i].selected = true;
 			    }
 			}
-			$('#multi-select').select2();
+			
 			$('#multi-select').trigger('change');
 		});
 	
