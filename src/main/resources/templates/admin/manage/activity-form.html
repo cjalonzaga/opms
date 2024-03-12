@@ -13,7 +13,7 @@
 			<div class="container-lg">
 				<div class="card mb-4 col-md-12 ">
 					<div class="card-body ">
-						<div class="col-md-12 text-center m-0" >
+						<div class="col-md-12 text-center m-0 p-0" >
 							<nav aria-label="breadcrumb">
 							  <ol class="breadcrumb">
 							    <li class="breadcrumb-item"><a href="#">Manage</a></li>
@@ -21,24 +21,33 @@
 							  </ol>
 							</nav>
 						</div>
-						<div class="col-md-12 text-center m-0" >
-							<div class="row mb-3">
-								<form class="col-md-4">
-									<div class="input-group ">
-									  <input type="text" class="form-control" placeholder="Search by code" 
-									  	aria-label="Recipient's username" aria-describedby="basic-addon2">
-									  <span class="input-group-text p-0 border-0" id="basic-addon2">
-									  	<button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
-									  </span>
-									</div>
-								</form>
-							</div>
-						</div>
 					</div>
 				</div>
 				
 				<div class="card mb-4 col-md-12 ">
 					<div class="card-body ">
+					
+						<div class="row">
+							<div class="card col-md-12 border-0 p-0">
+								<div class="card-body border-0">
+									<nav>
+				                      <div class="nav nav-tabs d-flex" id="nav-tab" role="tablist">
+				                        <button class="nav-link custom-tab active border-0" id="activityTab" data-coreui-toggle="tab" 
+				                        data-coreui-target="#activity" type="button" role="tab" aria-controls="activity" aria-selected="true">
+				                        Activity</button>
+				                        
+				                        <button class="nav-link custom-tab border-0" id="submittedAnsTab" data-coreui-toggle="tab" 
+				                        data-coreui-target="#submittedAns" type="button" role="tab" aria-controls="submittedAns" aria-selected="false">
+				                        Answers</button>
+				                      </div>
+				                    </nav>
+								</div>
+							</div>
+						</div>
+						
+						<div class="tab-content mt-3" id="nav-tabContent">
+						<!-- TAB ! -->
+						<div class="tab-pane fade show active" id="activity" role="tabpanel" aria-labelledby="activityTab" tabindex="0">		
 						<div class="col-md-12 text-center m-0" >
 							<div class="row mb-3 text-start">
 								<form id="formActivity" method="post" th:object="${activity}"  enctype="multipart/form-data"
@@ -153,6 +162,19 @@
 								</form>
 							</div>
 						</div>
+						</div>
+						
+						<div class="tab-pane fade show" id="submittedAns" role="tabpanel" aria-labelledby="submittedAnsTab" tabindex="0">
+							<div class="col-md-12 text-center m-0" >
+								<div class="row mb-3 text-start">
+									
+								</div>
+							</div>
+						</div>
+						
+						</div>
+						<!-- TAB -->
+						
 					</div>
 				</div>
 				
