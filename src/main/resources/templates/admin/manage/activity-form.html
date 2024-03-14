@@ -30,15 +30,15 @@
 						<div class="row">
 							<div class="card col-md-12 border-0 p-0">
 								<div class="card-body border-0">
-									<nav>
+									<nav th:if="${param.id != null && sections != null}">
 				                      <div class="nav nav-tabs d-flex" id="nav-tab" role="tablist">
 				                        <button class="nav-link custom-tab active border-0" id="activityTab" data-coreui-toggle="tab" 
 				                        data-coreui-target="#activity" type="button" role="tab" aria-controls="activity" aria-selected="true">
 				                        Activity</button>
+		                                
+		                                <a th:each="s : ${activity.sections}" th:href="@{'/admin/activity?id='+${activity.id}+'&'+'section='+ ${s.id} }" class="nav-link custom-tab border-0">
+		                                [[${s.name}]]</a>
 				                        
-				                        <button class="nav-link custom-tab border-0" id="submittedAnsTab" data-coreui-toggle="tab" 
-				                        data-coreui-target="#submittedAns" type="button" role="tab" aria-controls="submittedAns" aria-selected="false">
-				                        Answers</button>
 				                      </div>
 				                    </nav>
 								</div>
@@ -162,14 +162,6 @@
 								</form>
 							</div>
 						</div>
-						</div>
-						
-						<div class="tab-pane fade show" id="submittedAns" role="tabpanel" aria-labelledby="submittedAnsTab" tabindex="0">
-							<div class="col-md-12 text-center m-0" >
-								<div class="row mb-3 text-start">
-									
-								</div>
-							</div>
 						</div>
 						
 						</div>

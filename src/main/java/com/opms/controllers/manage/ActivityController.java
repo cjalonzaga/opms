@@ -95,6 +95,20 @@ public class ActivityController extends BaseController{
 		return "/admin/manage/activity-form";
 	}
 	
+	@GetMapping("/activity")
+	public String submittedActivity(Model model , @RequestParam(required = false) Long id , @RequestParam(required = false) Long section) {
+		
+		TeacherDto user = this.getCurrentUser();
+		model.addAttribute("user", user );
+		ActivityDto dto = activityService.get(id);
+		
+		
+		
+		model.addAttribute("activity" , dto);
+		
+		return "/admin/manage/activity";
+	}
+	
 	@PostMapping("/activity-form/save")
 	public String create(@ModelAttribute("activity") ActivityDto activityDto , @RequestParam("file") MultipartFile file) {
 		

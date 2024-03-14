@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}">
+</head>
+<body>
+
+	<div th:replace="~{includes/sidebar :: sidebar}"></div>
+	
+	<div class="wrapper d-flex flex-column min-vh-100 bg-light">
+		<div th:replace="~{includes/subheader :: subheader}"></div>
+		
+		<div class="body flex-grow-1 px-3">
+			<div class="container-lg">
+				<div class="card mb-4 col-md-12 ">
+					<div class="card-body ">
+						<div class="col-md-12 text-center m-0 p-0" >
+							<nav aria-label="breadcrumb">
+							  <ol class="breadcrumb">
+							    <li class="breadcrumb-item"><a href="#">Manage</a></li>
+							    <li class="breadcrumb-item active" aria-current="page">Activity</li>
+							  </ol>
+							</nav>
+						</div>
+					</div>
+				</div>
+				
+				<div class="card mb-4 col-md-12 ">
+					<div class="card-body ">
+					
+						<div class="row">
+							<div class="card col-md-12 border-0 p-0">
+								<div class="card-body border-0">
+									<nav th:if="${param.id != null && param.section != null}">
+				                      <div class="nav nav-tabs d-flex" id="nav-tab" role="tablist">
+				                        <a class="nav-link custom-tab border-0" id="activityTab" th:href="@{'/admin/activity-form?id='+${activity.id}}">
+				                        Activity</a>
+				                        
+		                        	 	<a th:each="s : ${activity.sections}" th:href="@{'/admin/activity?id='+${activity.id}+'&'+'section='+ ${s.id} }" 
+		                        	 		class="nav-link custom-tab border-0" 
+		                        	 		th:classappend="${#strings.toString(s.id) == #strings.toString(param.section)} ? active : na ">
+		                                [[${s.name}]]</a>
+				                        
+				                      </div>
+				                    </nav>
+								</div>
+							</div>
+						</div>
+						
+						<div class="tab-content mt-3" id="nav-tabContent">
+						<!-- TAB ! -->
+							<div class="tab-pane fade show active" id="activity" role="tabpanel" aria-labelledby="activityTab" tabindex="0">		
+								
+							</div>
+						</div>
+						<!-- TAB -->
+						
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		
+	</div>
+	<script type="text/javascript" th:inline="javascript"> 
+		/*jQuery('#dueDate').datetimepicker({
+	        icons: {
+	            previous: 'bi-caret-left-fill',
+	            next: 'bi-caret-right-fill',
+	            time: 'bi-clock-fill',
+	            up: 'bi-caret-up',
+	            down: 'bi-caret-down',
+	            date: 'bi-calendar-fill'
+	        },
+	        format:'L'
+	    });*/
+	    
+		const quill = new Quill('#editor', {
+		    theme: 'snow'
+		});
+	    
+	    /*<![CDATA[*/
+			var allList = [];
+		    var list = [[${sectionsAll}]]; //neglect the error data is direct from controller
+		    var sectionContain = [[${sections}]];
+		    if(sectionContain != null){
+		    	for (i = 0; i < list.length; i++) {
+			    	if(sectionContain.includes(list[i].id)){
+			    		allList.push(''+list[i].id+'');
+			    	}
+			    }
+		    }
+		    
+	    /*]]>*/
+	    function submitForm(e){
+	    	e.preventDefault();
+	    	document.getElementById('instruct').value = quill.root.innerHTML;
+	    	
+	    	//todo: need to add validation on empty fields
+	    	
+	    	document.getElementById('formActivity').submit();
+	    }
+	    
+		jQuery(document).ready(function($){
+			$('#multi-select').select2();
+			const select = document.getElementById("multi-select");
+			for (i = 0; i < select.options.length; ++i){
+			    if ( allList.includes( select.options[i].value ) ){
+			    	select.options[i].selected = true;
+			    }
+			}
+			
+			$('#multi-select').trigger('change');
+		});
+	
+	</script>
+	<footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>
