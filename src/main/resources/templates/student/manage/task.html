@@ -41,9 +41,9 @@
 								</div>
 								
 								<div th:if="${#strings.toString(activity.taskType) == 'FILE_UPLOAD'}">
-									<h6 class="mb-3">Shared Link</h6>
+									<h6 class="mb-3">Your Re-uploaded file</h6>
 									<div class="form-group col-md-6 mb-3" th:each="file : ${answer.files}">
-								    	<input type="text" class="form-control mb-3" id="fileLink" th:value="${file.fileUri}" required >
+								    	<a th:href="@{ ${file.uri} }" target="_blank">[[${file.uri}]]</a>
 								  	</div>
 								</div>
 							</div>
