@@ -21,6 +21,7 @@ import com.opms.db.dtos.CourseDto;
 import com.opms.db.dtos.TeacherDto;
 import com.opms.enums.Actions;
 import com.opms.services.ActivityService;
+import com.opms.services.AnswerService;
 import com.opms.services.SectionService;
 import com.opms.services.SubjectService;
 
@@ -31,11 +32,13 @@ public class ActivityController extends BaseController{
 	private final ActivityService activityService;
 	private final SubjectService subjectService;
 	private final SectionService sectionService;
+	private final AnswerService answerService;
 	
-	ActivityController(ActivityService activityService, SubjectService subjectService , SectionService sectionService){
+	ActivityController(ActivityService activityService, SubjectService subjectService , SectionService sectionService, AnswerService answerService){
 		this.activityService = activityService;
 		this.subjectService = subjectService;
 		this.sectionService = sectionService;
+		this.answerService = answerService;
 	}
 	
 	@GetMapping("/activities")
@@ -102,9 +105,7 @@ public class ActivityController extends BaseController{
 		model.addAttribute("user", user );
 		ActivityDto dto = activityService.get(id);
 		
-		
-		
-		model.addAttribute("activity" , dto);
+		model.addAttribute("activity" , dto );
 		
 		return "/admin/manage/activity";
 	}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}"></head>
+<body th:object="${user}" class="d-flex flex-column h-100vh">
+	  
+	  <header th:replace="~{parent/header :: header}"></header>
+	  
+	  <div class="container flex-1">
+		  <div class="row h-100 justify-content-center align-items-center">
+		    <div>
+				<div class="jumbotron">
+					<div class="row justify-content-center gap-20">
+					 	<div class="card p-0" style="width: 20rem;" th:each="s :  ${user.students}">
+					 	  	<img src="https://github.com/mdo.png" class="card-img-top" alt="...">
+						  	<div class="card-body">
+							    <h5 class="card-title">[[${s.firstName +' ' + s.lastName}]]</h5>
+							    <a th:href="@{'/parent/tasks?id='+${s.id}+'&mode=activities'}" class="card-link">View Activities</a>
+							    <a href="#" class="card-link">View Assignments</a>
+						  	</div>
+						</div>
+					</div>
+				</div>
+	  		</div>
+		  </div>
+	 </div>
+	
+	<footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>

@@ -106,4 +106,9 @@ public class AnswerServiceImpl extends AnswerMapper implements AnswerService{
 		return toDto(answer);
 	}
 
+	@Override
+	public List<AnswerDto> findAllBySection(Long activityId, Long sectionId) {
+		return toDtoList(this.answerRepository.findAllBySection(activityId));
+	}
+
 }

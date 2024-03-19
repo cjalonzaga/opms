@@ -36,7 +36,8 @@ public class AppConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorizeHttpRequests) ->
 			authorizeHttpRequests
-				.requestMatchers(HttpMethod.GET ,"/signup" , "/signup/**", "/css/**" , "/js/**" , "/vendors/**", "/assets/**" , "/images/**").permitAll()
+				.requestMatchers(HttpMethod.GET ,"/signup" ,"/ajax/**", 
+						"/signup/**", "/css/**" , "/js/**" , "/vendors/**", "/assets/**" , "/images/**").permitAll()
 				.requestMatchers(HttpMethod.POST , "/signup/**").permitAll()
 				.anyRequest()
 				.authenticated()

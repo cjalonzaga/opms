@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}"></head>
+<body th:object="${user}" class="d-flex flex-column h-100vh">
+	  
+    <header th:replace="~{parent/header :: header}"></header>
+	 
+	<div class="container flex-1">
+		  <div class="row h-100 justify-content-center">
+		    <div>
+		    
+				<div class="jumbotron parent">
+					<div class="row justify-content-center">
+						<ol style="--length: 5" role="list" th:object="${activity}">
+							<li style="--i: 1">
+							<div class="row">
+								<div class="col-md-12" th:object="${student}">
+									<h3 class="m-0">[[${activity.title}]]</h3>
+									<p class="d-flex align-items-center">Due date: 
+										<span th:text="${#temporals.format(activity.createdOn, 'dd/MM/yyyy HH:mm a')}"></span>
+									</p>
+									<div th:utext="${activity.instruction}"></div>
+									
+									<div th:if="${answer != null}">
+										<div th:object="${answer}">
+											<div>
+												<span>
+													<strong>Status : </strong>
+													<span class="badge text-bg-primary mt-3">[[${answer.status.name}]]</span> 
+												</span>
+												<div th:if="${#strings.toString(activity.taskType) == 'SHARE_FILE'}">
+													<h6 class="">[[${student.firstName +' '+student.lastName +' : Shared Link'}]]</h6>
+												  	<a th:href="@{ ${answer.fileUri} }" target="_blank">[[${answer.fileUri}]]</a>
+												</div>
+											
+												<div th:if="${#strings.toString(activity.taskType) == 'FILE_UPLOAD'}">
+													<h6 class="mb-3">Shared Link</h6>
+													<div class="form-group col-md-6 mb-3" th:each="file : ${answer.files}">
+												    	<input type="text" class="form-control mb-3" id="fileLink" th:value="${file.fileUri}" required >
+												  	</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<a th:href="@{'/parent/tasks?id='+${student.id}+'&mode=activities'}" style="float:right;">
+										<i class="fa-solid fa-angles-left" ></i>Back
+									</a>
+									
+								</div>
+							</div>
+							</li>
+						</ol>
+					</div>
+				</div>
+	  		</div>
+		  </div>
+	 </div>
+	  
+	<footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>

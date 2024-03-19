@@ -33,17 +33,16 @@ public class ProfileController extends BaseController{
 	@PostMapping("/profile/update/{userid}")
 	public String updateProfile(Model model , @ModelAttribute("user") TeacherDto teacherDto, @RequestParam("file") MultipartFile file) {
 		model.addAttribute("user", this.getCurrentUser() );
-		if(!file.isEmpty()) {
-			teacherService.update(file , teacherDto);
-		}
+		teacherService.update(file , teacherDto);
 		
 		return "redirect:/admin/profile";
 	}
-//	
-//	@PostMapping("/profile/update-password")
-//	public String updateCredentials(@ModelAttribute("user") UserDto userDto , Model model) {
-//		model.addAttribute("user", this.getCurrentUser() );
-//		userService.updateCredentials(userDto);
-//		return "redirect:/admin/profile";
-//	}
+	
+	@PostMapping("/profile/update-password")
+	public String updateCredentials(@ModelAttribute("user") TeacherDto teacherDto , Model model) {
+		model.addAttribute("user", this.getCurrentUser() );
+		teacherService.updateCredentials(teacherDto);
+		
+		return "redirect:/admin/profile";
+	}
 }

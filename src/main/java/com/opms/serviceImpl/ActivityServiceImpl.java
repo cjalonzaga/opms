@@ -9,13 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.opms.db.dtos.ActivityDto;
-import com.opms.db.dtos.CourseDto;
 import com.opms.db.entities.Activity;
 import com.opms.db.entities.Section;
 import com.opms.db.entities.Subject;

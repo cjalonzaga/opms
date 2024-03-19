@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.opms.db.dtos.ParentDto;
 import com.opms.db.dtos.StudentDto;
 import com.opms.db.dtos.TeacherDto;
 import com.opms.db.dtos.UserDto;
 import com.opms.enums.UserRoles;
 import com.opms.services.CourseService;
+import com.opms.services.ParentService;
 import com.opms.services.SectionService;
 import com.opms.services.StudentService;
 import com.opms.services.TeacherService;
@@ -25,15 +27,18 @@ public class SignUpController{
 	private final TeacherService teacherService;
 	private final StudentService studentService;
 	private final SectionService sectionService;
+	private final ParentService parentService;
 	
 	SignUpController(CourseService courseService , 
 			TeacherService teacherService , 
 			StudentService studentService,
-			SectionService sectionService){
+			SectionService sectionService,
+			ParentService parentService){
 		this.courseService = courseService;
 		this.teacherService = teacherService;
 		this.studentService = studentService;
 		this.sectionService = sectionService;
+		this.parentService = parentService;
 	}
 	
 	@GetMapping("/signup")
@@ -44,15 +49,15 @@ public class SignUpController{
 			}
 			if(UserRoles.STUDENT == UserRoles.valueOf(type.toUpperCase())) {
 				model.addAttribute("student" , new StudentDto());
-				System.out.println("STUDENT");
 				model.addAttribute("sections", sectionService.getAll());
 			}
 			if(UserRoles.PARENT == UserRoles.valueOf(type.toUpperCase())) {
-				//model.addAttribute("parent" , new StudentDto());
+				model.addAttribute("parent" , new ParentDto());
+				model.addAttribute("students", studentService.getAll());
 			}
 		}
-		
 		model.addAttribute("courses", courseService.getAll());
+		
 		return "signup";
 	}
 	
@@ -66,6 +71,13 @@ public class SignUpController{
 	@PostMapping("/signup/save/student")
 	public String createStudent(@ModelAttribute("student") StudentDto studentDto , Model model) {
 		StudentDto dto = studentService.create(studentDto);
+		String success = (dto != null) ? "true" : "false";
+		return "redirect:/signup?success="+success;
+	}
+	
+	@PostMapping("/signup/save/parent")
+	public String createParent(@ModelAttribute("parent") ParentDto parentDto , Model model) {
+		ParentDto dto = parentService.create(parentDto , parentDto.getStudentIds());
 		String success = (dto != null) ? "true" : "false";
 		return "redirect:/signup?success="+success;
 	}

@@ -200,7 +200,7 @@
 				
 				const oldPass = $('#old-password').val();
 				const id =$('#userid').val();
-				
+				console.log(window.location.origin +'/ajax/verifyPassword/')
 				if(oldPass != '' && id != ''){
 					$.ajax({
                         url : window.location.origin +'/ajax/verifyPassword/',

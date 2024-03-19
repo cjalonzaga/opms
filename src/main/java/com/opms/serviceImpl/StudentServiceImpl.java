@@ -74,4 +74,13 @@ public class StudentServiceImpl extends StudentMapper implements StudentService{
 		return toDto( studentRepository.save(student) );
 	}
 
+	@Override
+	public List<StudentDto> getAll() {
+		return toDtoList( studentRepository.findAll() );
+	}
+
+	@Override
+	public StudentDto getById(Long id) {
+		return toDto( studentRepository.findById(id).get() );
+	}
 }

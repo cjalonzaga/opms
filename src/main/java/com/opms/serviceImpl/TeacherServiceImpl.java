@@ -88,45 +88,47 @@ public class TeacherServiceImpl extends TeacherMapper implements TeacherService{
 		}
 		
 		Image image = null;
-		if(user.getImage() == null) {
-			File fileObject = FileUtil.convertMultiPartFileToFile(file);
-			String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-			s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObject));
-			String uri = s3Client.getUrl(bucketName, fileName).toString();
-			
-			image = new Image();
-			image.setFileName(fileName);
-			image.setOriginalFileName(file.getOriginalFilename());
-			image.setUri(uri);
-			image.setTeacher(user);
-			
-			user.setImage(image);
-			
-			imageRepository.save(image);
-			
-			fileObject.delete();
-		}else {
-			
-			//check if image doesn't change to reduce api call
-			if(!imageRepository.checkImageExist(file.getName())) {
-				s3Client.deleteObject(bucketName , user.getImage().getFileName());
-
+		if(!file.isEmpty()) {
+			if(user.getImage() == null) {
 				File fileObject = FileUtil.convertMultiPartFileToFile(file);
 				String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
 				s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObject));
-				
-				s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObject));
 				String uri = s3Client.getUrl(bucketName, fileName).toString();
 				
-				image = imageRepository.findById(user.getImage().getId()).get();
+				image = new Image();
 				image.setFileName(fileName);
-				image.setUri(uri);
 				image.setOriginalFileName(file.getOriginalFilename());
+				image.setUri(uri);
+				image.setTeacher(user);
+				
 				user.setImage(image);
 				
 				imageRepository.save(image);
 				
 				fileObject.delete();
+			}else {
+				
+				//check if image doesn't change to reduce api call
+				if(!imageRepository.checkImageExist(file.getName())) {
+					s3Client.deleteObject(bucketName , user.getImage().getFileName());
+
+					File fileObject = FileUtil.convertMultiPartFileToFile(file);
+					String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+					s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObject));
+					
+					s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObject));
+					String uri = s3Client.getUrl(bucketName, fileName).toString();
+					
+					image = imageRepository.findById(user.getImage().getId()).get();
+					image.setFileName(fileName);
+					image.setUri(uri);
+					image.setOriginalFileName(file.getOriginalFilename());
+					user.setImage(image);
+					
+					imageRepository.save(image);
+					
+					fileObject.delete();
+				}
 			}
 		}
 		

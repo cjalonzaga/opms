@@ -64,6 +64,10 @@ public class Student extends User{
 	@JsonIgnore
 	@OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
 	private List<UserFile> files;
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "students", cascade = CascadeType.MERGE , fetch = FetchType.LAZY)
+	private Set<Parent> parent;
 
 	public Image getImage() {
 		return image;
@@ -112,4 +116,13 @@ public class Student extends User{
 	public void setFiles(List<UserFile> files) {
 		this.files = files;
 	}
+
+	public Set<Parent> getParent() {
+		return parent;
+	}
+
+	public void setParent(Set<Parent> parent) {
+		this.parent = parent;
+	}
+	
 }

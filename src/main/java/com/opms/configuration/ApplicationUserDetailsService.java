@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.opms.db.entities.User;
+import com.opms.repositories.ParentRepository;
 import com.opms.repositories.StudentRepository;
 import com.opms.repositories.TeacherRepository;
 
@@ -19,6 +20,9 @@ public class ApplicationUserDetailsService implements UserDetailsService {
 	@Autowired
 	private StudentRepository studentRepository;
 	
+	@Autowired
+	private ParentRepository parentRepository;
+	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = null;
@@ -29,6 +33,10 @@ public class ApplicationUserDetailsService implements UserDetailsService {
 		///this will be a design flaws someday
 		if(studentRepository.ifUserExist(username)) {
 			user = studentRepository.findByUsername(username);
+		}
+		
+		if(parentRepository.ifUserExist(username)) {
+			user = parentRepository.findByUsername(username);
 		}
 		
         if (user == null){
