@@ -52,6 +52,14 @@ public class Answer extends BaseEntity{
 	@JsonIgnore
 	@OneToMany(mappedBy = "answer", fetch = FetchType.LAZY)
 	private List<UserFile> files;
+	
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "sectionId",
+            referencedColumnName = "id"
+    )
+	private Section section;
 
 	public Student getStudent() {
 		return student;
@@ -91,5 +99,13 @@ public class Answer extends BaseEntity{
 
 	public void setFiles(List<UserFile> files) {
 		this.files = files;
+	}
+
+	public Section getSection() {
+		return section;
+	}
+
+	public void setSection(Section section) {
+		this.section = section;
 	}
 }

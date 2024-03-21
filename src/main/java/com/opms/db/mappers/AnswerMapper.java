@@ -21,6 +21,7 @@ public class AnswerMapper extends BaseMapper implements Mapper<AnswerDto , Answe
 	PropertyMap<Answer , AnswerDto> mapProperty = new PropertyMap<Answer , AnswerDto>() {
         protected void configure() {
           map().setActivityId( source.getActivity().getId().toString() );
+          map().setStudentFullName( source.getStudent().getFullName() );
        }
     };
 

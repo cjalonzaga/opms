@@ -13,6 +13,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.opms.db.dtos.AnswerDto;
 import com.opms.db.entities.Activity;
 import com.opms.db.entities.Answer;
+import com.opms.db.entities.Section;
 import com.opms.db.entities.Student;
 import com.opms.db.entities.UserFile;
 import com.opms.db.mappers.AnswerMapper;
@@ -70,6 +71,16 @@ public class AnswerServiceImpl extends AnswerMapper implements AnswerService{
 			answer.setStudent(student);
 		}
 		
+		if(activity  != null && student != null) {
+			List<Long> sectionIds = activity.getSections().stream().map( sect -> sect.getId() ).toList();
+			List<Section> section = student.getSections().stream().filter( 
+										sect -> sectionIds.contains(sect.getId())
+									).toList();
+			if(!section.isEmpty()) {
+				answer.setSection(section.get(0));
+			}
+		}
+		
 		UserFile userFile = null;
 		
 		if(!file.isEmpty()) {
@@ -107,8 +118,13 @@ public class AnswerServiceImpl extends AnswerMapper implements AnswerService{
 	}
 
 	@Override
+	public List<AnswerDto> findAllByActivity(Long activityId, Long sectionId) {
+		return toDtoList(this.answerRepository.findAllByActivity(activityId));
+	}
+
+	@Override
 	public List<AnswerDto> findAllBySection(Long activityId, Long sectionId) {
-		return toDtoList(this.answerRepository.findAllBySection(activityId));
+		return toDtoList(answerRepository.findAllBySection(activityId , sectionId));
 	}
 
 }

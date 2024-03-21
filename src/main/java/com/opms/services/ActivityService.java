@@ -22,4 +22,5 @@ public interface ActivityService extends CrudBaseService<ActivityDto, Activity>{
 	List<ActivityDto> findActivitiesByStudent(Long studentId);
 	
 	ActivityDto update(ActivityDto dto , Long userId , MultipartFile file);
+	
 }

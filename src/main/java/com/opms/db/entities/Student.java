@@ -20,6 +20,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name="students")
@@ -125,4 +126,8 @@ public class Student extends User{
 		this.parent = parent;
 	}
 	
+	@Transient
+	public String getFullName() {
+		return this.getFirstName() + " "+ this.getMiddleName() +" " + this.getLastName();
+	}
 }

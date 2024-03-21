@@ -18,6 +18,8 @@ public class AnswerDto {
 	private List<UserFile> files;
 	
 	private String fileUri;
+	
+	private String studentFullName;
 
 	public Long getId() {
 		return id;
@@ -65,6 +67,14 @@ public class AnswerDto {
 
 	public void setFiles(List<UserFile> files) {
 		this.files = files;
+	}
+
+	public String getStudentFullName() {
+		return studentFullName;
+	}
+
+	public void setStudentFullName(String studentFullName) {
+		this.studentFullName = studentFullName;
 	}
 	
 	

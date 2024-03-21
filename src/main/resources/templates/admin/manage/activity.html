@@ -49,7 +49,37 @@
 						<div class="tab-content mt-3" id="nav-tabContent">
 						<!-- TAB ! -->
 							<div class="tab-pane fade show active" id="activity" role="tabpanel" aria-labelledby="activityTab" tabindex="0">		
-								
+								<div th:each="a : ${answers}">
+									<div class="accordion" id="accordionFlushExample">
+									  <div class="accordion-item">
+									    <h2 class="accordion-header" id="flush-headingOne">
+									      <button class="accordion-button collapsed" type="button" data-coreui-toggle="collapse" 
+									      	th:attr="data-coreui-target='#flush-collapseOne'+${a.id},aria-controls='flush-collapseOne'+${a.id}" aria-expanded="false">
+									         [[${a.studentFullName}]]
+									      </button>
+									    </h2>
+									    <div th:attr="id=flush-collapseOne+${a.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-coreui-parent="#accordionFlushExample">
+									     	
+									     	<div th:object="${activity}" class="mt-2 p-2">
+										     	<div th:if="${#strings.toString(activity.taskType) == 'SHARE_FILE'}">
+													<h6 class="mb-3">Shared Link</h6>
+													<div class="form-group col-md-6 mb-3">
+												    	<a th:href="@{ ${a.fileUri} }" target="_blank">[[${a.fileUri}]]</a>
+												  	</div>
+												</div>
+												
+												<div th:if="${#strings.toString(activity.taskType) == 'FILE_UPLOAD'}">
+													<h6 class="mb-3">Uploaded file</h6>
+													<div class="form-group col-md-6 mb-3" th:each="file : ${a.files}">
+												    	<a th:href="@{ ${file.uri} }" target="_blank">[[${file.uri}]]</a>
+												  	</div>
+												</div>
+									     	</div>
+									     	
+									    </div>
+									  </div>
+									 </div>
+								</div>
 							</div>
 						</div>
 						<!-- TAB -->

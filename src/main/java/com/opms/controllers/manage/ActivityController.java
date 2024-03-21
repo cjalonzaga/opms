@@ -107,6 +107,8 @@ public class ActivityController extends BaseController{
 		
 		model.addAttribute("activity" , dto );
 		
+		model.addAttribute("answers", answerService.findAllBySection(id, section));
+		
 		return "/admin/manage/activity";
 	}
 	

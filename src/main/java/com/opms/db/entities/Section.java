@@ -70,6 +70,10 @@ public class Section extends BaseEntity{
 		)    
 	@ManyToMany(cascade = CascadeType.PERSIST , fetch = FetchType.EAGER)
 	private List<Course> courses;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "section", fetch = FetchType.LAZY)
+	private List<Answer> answers;
 
 	public String getName() {
 		return name;
@@ -127,4 +131,11 @@ public class Section extends BaseEntity{
 		this.uniqueId = uniqueId;
 	}
 
+	public List<Answer> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(List<Answer> answers) {
+		this.answers = answers;
+	}
 }

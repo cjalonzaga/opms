@@ -15,5 +15,8 @@ public interface AnswerRepository extends JpaRepository<Answer , Long>{
 	Answer findByUser(Long userId , Long activityId);
 	
 	@Query("SELECT a FROM Answer a WHERE a.activity.id = :activityId ")
-	List<Answer> findAllBySection(Long activityId);
+	List<Answer> findAllByActivity(Long activityId);
+	
+	@Query("SELECT a FROM Answer a WHERE a.activity.id = :activityId and a.section.id = :sectionId")
+	List<Answer> findAllBySection(Long activityId ,Long sectionId);
 }
