@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}"></head>
+<body th:object="${user}" class="d-flex flex-column h-100vh">
+
+	<header th:replace="~{superadmin/header :: header}"></header>
+	
+	<div class="container flex-1">
+		  <div class="row h-100 justify-content-center ">
+		    	<form method="post" th:object="${editUser}" th:action="@{/superadmin/update} + ${'?mode='+param.mode}">
+		    		<input type="hidden" value="${editUser.id}" th:field="*{id}">
+		    		<div class="alert alert-success" role="alert" th:if="${param.success != null}">
+  						[[${param.success}]]
+					</div>
+					<div class="alert alert-danger" role="alert" th:if="${param.error != null}">
+					 	[[${param.error}]]
+					</div>
+					
+		    		<h3 class="mb-3">Update user status</h3>
+		    		<div class="row mb-3">
+		    			<div class="col-md-2">
+		    				First Name
+		    			</div>
+		    			<div class="col-md-6">
+		    				<input class="form-control" th:value="${editUser.firstName}" type="text" 
+		    					placeholder="First Name" th:field="*{firstName}" disabled>
+		    			</div>
+		    		</div>
+		    		
+		    		<div class="row mb-3">
+		    			<div class="col-md-2">
+		    				Middle Name
+		    			</div>
+		    			<div class="col-md-6">
+		    				<input class="form-control" th:value="${editUser.middleName}" type="text" 
+		    					placeholder="Middle Name" th:field="*{middleName}" disabled>
+		    			</div>
+		    		</div>
+		    		
+		    		<div class="row mb-3">
+		    			<div class="col-md-2">
+		    				Last Name
+		    			</div>
+		    			<div class="col-md-6">
+		    				<input class="form-control" th:value="${editUser.lastName}" type="text" 
+		    					placeholder="Last Name" th:field="*{lastName}" disabled>
+		    			</div>
+		    		</div>
+		    		
+		    		<div class="row mb-3">
+		    			<div class="col-md-2">
+		    				Address
+		    			</div>
+		    			<div class="col-md-6">
+		    				<input class="form-control" th:value="${editUser.address}" type="text" 
+		    					placeholder="Address" th:field="*{address}" disabled>
+		    			</div>
+		    		</div>
+		    		
+		    		<div class="row mb-3">
+		    			<div class="col-md-2">
+		    				Email
+		    			</div>
+		    			<div class="col-md-6">
+		    				<input class="form-control" th:value="${editUser.email}" type="text" 
+		    					placeholder="Email" th:field="*{email}" disabled>
+		    			</div>
+		    		</div>
+		    		
+		    		<div class="row mb-3">
+		    			<div class="col-md-2">
+		    				Role
+		    			</div>
+		    			<div class="col-md-6">
+		    				<input class="form-control" th:value="${editUser.userRole}" type="text" 
+		    					placeholder="Role" th:field="*{userRole}" disabled>
+		    			</div>
+		    		</div>
+		    		
+		    		<div class="row mb-3" th:if="${param.mode == 'student'}">
+		    			<div class="col-md-2">
+		    				Section
+		    			</div>
+		    			<div class="col-md-6">
+		    				<input class="form-control" th:value="${editUser.sectionName}" type="text" 
+		    				disabled>
+		    			</div>
+		    		</div>
+		    		
+		    		<div class="row mb-3">
+		    			<div class="col-md-2">
+		    				Status
+		    			</div>
+		    			<div class="col-md-6">
+		    				<select class="form-select" name="status" id="status" th:field="*{status}">
+		            			<option th:each="c : ${T(com.opms.enums.SignupStatus).values()}" 
+		            			th:value="${c}">[[${c}]]</option>
+							</select>
+		    			</div>
+		    		</div>
+		    		
+		    		<div class="row mb-3">
+		    			<div class="col-md-8 text-end">
+		    				<a class="btn btn-secondary" th:href="@{/superadmin/}+${action}">Back</a>
+		    				<input type="submit" class="btn btn-primary" id="updateStatus" value="Update" />
+		    			</div>
+		    		</div>
+		    	</form>
+		  </div>
+	 </div>
+	 
+<script>
+jQuery(document).ready(function($){
+	$('#updateStatus').click(function(e){
+		e.preventDefault();
+		var mode = `[[${param.mode}]]`;
+		var id = $('#id').val();
+		var status = $('#status').val();
+		
+		if(id == '' && mode == '' && status == ''){
+			return false;
+		}else{
+			$.ajax({
+				type: "GET",
+				contentType : 'application/json; charset=utf-8',
+				dataType : 'json',
+				url : window.location.origin +'/ajax/update-status/',
+				data : {
+					id : id,
+					status : status,
+					mode  : mode
+				},
+				success : function(res){
+					location.href = window.location.origin + res.callBackUri + res.message;
+				},
+				error : function(er){
+					console.log("ERROR")
+					console.log(er)
+				}
+			});
+		}
+	});
+});
+</script>
+	 
+	
+<footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>

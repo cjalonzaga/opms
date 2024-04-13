@@ -26,6 +26,9 @@ public class UserData extends BaseEntity{
 	@OneToOne(mappedBy = "userData" , cascade = CascadeType.ALL)
     private Student student;
 	
+	@OneToOne(mappedBy = "userData" , cascade = CascadeType.ALL)
+    private SuperAdmin superAdmin;
+	
 	@Basic
     @Column(
         name = "city",

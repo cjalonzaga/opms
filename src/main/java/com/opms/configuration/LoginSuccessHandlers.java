@@ -20,7 +20,7 @@ public class LoginSuccessHandlers extends SavedRequestAwareAuthenticationSuccess
             Authentication authentication) throws ServletException, IOException {
  
 		ApplicationUserDetails userDetails = (ApplicationUserDetails) authentication.getPrincipal();
-        //System.out.println("TRIGGERED HERE !!!");
+		
         String redirectURL = request.getContextPath();
          
         if (userDetails.hasRole("Teacher")) {
@@ -29,6 +29,8 @@ public class LoginSuccessHandlers extends SavedRequestAwareAuthenticationSuccess
             redirectURL = "student/dashboard";
         } else if (userDetails.hasRole("Parent")) {
             redirectURL = "parent/dashboard";
+        }else if (userDetails.hasRole("Super Admin")) {
+            redirectURL = "superadmin/dashboard";
         }
          
         response.sendRedirect(redirectURL);

@@ -52,7 +52,7 @@ public class ApplicationUserDetails implements UserDetails{
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return user.getIsActivated();
 	}
 	
 	public boolean hasRole(String roleName) {

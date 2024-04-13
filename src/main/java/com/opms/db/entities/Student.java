@@ -1,12 +1,17 @@
 package com.opms.db.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.tomcat.util.buf.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opms.enums.CouncilType;
+import com.opms.enums.SignupStatus;
 import com.opms.enums.UserRoles;
 
+import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -69,6 +74,10 @@ public class Student extends User{
 	@JsonIgnore
 	@ManyToMany(mappedBy = "students", cascade = CascadeType.MERGE , fetch = FetchType.LAZY)
 	private Set<Parent> parent;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+	private List<Folder> folders;
 
 	public Image getImage() {
 		return image;
@@ -126,8 +135,27 @@ public class Student extends User{
 		this.parent = parent;
 	}
 	
+	public List<Folder> getFolders() {
+		return folders;
+	}
+
+	public void setFolders(List<Folder> folders) {
+		this.folders = folders;
+	}
+
 	@Transient
 	public String getFullName() {
 		return this.getFirstName() + " "+ this.getMiddleName() +" " + this.getLastName();
+	}
+	
+	@Transient
+	public String getSection() {
+		List<String> section = new ArrayList<>();
+		if(!sections.isEmpty()) {
+			for(Section s : sections) {
+				section.add(s.getName());
+			}
+		}
+		return StringUtils.join(section);
 	}
 }

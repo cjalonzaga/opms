@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opms.db.BaseEntity;
 import com.opms.enums.CourseLevel;
+import com.opms.enums.SignupStatus;
 import com.opms.enums.UserRoles;
 
 import jakarta.persistence.*;
@@ -107,6 +108,22 @@ public class User{
     )
 	private UserRoles userRole;
 	
+	@Enumerated(EnumType.STRING)
+	@Column(
+        name = "status",
+        nullable = false,
+        updatable = true
+    )
+	private SignupStatus status;
+	
+	@Basic
+    @Column(
+            name = "isActivated",
+            nullable = false,
+            updatable = true
+    )
+	private Boolean isActivated;
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -206,6 +223,22 @@ public class User{
 		this.userRole = userRole;
 	}
 	
+	public SignupStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(SignupStatus status) {
+		this.status = status;
+	}
+
+	public Boolean getIsActivated() {
+		return isActivated;
+	}
+
+	public void setIsActivated(Boolean isActivated) {
+		this.isActivated = isActivated;
+	}
+
 	@Transient
 	public boolean hasRole(String roleName) {
 		return this.getUserRole().getName() == roleName ? true : false ;

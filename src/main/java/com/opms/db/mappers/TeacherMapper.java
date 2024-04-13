@@ -1,10 +1,12 @@
 package com.opms.db.mappers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 
+import com.opms.db.dtos.StudentDto;
 import com.opms.db.dtos.TeacherDto;
 import com.opms.db.dtos.UserDto;
 import com.opms.db.entities.Teacher;
@@ -36,8 +38,8 @@ public abstract class TeacherMapper extends BaseMapper implements Mapper<Teacher
 
 	@Override
 	public List<TeacherDto> toDtoList(List<Teacher> entityList) {
-		// TODO Auto-generated method stub
-		return null;
+		return entityList.stream().map( user -> 
+    	modelMapper.map(user, TeacherDto.class)).collect(Collectors.toList());
 	}
 
 	@Override

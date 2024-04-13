@@ -1,9 +1,11 @@
 package com.opms.db.dtos;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import com.opms.enums.CouncilType;
 import com.opms.enums.CourseLevel;
+import com.opms.enums.SignupStatus;
 import com.opms.enums.UserRoles;
 
 public class StudentDto implements Serializable{
@@ -11,6 +13,8 @@ public class StudentDto implements Serializable{
 	private static final long serialVersionUID = -5090837293783776841L;
 
 	private Long id;
+	
+	private LocalDateTime createdOn; 
 	
 	private String firstName;
 	
@@ -38,9 +42,15 @@ public class StudentDto implements Serializable{
 	
 	private CouncilType councilType;
 	
+	private Boolean isActivated;
+	
+	private SignupStatus status;
+	
 	private Long courseId;
 	
 	private Long[] sectionId;
+	
+	private String sectionName;
 
 	public Long getId() {
 		return id;
@@ -168,6 +178,38 @@ public class StudentDto implements Serializable{
 
 	public void setUserRole(UserRoles userRole) {
 		this.userRole = userRole;
+	}
+
+	public LocalDateTime getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(LocalDateTime createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public Boolean getIsActivated() {
+		return isActivated;
+	}
+
+	public void setIsActivated(Boolean isActivated) {
+		this.isActivated = isActivated;
+	}
+
+	public SignupStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(SignupStatus status) {
+		this.status = status;
+	}
+
+	public String getSectionName() {
+		return sectionName;
+	}
+
+	public void setSectionName(String sectionName) {
+		this.sectionName = sectionName;
 	}
 	
 }

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}"></head>
+<body th:object="${user}" class="d-flex flex-column h-100vh">
+
+	<header th:replace="~{superadmin/header :: header}"></header>
+	
+	<div class="container flex-1">
+		  <div class="row h-100 justify-content-center align-items-center">
+		    <div>
+				<div class="jumbotron">
+					<div class="row justify-content-center gap-20">
+					
+						<div class="card p-0" style="width: 20rem; cursor: pointer;" >
+							<a href="/superadmin/teachers" class="btn btn-secondary">
+					 	  	<i class="fas fa-chalkboard-teacher" style="font-size: 7rem;"></i>
+						  	<div class="card-body p-0 text-center">
+							    <h5 class="card-title">Teacher</h5>
+						  	</div>
+						  	</a>
+						</div>
+					
+					 	<div class="card p-0" style="width: 20rem; cursor: pointer;" >
+					 	  	<a href="/superadmin/students" class="btn btn-secondary">
+					 	  	<i class="fas fa-user-graduate" style="font-size: 7rem;"></i>
+						  	<div class="card-body p-0 text-center">
+							    <h5 class="card-title">Students</h5>
+						  	</div>
+						  	</a>
+						</div>
+						
+						<div class="card p-0" style="width: 20rem; cursor: pointer;" >
+							<a href="/superadmin/parents" class="btn btn-secondary">
+					 	  	<i class="fas fa-user-friends" style="font-size: 7rem;"></i>
+						  	<div class="card-body p-0 text-center">
+							    <h5 class="card-title">Parents</h5>
+						  	</div>
+						  	</a>
+						</div>
+						
+					</div>
+					
+					
+				</div>
+	  		</div>
+		  </div>
+	 </div>
+	
+<footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>

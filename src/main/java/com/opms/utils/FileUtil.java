@@ -6,11 +6,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.Optional;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.opms.enums.FileTypes;
+
 public class FileUtil {
+	
+	private String[] fileTypes = {"pdf" , "docx" , "txt" , "xlsx" , "pptx"}; 
 	
 	public static File convertMultiPartFileToFile(MultipartFile file) {
         File convertedFile = new File(file.getOriginalFilename());
@@ -21,4 +27,38 @@ public class FileUtil {
         }
         return convertedFile;
     }
+	
+	public static FileTypes getFileType(String fileName) {
+		String ext = getExtensionByStringHandling(fileName).get();
+		FileTypes types = null;
+		switch(ext) {
+			case "pdf" :
+				types = FileTypes.PDF;
+			case "docx" :
+				types = FileTypes.WORD;
+			case "txt" :
+				types = FileTypes.TEXT;
+			case "xlsx" :
+				types = FileTypes.EXCEL;
+			case "pptx" :
+				types = FileTypes.PPT;
+			case "jpeg" :
+				types = FileTypes.IMAGE;
+			case "png" :
+				types = FileTypes.IMAGE;
+			case "jpg" :
+				types = FileTypes.IMAGE;
+				
+			default :
+				break;
+		}
+		
+		return types;
+	}
+	
+	private static Optional<String> getExtensionByStringHandling(String filename) {
+		return Optional.ofNullable(filename)
+    	      .filter(f -> f.contains("."))
+    	      .map(f -> f.substring(filename.lastIndexOf(".") + 1));
+	}
 }

@@ -1,6 +1,7 @@
 package com.opms.enums;
 
 public enum UserRoles {
+	SUPER_ADMIN("Super Admin"),
 	TEACHER("Teacher"),
 	STUDENT("Student"),
 	PARENT("Parent");

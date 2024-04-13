@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,7 @@ import com.opms.db.entities.Section;
 import com.opms.db.entities.Student;
 import com.opms.db.entities.UserData;
 import com.opms.db.mappers.StudentMapper;
+import com.opms.enums.SignupStatus;
 import com.opms.repositories.CourseRepository;
 import com.opms.repositories.SectionRepository;
 import com.opms.repositories.StudentRepository;
@@ -82,5 +86,36 @@ public class StudentServiceImpl extends StudentMapper implements StudentService{
 	@Override
 	public StudentDto getById(Long id) {
 		return toDto( studentRepository.findById(id).get() );
+	}
+
+	@Override
+	public Page<StudentDto> filterSearch(String status, String createdOn, String keyword, Pageable pageable) {
+		int offset = pageable.getPageNumber() * pageable.getPageSize();
+		List<StudentDto> list = toDtoList( studentRepository.findAllWithPaging(keyword, createdOn , status , offset, pageable.getPageSize()) );
+		int totalSize = studentRepository.totalSize();
+		return new PageImpl<>(list , pageable , totalSize );
+	}
+
+	@Override
+	public Page<StudentDto> findAllPageable(Pageable pageable) {
+		int offset = pageable.getPageNumber() * pageable.getPageSize();
+		List<StudentDto> list = toDtoList(studentRepository.findAllPageable(offset, pageable.getPageSize() ));
+		return new PageImpl<>(list , pageable , list.size() );
+	}
+
+	@Override
+	public StudentDto update(Long id , String status) {
+		Student student = studentRepository.findById(id).get();
+		if(student == null ) {
+			return null;
+		}else {
+			student.setStatus(SignupStatus.valueOf(status));
+			if(SignupStatus.valueOf(status) == SignupStatus.APPROVED) {
+				student.setIsActivated(true);
+			}else {
+				student.setIsActivated(false);
+			}
+			return toDto ( studentRepository.save(student));
+		}
 	}
 }

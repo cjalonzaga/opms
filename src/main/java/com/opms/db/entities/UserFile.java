@@ -2,10 +2,13 @@ package com.opms.db.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.opms.db.BaseEntity;
+import com.opms.enums.FileTypes;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -80,6 +83,22 @@ public class UserFile extends BaseEntity{
     )
 	private Answer answer;
 	
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "folderId",
+            referencedColumnName = "id"
+    )
+	private Folder folder;
+	
+	@Enumerated(EnumType.STRING)
+    @Column(
+        name = "fileType",
+        nullable = false,
+        updatable = true
+    )
+	private FileTypes type;
+	
 	public String getFileName() {
 		return fileName;
 	}
@@ -142,5 +161,21 @@ public class UserFile extends BaseEntity{
 
 	public void setStudent(Student student) {
 		this.student = student;
+	}
+
+	public Folder getFolder() {
+		return folder;
+	}
+
+	public void setFolder(Folder folder) {
+		this.folder = folder;
+	}
+
+	public FileTypes getType() {
+		return type;
+	}
+
+	public void setType(FileTypes type) {
+		this.type = type;
 	}
 }

@@ -3,13 +3,18 @@ package com.opms.serviceImpl;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.opms.db.dtos.ParentDto;
+import com.opms.db.dtos.StudentDto;
 import com.opms.db.entities.Parent;
 import com.opms.db.entities.Student;
 import com.opms.db.mappers.ParentMapper;
+import com.opms.enums.SignupStatus;
 import com.opms.repositories.ParentRepository;
 import com.opms.repositories.StudentRepository;
 import com.opms.services.ParentService;
@@ -47,5 +52,44 @@ public class ParentServiceImpl extends ParentMapper implements ParentService{
 	public ParentDto findByUsername(String username) {
 		return toDto( parentRepository.findByUsername(username) );
 	}
+
+	@Override
+	public Page<ParentDto> filterSearch(String status, String createdOn, String keyword, Pageable pageable) {
+		int offset = pageable.getPageNumber() * pageable.getPageSize();
+		List<ParentDto> list = toDtoList( parentRepository.findAllWithPaging(keyword, createdOn , status , offset, pageable.getPageSize()) );
+		
+		int totalSize = parentRepository.totalSize();
+		
+		return new PageImpl<>(list , pageable , totalSize );
+	}
+
+	@Override
+	public Page<ParentDto> findAllPageable(Pageable pageable) {
+		int offset = pageable.getPageNumber() * pageable.getPageSize();
+		List<ParentDto> list = toDtoList(parentRepository.findAllPageable(offset, pageable.getPageSize() ));
+		return new PageImpl<>(list , pageable , list.size() );
+	}
+
+	@Override
+	public ParentDto getById(Long id) {
+		return toDto (parentRepository.findById(id).orElseThrow(null));
+	}
+
+	@Override
+	public ParentDto update(Long id, String status) {
+		Parent parent = parentRepository.findById(id).get();
+		if(parent == null ) {
+			return null;
+		}else {
+			parent.setStatus(SignupStatus.valueOf(status));
+			if(SignupStatus.valueOf(status) == SignupStatus.APPROVED) {
+				parent.setIsActivated(true);
+			}else {
+				parent.setIsActivated(false);
+			}
+			return toDto ( parentRepository.save(parent));
+		}
+	}
+	
 	
 }

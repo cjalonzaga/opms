@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}"></head>
+<body>
+	<div th:replace="~{includes/sidebar2 :: sidebar2}"></div>
+	<div class="wrapper d-flex flex-column min-vh-100 bg-light">
+      
+      <div th:replace="~{includes/subheader :: subheader}"></div>
+      <div class="body flex-grow-1 px-3">
+		<div class="container-lg">
+			<div class="card mb-4 col-md-12 ">
+				<div class="card-body">
+				
+					<div class="alert alert-success" role="alert" th:if="${param.success != null}">
+					  [[${param.success}]]
+					</div>
+					<div class="alert alert-danger" role="alert" th:if="${param.error != null}">
+					  [[${param.error}]]
+					</div>
+					
+					<div class="row">
+						<div class="col-md-12 d-flex justify-content-end">
+							<form id="fileUploadForm" enctype="multipart/form-data" method="post" th:object="${file}" th:action="@{/student/uploadfile}">
+								<input type="hidden" th:value="${file.folderId}" th:field="*{folderId}">
+								<label for="uploadFile" class="new-file"><i class="fa-solid fa-file"></i> Add File</label>
+								<input type="file" name="file" id="uploadFile" style="display: none;"/>
+							</form>
+						</div>
+					</div>
+
+					<table class="table">
+					  <thead>
+					    <tr>
+					      <th scope="col">Name</th>
+					      <th scope="col">Last Modified</th>
+					      <th scope="col" >Action</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr th:each="file : ${files}">
+					      	<td><i th:attr="class=${file.type.icon}"></i><span class="ms-2">[[${file.fileName}]]</span></td>
+					      	<td th:text="${#temporals.format(file.updatedOn, 'dd/MM/yyyy HH:mm a')}"></td>
+					      	<td>
+					      		<a th:href="${file.uri}" target="_blank" ><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+					      		<a href="#" data-coreui-toggle="modal" data-coreui-target='#deleteFileModal'
+					      			th:attr="data-fileid=${file.id}, data-filename=${file.fileName} , class='ms-2 deleteFile'" 
+					      			class="ms-2 deletFile"><i class="far fa-trash-alt"></i></a>
+					      	</td>
+					    </tr>
+					    
+					    <tr th:unless="${files.size() > 0}">
+							<td colspan="4" class="text-center">Folder has no file yet.</td>
+						</tr>
+					    
+					  </tbody>
+					</table>
+					
+					<div class="row">
+						<div class="col-md-12 d-flex justify-content-end">
+							<a th:href="@{/student/portfolio}+${'?mode=folders'}" class="btn btn-secondary">
+							<i class="fa-solid fa-angles-left"></i>Back</a>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	  </div>
+   </div>
+   
+   <!-- Modal -->
+	<div class="modal fade" id="deleteFileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered">
+	    <div class="modal-content">
+	      <div class="modal-header border-0">
+	        <h5 class="modal-title" id="exampleModalLabel">Delete File</h5>
+	        <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	      	<form th:action="@{/student/deleteFile}" id="deleteForm" method="post">
+	      		<p id="fileName"></p>
+	      		<input type="hidden" id="fileId" name="fileId"/>
+	      		<div th:object="${file}">
+	      			<input type="hidden" th:value="${file.folderId}" th:field="*{folderId}">
+	      		</div>
+	        </form>
+	      </div>
+	      <div class="modal-footer border-0">
+	        <button type="button" class="btn btn-primary" id="deleteFileBtn">Confirm</button>
+	      </div>
+	      
+	    </div>
+	  </div>
+	</div>
+
+	<script>
+		jQuery(document).ready(function($){
+			document.getElementById("uploadFile").onchange = function() {
+			   document.getElementById("fileUploadForm").submit();
+			};
+			
+			$('.deleteFile').click(function(e){
+				e.preventDefault();
+				const fileId = $(this).data('fileid');
+				const fileName = $(this).data('filename');
+				
+				$('#fileId').val("");
+				$('#fileName').text("");
+				
+				if(fileId != ''){
+					$('#fileId').val(fileId);
+					$('#fileName').text(fileName);
+				}
+			});
+			
+			$('#deleteFileBtn').click(function(){
+				if($('#fileId').val() != ''){
+					$('#deleteForm').submit();
+				}
+			});
+		});
+	</script>
+	
+   <footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>

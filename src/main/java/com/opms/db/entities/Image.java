@@ -41,6 +41,12 @@ public class Image extends BaseEntity{
 	
 	@OneToOne(mappedBy = "image")
     private Student student;
+	
+	@OneToOne(mappedBy = "image")
+    private SuperAdmin superAdmin;
+	
+	@OneToOne(mappedBy = "image")
+    private Parent parent;
 
 	public String getFileName() {
 		return fileName;
@@ -81,5 +87,20 @@ public class Image extends BaseEntity{
 	public void setStudent(Student student) {
 		this.student = student;
 	}
-	
+
+	public SuperAdmin getSuperAdmin() {
+		return superAdmin;
+	}
+
+	public void setSuperAdmin(SuperAdmin superAdmin) {
+		this.superAdmin = superAdmin;
+	}
+
+	public Parent getParent() {
+		return parent;
+	}
+
+	public void setParent(Parent parent) {
+		this.parent = parent;
+	}
 }

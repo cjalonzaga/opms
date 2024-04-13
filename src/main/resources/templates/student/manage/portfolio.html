@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}"></head>
+<body>
+	<div th:replace="~{includes/sidebar2 :: sidebar2}"></div>
+	<div class="wrapper d-flex flex-column min-vh-100 bg-light">
+      
+      <div th:replace="~{includes/subheader :: subheader}"></div>
+      <div class="body flex-grow-1 px-3">
+		<div class="container-lg">
+			<div class="card mb-4 col-md-12 ">
+				<div class="card-body">
+				
+					<div class="alert alert-success" role="alert" th:if="${param.success != null}">
+					  [[${param.success}]]
+					</div>
+					<div class="alert alert-danger" role="alert" th:if="${param.error != null}">
+					  [[${param.error}]]
+					</div>
+					
+					<div class="row">
+						<div class="col-md-12 d-flex justify-content-between">
+							
+							<div class="d-flex align-items-center gap-2">
+								<h5 class="m-0">Suggested</h5>
+								<div class="main-wrapper d-flex">
+									<a th:href="@{/student/portfolio}+${'?mode=files'}" class="suggested-files"><i class="fa-solid fa-file"></i>
+									<i class="fa-solid fa-check checkthis"></i> Files</a>
+									<a th:href="@{/student/portfolio}+${'?mode=folders'}" class="suggested-folders"><i class="fa-solid fa-folder"></i>
+									<i class="fa-solid fa-check checkthis"></i> Folders</a>
+								</div>
+							</div>
+							
+							<div class="dropdown">
+								<button class="new-file dropdown-toggle" data-coreui-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-plus"></i> New</button>
+								
+								<ul class="dropdown-menu">
+								    <li><a class="dropdown-item" data-coreui-toggle="modal" data-coreui-target="#newFolder" href="#"><i class="fa-solid fa-folder"></i> New Folder</a></li>
+								    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-file"></i> New File</a></li>
+								</ul>
+								
+							</div>
+						</div>
+					</div>
+
+					<table class="table" th:if="${ #strings.toString(param.mode) == 'folders'}">
+					  <thead>
+					    <tr>
+					      <th scope="col">Name</th>
+					      <th scope="col">Owner</th>
+					      <th scope="col">Last Modified</th>
+					      <th scope="col" class="text-center">Action</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr th:each="folder : ${folders}">
+					      <th><i class="fas fa-folder"></i> <a th:href="@{/student/folder?folderId={id}(id=${folder.id})}">[[${folder.name}]]</a></th>
+					      <td>Mark</td>
+					      <td>[[${#temporals.format(folder.createdOn, 'dd/MM/yyyy HH:mm a')}]]</td>
+					      <td class="text-center">
+				      			
+				      		<a href="#" class="ms-2 text-decoration-none">
+				      			<i class="fa-solid fa-download"></i></a>
+				      			
+				      		<a class="ms-2 text-decoration-none" href="#" data-coreui-toggle="modal">
+				      			<i class="far fa-trash-alt"></i></a>
+				      			
+					      </td>
+					    </tr>
+					  </tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	  </div>
+   </div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="newFolder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered">
+	    <div class="modal-content">
+	      <div class="modal-header border-0">
+	        <h5 class="modal-title" id="exampleModalLabel">New Folder</h5>
+	        <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	      	<form th:action="@{/student/create-folder}" id="folderForm" method="post" th:object="${folder}">
+	        	<input class="form-control" type="text" th:field="*{name}" />
+	        </form>
+	      </div>
+	      <div class="modal-footer border-0">
+	        <button type="button" class="btn btn-secondary" data-coreui-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" id="createFolder">Create</button>
+	      </div>
+	      
+	    </div>
+	  </div>
+	</div>
+   
+   <script>
+   	jQuery(document).ready(function($){
+   		$('#createFolder').click(function(e){
+   			e.preventDefault();
+   			if(jQuery('#name').val() != ""){
+   				jQuery('#folderForm').submit();
+   			}else{
+   				alert('Provide a folder name');
+   			}
+   		});
+   	});
+   </script>
+   <footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>

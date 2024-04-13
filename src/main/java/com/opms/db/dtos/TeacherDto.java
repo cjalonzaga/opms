@@ -1,8 +1,10 @@
 package com.opms.db.dtos;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Set;
 
+import com.opms.enums.SignupStatus;
 import com.opms.enums.UserRoles;
 
 public class TeacherDto implements Serializable{
@@ -12,6 +14,8 @@ public class TeacherDto implements Serializable{
 	private Long id;
 	
 	private String firstName;
+	
+	private LocalDateTime createdOn;
 	
 	private String lastName;
 	
@@ -31,7 +35,11 @@ public class TeacherDto implements Serializable{
 	
 	private String fileName;
 	
-	private UserRoles userRoles;
+	private Boolean isActivated;
+	
+	private SignupStatus status;
+	
+	private UserRoles userRole;
 
 	public Long getId() {
 		return id;
@@ -121,11 +129,35 @@ public class TeacherDto implements Serializable{
 		this.fileName = fileName;
 	}
 
-	public UserRoles getUserRoles() {
-		return userRoles;
+	public Boolean getIsActivated() {
+		return isActivated;
 	}
 
-	public void setUserRoles(UserRoles userRoles) {
-		this.userRoles = userRoles;
+	public void setIsActivated(Boolean isActivated) {
+		this.isActivated = isActivated;
+	}
+
+	public SignupStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(SignupStatus status) {
+		this.status = status;
+	}
+
+	public LocalDateTime getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(LocalDateTime createdOn) {
+		this.createdOn = createdOn;
+	}
+
+	public UserRoles getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(UserRoles userRole) {
+		this.userRole = userRole;
 	}
 }

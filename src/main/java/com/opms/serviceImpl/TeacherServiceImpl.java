@@ -1,9 +1,13 @@
 package com.opms.serviceImpl;
 
 import java.io.File;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,11 +16,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.opms.db.dtos.StudentDto;
 import com.opms.db.dtos.TeacherDto;
 import com.opms.db.entities.Image;
+import com.opms.db.entities.Student;
 import com.opms.db.entities.Teacher;
 import com.opms.db.entities.UserData;
 import com.opms.db.mappers.TeacherMapper;
+import com.opms.enums.SignupStatus;
 import com.opms.enums.UserRoles;
 import com.opms.repositories.CourseRepository;
 import com.opms.repositories.ImageRepository;
@@ -66,7 +73,7 @@ public class TeacherServiceImpl extends TeacherMapper implements TeacherService{
 		
 		UserData data2 = userDataRepository.save(uData);
 		teacher.setPassword( passwordEncoder.encode(dto.getPassword()) );
-		teacher.setUserRole(dto.getUserRoles());
+		teacher.setUserRole(dto.getUserRole());
 		teacher.setUserData(data2);
 		
 		return toDto(teacherRepository.save(teacher));
@@ -166,5 +173,41 @@ public class TeacherServiceImpl extends TeacherMapper implements TeacherService{
 			user.setPassword(passwordEncoder.encode( dto.getPassword()));
 		}
 		return this.toDto( teacherRepository.save(user) );
+	}
+
+	@Override
+	public TeacherDto getById(Long id) {
+		return toDto(teacherRepository.findById(id).orElseThrow(null));
+	}
+
+	@Override
+	public Page<TeacherDto> filterSearch(String status, String createdOn, String keyword, Pageable pageable) {
+		int offset = pageable.getPageNumber() * pageable.getPageSize();
+		List<TeacherDto> list = toDtoList( teacherRepository.findAllWithPaging(keyword, createdOn , status , offset, pageable.getPageSize()) );
+		int totalSize = teacherRepository.totalSize();
+		return new PageImpl<>(list , pageable , totalSize );
+	}
+
+	@Override
+	public Page<TeacherDto> findAllPageable(Pageable pageable) {
+		int offset = pageable.getPageNumber() * pageable.getPageSize();
+		List<TeacherDto> list = toDtoList(teacherRepository.findAllPageable(offset, pageable.getPageSize() ));
+		return new PageImpl<>(list , pageable , list.size() );
+	}
+
+	@Override
+	public TeacherDto update(Long id, String status) {
+		Teacher teacher = teacherRepository.findById(id).get();
+		if(teacher == null ) {
+			return null;
+		}else {
+			teacher.setStatus(SignupStatus.valueOf(status));
+			if(SignupStatus.valueOf(status) == SignupStatus.APPROVED) {
+				teacher.setIsActivated(true);
+			}else {
+				teacher.setIsActivated(false);
+			}
+			return toDto ( teacherRepository.save(teacher));
+		}
 	}
 }

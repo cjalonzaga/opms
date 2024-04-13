@@ -1,12 +1,16 @@
 package com.opms.db.dtos;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
+import com.opms.enums.SignupStatus;
 import com.opms.enums.UserRoles;
 
 public class ParentDto {
-private Long id;
-	
+	private Long id;
+
+	private LocalDateTime createdOn; 
+
 	private String firstName;
 	
 	private String lastName;
@@ -32,6 +36,10 @@ private Long id;
 	private List<StudentDto> students;
 	
 	private List<Long> studentIds;
+	
+	private Boolean isActivated;
+	
+	private SignupStatus status;
 
 	public Long getId() {
 		return id;
@@ -143,5 +151,29 @@ private Long id;
 
 	public void setStudentIds(List<Long> studentIds) {
 		this.studentIds = studentIds;
+	}
+
+	public Boolean getIsActivated() {
+		return isActivated;
+	}
+
+	public void setIsActivated(Boolean isActivated) {
+		this.isActivated = isActivated;
+	}
+
+	public SignupStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(SignupStatus status) {
+		this.status = status;
+	}
+
+	public LocalDateTime getCreatedOn() {
+		return createdOn;
+	}
+
+	public void setCreatedOn(LocalDateTime createdOn) {
+		this.createdOn = createdOn;
 	}
 }
