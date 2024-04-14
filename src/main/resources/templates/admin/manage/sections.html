@@ -30,22 +30,14 @@
 						</div>
 						
 						<div class="col-md-12 text-center m-0" >
-						
-							
-							<div class="row mb-3">
-								<!-- Add Search Form Here -->
-								<div class="col-md-6 d-flex justify-content-end">
-									<a class="btn btn-primary col-md-3" th:href="@{/admin/section-form}">Add Sections</a>
-								</div>
-							</div>
 							
 							<table class="table text-start table-striped table-bordered mt-3">
 								<thead>
 								    <tr>
 								      <th scope="col">Name</th>
 								      <th scope="col">Course Level</th>
-								      <th scope="col">Date Created</th>
-								      <th scope="col" class="text-center">Action</th>
+								     <!--   <th scope="col">Date Created</th>
+								      <th scope="col" class="text-center">Action</th>-->
 								    </tr>
 								</thead>
 								
@@ -53,7 +45,8 @@
     								<tr th:each="section : ${sections}">
 										<td th:text="${section.name}">Ted 1</td>
 										<td th:text="${section.courseLevel.getName}">Course Level</td>
-										<td th:text="${#temporals.format(section.createdOn, 'dd/MM/yyyy HH:mm a')}" />
+										
+										<!--/* <td th:text="${#temporals.format(section.createdOn, 'dd/MM/yyyy HH:mm a')}" />
 										<td class="text-center">
 								      		<a th:href="@{/admin/section-form?id={id}(id=${section.id})}" class="text-decoration-none">
 								      			<i class="far fa-edit"></i>
@@ -62,7 +55,7 @@
 								      			th:attr="data-coreui-target='#confirmDeleteModal'+${section.id}">
 								      			<i class="far fa-trash-alt"></i>
 								      		</a>
-								      	</td>
+								      	</td> */-->
     								</tr>
     								
     							</tbody>

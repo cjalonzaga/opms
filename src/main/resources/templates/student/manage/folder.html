@@ -5,17 +5,14 @@
 	<div th:replace="~{includes/sidebar2 :: sidebar2}"></div>
 	<div class="wrapper d-flex flex-column min-vh-100 bg-light">
       
-      <div th:replace="~{includes/subheader :: subheader}"></div>
+      <div th:replace="~{includes/subheader2 :: subheader2}"></div>
       <div class="body flex-grow-1 px-3">
 		<div class="container-lg">
 			<div class="card mb-4 col-md-12 ">
 				<div class="card-body">
 				
-					<div class="alert alert-success" role="alert" th:if="${param.success != null}">
-					  [[${param.success}]]
-					</div>
-					<div class="alert alert-danger" role="alert" th:if="${param.error != null}">
-					  [[${param.error}]]
+					<div class="alert alert-info" role="alert" th:if="${param.msg != null}">
+					  [[${param.msg}]]
 					</div>
 					
 					<div class="row">

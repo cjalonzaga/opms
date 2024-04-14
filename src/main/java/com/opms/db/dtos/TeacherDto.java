@@ -1,15 +1,11 @@
 package com.opms.db.dtos;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import com.opms.enums.SignupStatus;
 import com.opms.enums.UserRoles;
 
-public class TeacherDto implements Serializable{
-	
-	private static final long serialVersionUID = 3108679364014199668L;
+public class TeacherDto {
 
 	private Long id;
 	
@@ -40,6 +36,8 @@ public class TeacherDto implements Serializable{
 	private SignupStatus status;
 	
 	private UserRoles userRole;
+	
+	private String fullName;
 
 	public Long getId() {
 		return id;
@@ -151,6 +149,14 @@ public class TeacherDto implements Serializable{
 
 	public void setCreatedOn(LocalDateTime createdOn) {
 		this.createdOn = createdOn;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
 	public UserRoles getUserRole() {

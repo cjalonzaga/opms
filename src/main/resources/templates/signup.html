@@ -3,7 +3,7 @@
 <head th:replace="~{includes/header :: header}">
 </head>
 <body>
-	<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+	<div class="bg-light min-vh-100 d-flex flex-row align-items-center background-img-banner">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-md-10">
@@ -108,7 +108,7 @@
 		            	<div class="col-md-4 d-none">
 		            		<div class="input-group mb-3">
 		            		<!-- th:field="*{roleId}" -->
-		            			<input type="hidden" id="roleId" value="" th:field="*{userRoles}">
+		            			<input type="hidden" id="roleId" value="" th:field="*{userRole}">
 		                		<select class="form-select form-select-lg select-custom" id="selectRole" th:disabled="${param.type != null}"
 		                			 aria-label=".form-select-lg example" required>
 							  		<option value="">Select Designation</option>
@@ -230,20 +230,17 @@
 		            	
 		            	<div class="col-md-6">
 		            		<div class="input-group mb-3">
-			            		<select class="form-select form-select-lg select-custom" id="courseLevel" th:field="*{councilType}"
+			            		<select class="form-select form-select-lg select-custom d-none" id="courseLevel"  th:field="*{councilType}"
 			            		aria-label=".form-select-lg example" required>
-			            			<option value="">Select Counsil</option>
-			            			<option th:each="c : ${T(com.opms.enums.CouncilType).values()}" 
-			            			th:value="${c}">[[${'('+c+') ' + c.getName}]]</option>
+			            			<option th:value="TTED"></option>
 			            		</select>
 		            		</div>
 		            	</div>
 		            	
 		            	<div class="col-md-6">
 		            		<div class="input-group mb-3">
-			            		<select class="form-select form-select-lg select-custom" id="selectCourse" th:field="*{courseId}"
+			            		<select class="form-select form-select-lg select-custom d-none" th:field="*{courseId}"
 			            			aria-label=".form-select-lg example" required>
-			            			<option value="">Select Course</option>
 			            			<option th:each="course : ${courses}" th:value="${course.id}">
 			            				[[${course.name}]]
 			            			</option>
@@ -443,6 +440,23 @@
       </div>
     </div>
     
+    <!-- Modal -->
+	<div th:if="${param.success != null && #strings.toString(param.success) != ''}">
+	<div class="modal fade show" id="successModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered">
+	    <div class="modal-content">
+	      <div class="modal-header border-0">
+	        <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body text-center">
+	      	<i class="fa-regular fa-circle-check text-success" style="font-size: 5rem;"></i>
+	      	<h4 class="mt-2">You have successfully created an account!</h4>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+    </div>
+    
     <script th:inline="javascript">
 		jQuery(document).ready(function($){
 			$('#selectCourse').select2({
@@ -452,6 +466,12 @@
 			$('#selectStudent').select2({
 				placeholder: 'Select student'
 			});
+			
+			var modal = jQuery('#successModal');
+			
+			if(modal != null){
+				$(modal).modal('show');
+			}
 			
 			const arrayStudent = [];
 			

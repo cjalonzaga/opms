@@ -15,7 +15,6 @@ public class CourseDto {
 	private String abbreviation;
 	private Long[] sectionId;
 	private CouncilType councilType;
-	private Long teacherId;
 	private String createdBy;
 	private List<SectionDto> sections;
 	
@@ -62,21 +61,19 @@ public class CourseDto {
 	public void setCouncilType(CouncilType councilType) {
 		this.councilType = councilType;
 	}
-	public Long getTeacherId() {
-		return teacherId;
-	}
-	public void setTeacherId(Long teacherId) {
-		this.teacherId = teacherId;
-	}
+	
 	public String getCreatedBy() {
 		return createdBy;
 	}
+	
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
 	}
+	
 	public List<SectionDto> getSections() {
 		return sections;
 	}
+	
 	public void setSections(List<SectionDto> sections) {
 		this.sections = sections;
 	}

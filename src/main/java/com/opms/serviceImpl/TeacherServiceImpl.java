@@ -1,6 +1,7 @@
 package com.opms.serviceImpl;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -64,6 +65,9 @@ public class TeacherServiceImpl extends TeacherMapper implements TeacherService{
 	@Override
 	public TeacherDto create(TeacherDto dto) {
 		Teacher teacher = toEntity(dto);
+		teacher.setCreatedOn(LocalDateTime.now());
+		teacher.setIsActivated(Boolean.FALSE);
+		teacher.setStatus(SignupStatus.NEW);
 		
 		UserData uData = new UserData();
 		uData.setCity(dto.getUserData().getCity());

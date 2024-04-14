@@ -10,7 +10,7 @@ import com.opms.db.entities.UserFile;
 public interface FileService extends FileAware<UserFileDto , UserFile>{
 	UserFileDto upload(UserFileDto dto , Long userId , MultipartFile file);
 	Page<UserFileDto> filterSearch(String status , String createdOn , String keyword , Pageable pageable);
-	Page<UserFileDto> findAllPageable(Pageable pageable);
+	Page<UserFileDto> findAllPageableByUser(Pageable pageable , Long userId);
 	Page<UserFileDto> findAllPageable(Pageable pageable , Long folderId);
 	void delete(Long fileId);
 }

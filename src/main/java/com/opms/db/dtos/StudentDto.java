@@ -51,6 +51,8 @@ public class StudentDto implements Serializable{
 	private Long[] sectionId;
 	
 	private String sectionName;
+	
+	private String fullName;
 
 	public Long getId() {
 		return id;
@@ -210,6 +212,14 @@ public class StudentDto implements Serializable{
 
 	public void setSectionName(String sectionName) {
 		this.sectionName = sectionName;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 	
 }

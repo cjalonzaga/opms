@@ -129,6 +129,7 @@ public class ActivityServiceImpl extends ActivityMapper implements ActivityServi
 			ufile.setOriginalFileName(file.getOriginalFilename());
 			ufile.setFileName(fileName);
 			ufile.setUri(uri);
+			ufile.setType(FileUtil.getFileType(fileName));
 			
 			saved = activityRepository.save(activity);
 			
@@ -174,6 +175,7 @@ public class ActivityServiceImpl extends ActivityMapper implements ActivityServi
 			ufile.setOriginalFileName(file.getOriginalFilename());
 			ufile.setFileName(fileName);
 			ufile.setUri(uri);
+			ufile.setType(FileUtil.getFileType(file.getOriginalFilename()));
 			
 			saved = activityRepository.save(activity);
 			

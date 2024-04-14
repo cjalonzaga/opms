@@ -1,5 +1,6 @@
 package com.opms.serviceImpl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -38,10 +39,18 @@ public class ParentServiceImpl extends ParentMapper implements ParentService{
 	public ParentDto create(ParentDto dto, List<Long> studentIds) {
 		
 		Parent parent = toEntity(dto);
+		
+		if(parentRepository.ifUserExist(dto.getUsername())) {
+			return null;
+		}
+		
 		if(!dto.getStudentIds().isEmpty()) {
 			List<Student> studentList = studentRepository.findAllById( dto.getStudentIds() );
 			parent.setStudents(studentList);
 		}
+		parent.setCreatedOn(LocalDateTime.now());
+		parent.setIsActivated(Boolean.FALSE);
+		parent.setStatus(SignupStatus.NEW);
 		
 		parent.setPassword( passwordEncoder.encode(dto.getPassword()) );
 		

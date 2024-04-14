@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head></head>
 <body>
-	<header class="header header-sticky mb-4" th:fragment="subheader">
+	<header class="header header-sticky mb-4" th:fragment="subheader2">
         <div class="container-fluid">
           <button class="header-toggler px-md-0 me-md-3" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
             <svg class="icon icon-lg">
@@ -42,7 +42,10 @@
                 <div class="dropdown-header bg-light py-2">
                   <div class="fw-semibold">Account</div>
                 </div>
-                	<a class="dropdown-item" th:href="@{/admin/profile}">Profile</a>
+                	<a class="dropdown-item" href="#">
+                  	Tasks<span class="badge badge-sm bg-danger ms-2">42</span>
+                  	</a>
+                	<a class="dropdown-item" th:href="@{/student/profile}">Profile</a>
                 <div class="dropdown-divider"></div>
                 <form th:action="@{/perform_logout}" method="post">
                 	<input type="submit" class="dropdown-item" th:href="@{/perform_logout}" value="Logout">

@@ -40,6 +40,8 @@ public class ParentDto {
 	private Boolean isActivated;
 	
 	private SignupStatus status;
+	
+	private String fullName;
 
 	public Long getId() {
 		return id;
@@ -175,5 +177,13 @@ public class ParentDto {
 
 	public void setCreatedOn(LocalDateTime createdOn) {
 		this.createdOn = createdOn;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 }

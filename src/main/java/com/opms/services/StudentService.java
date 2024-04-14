@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.opms.db.dtos.StudentDto;
 
@@ -15,4 +16,8 @@ public interface StudentService {
 	Page<StudentDto> filterSearch(String status , String createdOn , String keyword , Pageable pageable);
 	Page<StudentDto> findAllPageable(Pageable pageable);
 	StudentDto update(Long id , String status);
+	
+	Boolean verifyPassword(String password, Long userId);
+	StudentDto update( MultipartFile file , StudentDto teacherDto);
+	StudentDto updateCredentials(StudentDto dto);
 }

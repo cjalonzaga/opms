@@ -73,7 +73,7 @@
 									
 									<div class="row align-items-center mt-2 mb-3">
 										<div class="col-sm-2">
-											<label for="due" class="form-label m-0">Due Date</label>
+											<label for="due" class="form-label m-0">Deadline</label>
 										</div>
 										<div class="col-md-6">
 		 									<input type="datetime-local" class="form-control" id="due"  
@@ -207,10 +207,62 @@
 	    function submitForm(e){
 	    	e.preventDefault();
 	    	document.getElementById('instruct').value = quill.root.innerHTML;
-	    	
-	    	//todo: need to add validation on empty fields
-	    	
+	    	if(validate()){
+	    		return false;
+	    	}
 	    	document.getElementById('formActivity').submit();
+	    }
+	    
+	    function validate(){
+	    	
+	    	var error = false;
+	    	var msg ="Please complet required fields \n";
+	    	
+	   		const courseTitle = jQuery('#courseTitle').val();
+	   		const duedate = jQuery('#due').val();
+	   		const subjectId = jQuery('#subjectId').val();
+	   		const section = jQuery('#multi-select').val();
+	   		
+	   		const requireFile = jQuery('#formFile').val();
+	   		const shareAction = jQuery('#inlineRadioFILE_UPLOAD').is(':checked');
+	   		const uploadAction = jQuery('#inlineRadioSHARE_FILE').is(':checked');
+	   		
+	   		var hasFileUpload = false;
+	   		if(jQuery('#inlineRadioFILE_UPLOAD').is(':checked')){
+	   			hasFileUpload = true;
+	   		}
+	   		
+	   		if(courseTitle == ""){
+	   			error = true;
+	   			msg += "*Course Title \n";
+	   		}
+	   		
+	   		if(duedate == ""){
+	   			error = true;
+	   			msg += "*Deadline \n";
+	   		}
+	   		
+	   		if(section == ""){
+	   			error = true;
+	   			msg += "*Section/s \n";
+	   		}
+	   		
+	   		if(!shareAction && !uploadAction){
+	   			error = true;
+	   			msg += "*Student Action \n";
+	   		}
+	   		
+	   		
+	   		if(hasFileUpload && requireFile == ""){
+	   			error = true;
+	   			msg += "*Upload file.";
+	   		}
+	   		
+	   		if(error){
+	   			alert(msg)
+	   		}
+	   		
+	   		return error;
 	    }
 	    
 		jQuery(document).ready(function($){

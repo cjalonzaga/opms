@@ -19,6 +19,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name="teachers")
@@ -100,5 +101,10 @@ public class Teacher extends User{
 
 	public void setFiles(List<UserFile> files) {
 		this.files = files;
+	}
+	
+	@Transient
+	public String getFullName() {
+		return this.getFirstName() + " "+ this.getMiddleName() +" " + this.getLastName();
 	}
 }

@@ -88,7 +88,7 @@ public class SubjectController extends BaseController{
 	
 	@PostMapping("/subject-form/save")
 	public String create(Model model , @ModelAttribute("subject") SubjectDto subjectDto) {
-		SubjectDto dto = subjectService.create(subjectDto);
+		SubjectDto dto = subjectService.createByUser(subjectDto , this.getCurrentUser().getId());
 		String success = (dto != null) ? "true" : "false";
 		
 		return "redirect:/admin/subjects?success="+success;

@@ -86,16 +86,15 @@ public class FileServiceImpl extends UserFileMapper implements FileService{
 	}
 
 	@Override
-	public Page<UserFileDto> findAllPageable(Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+	public Page<UserFileDto> findAllPageableByUser(Pageable pageable ,Long userId) {
+		int offset = pageable.getPageNumber() * pageable.getPageSize();
+		List<UserFileDto> list = toDtoList( userFileRepository.findAllPageableByUser(offset, pageable.getPageSize() , userId ) );
+		return new PageImpl<>(list , pageable , list.size() );
 	}
 
 	@Override
 	public void delete(Long fileId) {
 		UserFile file = userFileRepository.findById(fileId).get();
-		s3Client.deleteObject(bucketName , file.getFileName() );
-		
 		userFileRepository.deleteById(file.getId());
 	}
 

@@ -49,9 +49,9 @@ public class FolderServiceImpl extends FolderMapper implements FolderService {
 	}
 
 	@Override
-	public Page<FolderDto> findAllPageable(Pageable pageable) {
+	public Page<FolderDto> findAllPageable(Pageable pageable, Long studentId) {
 		int offset = pageable.getPageNumber() * pageable.getPageSize();
-		List<FolderDto> list = toDtoList(folderRepository.findAllPageable(offset, pageable.getPageSize() ));
+		List<FolderDto> list = toDtoList(folderRepository.findAllPageable(offset, pageable.getPageSize() , studentId ));
 		return new PageImpl<>(list , pageable , list.size() );
 	}
 	

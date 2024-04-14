@@ -40,26 +40,47 @@ public class StudentPorfolioController extends StudentBaseController{
 			@RequestParam(required = false) String createdOn,
 			@RequestParam(required = false) String mode) {
 		
-		model.addAttribute("user", this.getCurrentUser());
+		StudentDto user = this.getCurrentUser();
+		
+		model.addAttribute("user", user);
 		
 		model.addAttribute("folder", new FolderDto());
 		
 		Pageable pageable = PageRequest.of(page - 1, size);
 		
-		Page<FolderDto> paging;
-		if(keyword == null && createdOn == null) {
-			paging = folderService.findAllPageable(pageable);
-		}else {
-			final String createdDate = (createdOn == null || createdOn.isEmpty() ) ? null : createdOn;
-			paging = folderService.filterSearch(createdDate, keyword , pageable);
+		if(mode.equalsIgnoreCase("folders")) {
+			Page<FolderDto> paging;
+			if(keyword == null && createdOn == null) {
+				paging = folderService.findAllPageable(pageable , user.getId());
+			}else {
+				final String createdDate = (createdOn == null || createdOn.isEmpty() ) ? null : createdOn;
+				paging = folderService.filterSearch(createdDate, keyword , pageable);
+			}
+		
+			model.addAttribute("folders",  paging.getContent());
+			
+			model.addAttribute("currentPage", paging.getNumber() + 1);
+			model.addAttribute("totalItems", paging.getTotalElements());
+	     	model.addAttribute("totalPages", paging.getTotalPages());
+	     	model.addAttribute("pageSize", size);
 		}
 		
-		model.addAttribute("folders",  paging.getContent());
-		
-		model.addAttribute("currentPage", paging.getNumber() + 1);
-		model.addAttribute("totalItems", paging.getTotalElements());
-     	model.addAttribute("totalPages", paging.getTotalPages());
-     	model.addAttribute("pageSize", size);
+		if(mode.equalsIgnoreCase("files")) {
+			Page<UserFileDto> paging;
+			if(keyword == null && createdOn == null) {
+				paging = fileService.findAllPageableByUser(pageable , user.getId());
+			}else {
+				final String createdDate = (createdOn == null || createdOn.isEmpty() ) ? null : createdOn;
+				paging = fileService.filterSearch(null ,createdDate, keyword , pageable);
+			}
+			
+			model.addAttribute("files",  paging.getContent());
+			
+			model.addAttribute("currentPage", paging.getNumber() + 1);
+			model.addAttribute("totalItems", paging.getTotalElements());
+	     	model.addAttribute("totalPages", paging.getTotalPages());
+	     	model.addAttribute("pageSize", size);
+		}
 		
 		return "student/manage/portfolio";
 	}

@@ -48,32 +48,44 @@
 						
 						<div class="tab-content mt-3" id="nav-tabContent">
 						<!-- TAB ! -->
-							<div class="tab-pane fade show active" id="activity" role="tabpanel" aria-labelledby="activityTab" tabindex="0">		
+							<div class="tab-pane fade show active" id="activity" role="tabpanel" aria-labelledby="activityTab" 
+								tabindex="0" style="display: grid; grid-template-columns: repeat(2,1fr); gap: 20px;">		
 								<div th:each="a : ${answers}">
-									<div class="accordion" id="accordionFlushExample">
+									<div class="accordion" id="accordionFlushExample" >
 									  <div class="accordion-item">
-									    <h2 class="accordion-header" id="flush-headingOne">
+									    <h2 class="accordion-header" id="flush-headingOne" >
 									      <button class="accordion-button collapsed" type="button" data-coreui-toggle="collapse" 
 									      	th:attr="data-coreui-target='#flush-collapseOne'+${a.id},aria-controls='flush-collapseOne'+${a.id}" aria-expanded="false">
 									         [[${a.studentFullName}]]
+									         
+									         <span th:if="${#strings.toString(a.status) == 'SUBMITTED'}" class="badge text-bg-primary ms-2">New</span>
+									         <span th:if="${#strings.toString(a.status) == 'CHECKED'}" class="badge text-bg-success ms-2 text-white">[[${a.status.name}]]</span>
 									      </button>
 									    </h2>
 									    <div th:attr="id=flush-collapseOne+${a.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-coreui-parent="#accordionFlushExample">
 									     	
-									     	<div th:object="${activity}" class="mt-2 p-2">
+									     	<div th:object="${activity}" class="mt-2 p-2" th:attr="id=spinnerCont+${a.id}">
 										     	<div th:if="${#strings.toString(activity.taskType) == 'SHARE_FILE'}">
 													<h6 class="mb-3">Shared Link</h6>
-													<div class="form-group col-md-6 mb-3">
+													<div class="form-group col-md-12 mb-3">
 												    	<a th:href="@{ ${a.fileUri} }" target="_blank">[[${a.fileUri}]]</a>
 												  	</div>
 												</div>
 												
 												<div th:if="${#strings.toString(activity.taskType) == 'FILE_UPLOAD'}">
 													<h6 class="mb-3">Uploaded file</h6>
-													<div class="form-group col-md-6 mb-3" th:each="file : ${a.files}">
+													<div class="form-group col-md-12 mb-3" th:each="file : ${a.files}">
 												    	<a th:href="@{ ${file.uri} }" target="_blank">[[${file.uri}]]</a>
 												  	</div>
 												</div>
+												
+												<div class="col-md-6">
+												<select class="form-control form-select ms-2 answerStatSelect" name="status" 
+													th:attr="data-answerid=${a.id}" >
+							                		<option th:each="status : ${a.status.values()}"
+							                         th:value="${status}" th:attr="selected= ${status == a.status} ? true : false ">[[${status.getName}]]</option>
+							               		</select>
+							               		</div>
 									     	</div>
 									     	
 									    </div>
@@ -91,6 +103,57 @@
 		</div>
 		
 	</div>
+	
+	<script>
+		jQuery(document).ready(function($){
+			
+			var spinner = `<div class="d-flex justify-content-center spin-me">
+				 				<div class="spinner-border" role="status">
+			    				<span class="sr-only">Loading...</span>
+			  					</div>
+						   </div>`;
+			
+			$('.answerStatSelect').change(function(){
+				const id = $(this).data('answerid');
+				const status = $(this).val();
+				if(id != "" && status != ""){
+					$.ajax({
+						type: "GET",
+						contentType : 'application/json; charset=utf-8',
+						dataType : 'json',
+						url : window.location.origin +'/ajax/update-answer/',
+						data : {
+							id : id,
+							status : status
+						},
+						beforeSend: function() {
+					       jQuery('#spinnerCont'+id).append(spinner)
+					    },
+						success : function(res){
+							if(res.success){
+								setTimeout(()=>{
+									jQuery('#spinnerCont'+id).find('.spin-me').remove();
+									location.reload();
+								} , 2000);
+							}else{
+								setTimeout(()=>{
+									jQuery('#spinnerCont'+id).find('.spin-me').remove();
+									location.reload();
+								} , 2000);
+							}
+						},
+						error : function(er){
+							setTimeout(()=>{
+								jQuery('#spinnerCont'+id).find('.spin-me').remove();
+								location.reload();
+							} , 2000);
+						}
+					});
+				}
+			});
+		});
+	</script>
+	
 	<footer th:replace="~{includes/footer :: footer}"></footer>
 </body>
 </html>

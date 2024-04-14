@@ -31,26 +31,19 @@ public class FileUtil {
 	public static FileTypes getFileType(String fileName) {
 		String ext = getExtensionByStringHandling(fileName).get();
 		FileTypes types = null;
-		switch(ext) {
-			case "pdf" :
-				types = FileTypes.PDF;
-			case "docx" :
-				types = FileTypes.WORD;
-			case "txt" :
-				types = FileTypes.TEXT;
-			case "xlsx" :
-				types = FileTypes.EXCEL;
-			case "pptx" :
-				types = FileTypes.PPT;
-			case "jpeg" :
-				types = FileTypes.IMAGE;
-			case "png" :
-				types = FileTypes.IMAGE;
-			case "jpg" :
-				types = FileTypes.IMAGE;
-				
-			default :
-				break;
+		
+		if(ext.equalsIgnoreCase("jpeg") || ext.equalsIgnoreCase("png") || ext.equalsIgnoreCase("jpg")){
+			types = FileTypes.IMAGE;
+		}else if(ext.equalsIgnoreCase("xlsx") || ext.equalsIgnoreCase("xls")) {
+			types = FileTypes.EXCEL;
+		}else if(ext.equalsIgnoreCase("docx")) {
+			types = FileTypes.WORD;
+		}else if(ext.equalsIgnoreCase("txt")) {
+			types = FileTypes.TEXT;
+		}else if(ext.equalsIgnoreCase("pptx")){
+			types = FileTypes.PPT;
+		}else if(ext.equalsIgnoreCase("pdf")) {
+			types = FileTypes.PDF;
 		}
 		
 		return types;

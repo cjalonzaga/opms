@@ -5,7 +5,7 @@
 	<div th:replace="~{includes/sidebar2 :: sidebar2}"></div>
 	<div class="wrapper d-flex flex-column min-vh-100 bg-light">
       
-      <div th:replace="~{includes/subheader :: subheader}"></div>
+      <div th:replace="~{includes/subheader2 :: subheader2}"></div>
       <div class="body flex-grow-1 px-3">
 		<div class="container-lg">
 			<div class="card mb-4 col-md-12 p-5" >
@@ -35,13 +35,14 @@
 							<div th:if="${answer != null}">
 								<div th:if="${#strings.toString(activity.taskType) == 'SHARE_FILE'}">
 									<h6 class="mb-3">Shared Link</h6>
-									<div class="form-group col-md-6 mb-3">
-								    	<input type="text" class="form-control mb-3" id="fileLink" th:value="${answer.fileUri}" required disabled >
+									<div class="form-group col-md-6 mb-3 d-flex align-items-center gap-2">
+								    	<input type="text" class="form-control" id="fileLink" th:value="${answer.fileUri}" required disabled >
+								    	<a th:href="${answer.fileUri}" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
 								  	</div>
 								</div>
 								
 								<div th:if="${#strings.toString(activity.taskType) == 'FILE_UPLOAD'}">
-									<h6 class="mb-3">Your Re-uploaded file</h6>
+									<h6 class="mb-3">Submitted File</h6>
 									<div class="form-group col-md-6 mb-3" th:each="file : ${answer.files}">
 								    	<a th:href="@{ ${file.uri} }" target="_blank">[[${file.uri}]]</a>
 								  	</div>

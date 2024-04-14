@@ -323,6 +323,14 @@ body.parent {
 .checkthis{
 	display: none;
 }
+.background-img-banner:before{
+	content: "";
+	background: url(/images/landscape-view.png);
+	display: block;
+	width: 100%;
+	height: 100vh;
+    position: absolute;
+}
 
 @media (min-width: 40em) {
 	.parent li {

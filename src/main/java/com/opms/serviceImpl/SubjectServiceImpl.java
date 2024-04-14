@@ -12,11 +12,13 @@ import org.springframework.stereotype.Service;
 import com.opms.db.dtos.SubjectDto;
 import com.opms.db.entities.Course;
 import com.opms.db.entities.Subject;
+import com.opms.db.entities.Teacher;
 import com.opms.db.entities.User;
 import com.opms.db.mappers.SubjectMapper;
 import com.opms.repositories.CourseRepository;
 import com.opms.repositories.StudentRepository;
 import com.opms.repositories.SubjectRepository;
+import com.opms.repositories.TeacherRepository;
 import com.opms.services.SubjectService;
 
 @Service
@@ -25,15 +27,18 @@ public class SubjectServiceImpl extends SubjectMapper implements SubjectService{
 	private final SubjectRepository subjectRepository;
 	private final CourseRepository courseRepository;
 	private final StudentRepository studentRepository;
+	private final TeacherRepository teacherRepository;
 
 	public SubjectServiceImpl(ModelMapper modelMapper , 
 			SubjectRepository subjectRepository, 
 			CourseRepository courseRepository,
-			StudentRepository studentRepository) {
+			StudentRepository studentRepository,
+			TeacherRepository teacherRepository) {
 		super(modelMapper);
 		this.subjectRepository = subjectRepository;
 		this.courseRepository = courseRepository;
 		this.studentRepository = studentRepository;
+		this.teacherRepository = teacherRepository;
 	}
 
 	@Override
@@ -129,6 +134,19 @@ public class SubjectServiceImpl extends SubjectMapper implements SubjectService{
 					subjectRepository.searchAll(createdOn , keyword , courseLevel , sem , offset , pageable.getPageSize() ));
 		
 		return new PageImpl<>(subjectList , pageable , subjectList.size());
+	}
+
+	@Override
+	public SubjectDto createByUser(SubjectDto dto, Long userId) {
+		Subject subject = this.toEntity(dto);
+		Course course = courseRepository.findById(dto.getCourseId()).get();
+		subject.setCourse(course);
+		subject.setCreatedOn(LocalDateTime.now());
+		
+		if(subjectRepository.ifSubjectExist( dto.getCode() , userId )) {
+			return null;
+		}
+		return this.toDto(subjectRepository.save(subject));
 	}
 
 }

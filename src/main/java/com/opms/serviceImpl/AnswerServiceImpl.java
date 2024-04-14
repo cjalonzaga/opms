@@ -94,6 +94,7 @@ public class AnswerServiceImpl extends AnswerMapper implements AnswerService{
 			userFile.setFileName(fileName);
 			userFile.setUri(uri);
 			userFile.setStudent(student);
+			userFile.setType(FileUtil.getFileType(fileName));
 			
 			answer = answerRepository.save(answer);
 			
@@ -125,6 +126,17 @@ public class AnswerServiceImpl extends AnswerMapper implements AnswerService{
 	@Override
 	public List<AnswerDto> findAllBySection(Long activityId, Long sectionId) {
 		return toDtoList(answerRepository.findAllBySection(activityId , sectionId));
+	}
+
+	@Override
+	public AnswerDto updateAnswer(String status, Long id) {
+		if(status == null && id == null) {
+			return null;
+		}
+		Answer answer = answerRepository.findById(id).get();
+		answer.setStatus(AnswerStatus.valueOf(status));
+		
+		return toDto(answerRepository.save(answer));
 	}
 
 }

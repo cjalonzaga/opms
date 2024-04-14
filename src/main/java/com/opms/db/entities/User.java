@@ -80,7 +80,8 @@ public class User{
     @Column(
         name = "username",
         nullable = false,
-        updatable = false
+        updatable = false,
+        unique = true
     )
 	private String username;
 	
@@ -88,7 +89,8 @@ public class User{
     @Column(
         name = "email",
         nullable = false,
-        updatable = false
+        updatable = false,
+        unique = true
     )
 	private String email;
 	

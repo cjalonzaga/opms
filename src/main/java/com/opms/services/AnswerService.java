@@ -13,4 +13,6 @@ public interface AnswerService {
 	List<AnswerDto> findAllByActivity(Long activityId , Long sectionId);
 	
 	List<AnswerDto> findAllBySection(Long activityId , Long sectionId);
+	
+	AnswerDto updateAnswer(String status , Long id);
 }

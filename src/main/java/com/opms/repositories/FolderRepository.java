@@ -21,6 +21,6 @@ public interface FolderRepository extends JpaRepository<Folder , Long>{
 			+ " ORDER BY s.created_on DESC LIMIT :size OFFSET :page " , nativeQuery = true)
 	List<Folder> findAllWithPaging(String keyword , String createdOn , int page , int size);
 	
-	@Query(value="SELECT s.* FROM folders s ORDER BY s.created_on DESC LIMIT :size OFFSET :page " , nativeQuery = true)
-	List<Folder> findAllPageable(int page , int size);
+	@Query(value="SELECT s.* FROM folders s WHERE s.student_id = :studentId ORDER BY s.created_on DESC LIMIT :size OFFSET :page " , nativeQuery = true)
+	List<Folder> findAllPageable(int page , int size , Long studentId);
 }
