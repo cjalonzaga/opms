@@ -56,7 +56,7 @@ public class ModuleFile extends BaseEntity{
             name = "moduleId",
             referencedColumnName = "id"
     )
-	private Module module;
+	private Modules module;
 
 	public String getFileName() {
 		return fileName;
@@ -90,11 +90,11 @@ public class ModuleFile extends BaseEntity{
 		this.type = type;
 	}
 
-	public Module getModule() {
+	public Modules getModule() {
 		return module;
 	}
 
-	public void setModule(Module module) {
+	public void setModule(Modules module) {
 		this.module = module;
 	}
 }

@@ -77,7 +77,7 @@ public class Section extends BaseEntity{
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "section", fetch = FetchType.LAZY)
-	private List<Module> modules;
+	private List<Modules> modules;
 
 	public String getName() {
 		return name;
@@ -143,11 +143,11 @@ public class Section extends BaseEntity{
 		this.answers = answers;
 	}
 
-	public List<Module> getModules() {
+	public List<Modules> getModules() {
 		return modules;
 	}
 
-	public void setModules(List<Module> modules) {
+	public void setModules(List<Modules> modules) {
 		this.modules = modules;
 	}
 }

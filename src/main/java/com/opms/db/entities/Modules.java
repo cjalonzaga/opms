@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="modules")
-public class Module extends BaseEntity{
+public class Modules extends BaseEntity{
 	
 	@Basic
     @Column(
