@@ -28,10 +28,10 @@ public interface StudentRepository extends JpaRepository<Student , Long>{
 	@Query(value="SELECT s.* FROM students s WHERE "
 			+ " ( LOWER(s.first_name) LIKE %:keyword% OR LOWER(s.last_name) LIKE %:keyword% ) "
 			+ " AND (:createdOn IS NULL OR DATE(s.created_on) = :createdOn ) "
-			+ " AND s.status = :status"
+			+ " AND s.status = :status AND s.is_valid = TRUE "
 			+ " ORDER BY s.created_on DESC LIMIT :size OFFSET :page " , nativeQuery = true)
 	List<Student> findAllWithPaging(String keyword , String createdOn , String status , int page , int size);
 	
-	@Query(value="SELECT s.* FROM students s ORDER BY s.created_on DESC LIMIT :size OFFSET :page " , nativeQuery = true)
+	@Query(value="SELECT s.* FROM students s WHERE s.is_valid = TRUE ORDER BY s.created_on DESC LIMIT :size OFFSET :page " , nativeQuery = true)
 	List<Student> findAllPageable(int page , int size);
 }

@@ -18,4 +18,5 @@ public interface TeacherService {
 	Page<TeacherDto> findAllPageable(Pageable pageable);
 	TeacherDto update(Long id , String status);
 	
+	String delete(Long id);
 }

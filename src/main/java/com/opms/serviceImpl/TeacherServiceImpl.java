@@ -214,4 +214,19 @@ public class TeacherServiceImpl extends TeacherMapper implements TeacherService{
 			return toDto ( teacherRepository.save(teacher));
 		}
 	}
+
+	@Override
+	public String delete(Long id) {
+		if(id == null) {
+			return "Failed to delete user.";
+		}
+		
+		Teacher t = teacherRepository.findById(id).get();
+		t.setIsValid(false);
+		t.setIsActivated(false);
+		
+		teacherRepository.save(t);
+		
+		return "User successfully deleted.";
+	}
 }

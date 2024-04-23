@@ -142,7 +142,7 @@ public class SubjectServiceImpl extends SubjectMapper implements SubjectService{
 		Course course = courseRepository.findById(dto.getCourseId()).get();
 		subject.setCourse(course);
 		subject.setCreatedOn(LocalDateTime.now());
-		
+		subject.setTeacher(teacherRepository.findById(userId).get());
 		if(subjectRepository.ifSubjectExist( dto.getCode() , userId )) {
 			return null;
 		}

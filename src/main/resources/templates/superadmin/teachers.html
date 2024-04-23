@@ -29,6 +29,10 @@
 						  </span>
 						</div>
 					</form>
+					
+					<div class="alert alert-info mt-3" role="alert" th:if="${param.success != null}">
+					 	[[${param.success}]]
+					</div>
 				
 					<table class="table mt-5">
 					  <thead>
@@ -50,11 +54,13 @@
 					      	<a th:href="@{/superadmin/edit?id={id}(id=${teacher.id})}+${'&mode=teacher'}" class="text-decoration-none">
 				      			<i class="far fa-edit"></i>
 				      		</a>
+				      		<a class="ms-2 text-decoration-none" href="#" data-coreui-toggle="modal" 
+							   th:attr="data-coreui-target='#confirmDeleteModal'+${teacher.id}"><i class="far fa-trash-alt"></i></a>
 					      </td>
 					    </tr>
 					    
 					    <tr th:unless="${teachers.size() > 0}">
-							<td colspan="5" class="text-center">No students found.</td>
+							<td colspan="5" class="text-center">No teachers found.</td>
 						</tr>
 					  </tbody>
 					  
@@ -67,6 +73,28 @@
 	  		</div>
 		  </div>
 	 </div>
+	 
+	 <div th:each="dto: ${teachers}" >
+		<div class="modal" tabindex="-1" th:attr="id='confirmDeleteModal'+${dto.id}" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Delete User?</h5>
+		        <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		      	<form method="post" th:action="@{/superadmin/delete?id={id}(id=${dto.id}) } + ${'&mode=teachers'}" >
+		      		 <p th:text="${'Sure to delete user '+dto.fullName+' ?'}"></p>
+		      		 <div class="row justify-content-end">
+			      		 <button type="button" class="btn btn-secondary col-md-2" data-coreui-dismiss="modal">Cancel</button>
+			      		 <input type="submit" class="btn btn-primary col-md-2 ms-2" value="Delete" />
+		      		 </div>
+		      	</form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	</div>
 	
 <footer th:replace="~{includes/footer :: footer}"></footer>
 </body>

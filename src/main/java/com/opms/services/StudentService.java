@@ -20,4 +20,6 @@ public interface StudentService {
 	Boolean verifyPassword(String password, Long userId);
 	StudentDto update( MultipartFile file , StudentDto teacherDto);
 	StudentDto updateCredentials(StudentDto dto);
+	
+	String delete(Long id);
 }

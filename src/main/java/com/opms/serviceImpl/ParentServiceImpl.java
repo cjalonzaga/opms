@@ -100,5 +100,18 @@ public class ParentServiceImpl extends ParentMapper implements ParentService{
 		}
 	}
 	
-	
+	@Override
+	public String delete(Long id) {
+		if(id == null) {
+			return "Failed to delete user.";
+		}
+		
+		Parent t = parentRepository.findById(id).get();
+		t.setIsValid(false);
+		t.setIsActivated(false);
+		
+		parentRepository.save(t);
+		
+		return "User successfully deleted.";
+	}
 }

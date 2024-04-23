@@ -85,15 +85,14 @@
 					              		</div>
 									</div>
 									
-									<div class="row align-items-center mb-3 mt-2">
+									<div class="row align-items-center mb-3 mt-2 d-none">
 										<div class="col-sm-2">
 											<label for="courseLevel" class="form-label m-0">Course/Program</label>
 										</div>
 										<div class="col-md-6">
-		 									<select class="form-control form-select" id="courseSelect" th:field="*{courseId}" style="height: 40px;">
-		 										<option value=""></option>
+		 									<select class="form-control form-select" th:field="*{courseId}" style="height: 40px;">
 		 										<option th:each="c : ${courseList}"
-						                         th:value="${c.id}" th:text="${c.getName}"></option>
+						                         th:value="${c.id}" th:text="${c.getName}" selected></option>
 						               		</select>
 					              		</div>
 									</div>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}"></head>
+<body>
+	<div th:replace="~{includes/sidebar2 :: sidebar2}"></div>
+	<div class="wrapper d-flex flex-column min-vh-100 bg-light">
+      
+      <div th:replace="~{includes/subheader2 :: subheader2}"></div>
+      <div class="body flex-grow-1 px-3">
+		<div class="container-lg">
+			<div class="card mb-4 col-md-12 ">
+				<div class="card-body" th:object="${module}">
+							
+					<div class="row align-items-center mb-3 mt-2">
+						<div class="col-sm-2 text-start">
+							<label for="code" class="form-label m-0 text-start">Title</label>
+						</div>
+						<div class="col-md-6">
+							[[${module.name}]]
+	              		</div>
+					</div>
+					
+					<div class="row mb-3 mt-2 align-items-start text-start">
+						<div class="col-sm-2">
+							<label for="code" class="form-label m-0 text-start">Notes</label>
+						</div>
+						<div class="col-md-6">
+							<div th:utext="${module.note}"></div>
+	              		</div>
+					</div>
+					
+					<div class="row align-items-center mb-3 mt-2">
+						<div class="col-sm-2 text-start">
+							<label for="formFile" class="form-label">Attached file</label>
+						</div>
+						<div class="col-md-6" >
+							<div class="col-md-12" th:each="file : ${module.moduleFiles}">
+								<i th:attr="class=${file.type.icon}"></i><a th:href="${file.uri}" class="ms-2" target="_blank">[[${file.fileName}]]</a>
+							</div>
+						</div>
+					</div>
+									
+				</div>
+			</div>
+		</div>
+	   </div>
+	</div>
+	
+	<footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>

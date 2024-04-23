@@ -149,6 +149,14 @@ public class Student extends User{
 	}
 	
 	@Transient
+	public Section getStudentSection() {
+		if(!this.sections.isEmpty()) {
+			return sections.get(0);
+		}
+		return null;
+	}
+	
+	@Transient
 	public String getSection() {
 		List<String> section = new ArrayList<>();
 		if(!sections.isEmpty()) {

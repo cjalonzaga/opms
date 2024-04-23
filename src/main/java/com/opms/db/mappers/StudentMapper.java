@@ -25,6 +25,7 @@ public abstract class StudentMapper extends BaseMapper implements Mapper<Student
            map().setImageUri(source.getImage().getUri());
            map().setFileName(source.getImage().getFileName());
            map().setSectionName(source.getSection());
+           map().setStudentSection(source.getStudentSection());
        }
     };
 

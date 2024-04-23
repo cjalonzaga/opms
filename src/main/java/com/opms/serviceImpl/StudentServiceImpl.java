@@ -231,4 +231,19 @@ public class StudentServiceImpl extends StudentMapper implements StudentService{
 	public Boolean verifyPassword(String password, Long userId) {
 		return passwordEncoder.matches(password, studentRepository.findById(userId).get().getPassword());
 	}
+	
+	@Override
+	public String delete(Long id) {
+		if(id == null) {
+			return "Failed to delete user.";
+		}
+		
+		Student t = studentRepository.findById(id).get();
+		t.setIsValid(false);
+		t.setIsActivated(false);
+		
+		studentRepository.save(t);
+		
+		return "User successfully deleted.";
+	}
 }

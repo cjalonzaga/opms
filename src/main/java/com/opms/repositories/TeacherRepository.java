@@ -23,10 +23,10 @@ public interface TeacherRepository extends JpaRepository<Teacher , Long>{
 	@Query(value="SELECT s.* FROM teachers s WHERE "
 			+ " ( LOWER(s.first_name) LIKE %:keyword% OR LOWER(s.last_name) LIKE %:keyword% ) "
 			+ " AND (:createdOn IS NULL OR DATE(s.created_on) = :createdOn ) "
-			+ " AND s.status = :status"
+			+ " AND s.status = :status AND s.is_valid = TRUE "
 			+ " ORDER BY s.created_on DESC LIMIT :size OFFSET :page " , nativeQuery = true)
 	List<Teacher> findAllWithPaging(String keyword , String createdOn , String status , int page , int size);
 	
-	@Query(value="SELECT s.* FROM teachers s ORDER BY s.created_on DESC LIMIT :size OFFSET :page " , nativeQuery = true)
+	@Query(value="SELECT s.* FROM teachers s WHERE s.is_valid = TRUE ORDER BY s.created_on DESC LIMIT :size OFFSET :page " , nativeQuery = true)
 	List<Teacher> findAllPageable(int page , int size);
 }

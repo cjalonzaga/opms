@@ -15,4 +15,6 @@ public interface ParentService {
 	Page<ParentDto> findAllPageable(Pageable pageable);
 	ParentDto getById(Long id);
 	ParentDto update(Long id , String status);
+	
+	String delete(Long id);
 }

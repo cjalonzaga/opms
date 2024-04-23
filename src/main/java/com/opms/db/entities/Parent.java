@@ -12,6 +12,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name="parents")
@@ -58,6 +59,11 @@ public class Parent extends User{
 
 	public void setUserData(UserData userData) {
 		this.userData = userData;
+	}
+	
+	@Transient
+	public String getFullName() {
+		return this.getFirstName() + " "+ this.getMiddleName() +" " + this.getLastName();
 	}
 	
 }

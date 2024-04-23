@@ -76,7 +76,7 @@ public class ActivityController extends BaseController{
 	public String createForm(Model model , @RequestParam(required = false) Long id) {
 		TeacherDto user = this.getCurrentUser();
 		model.addAttribute("user", user );
-		model.addAttribute("subjects", subjectService.getAll());
+		model.addAttribute("subjects", subjectService.findAllByUser(user.getId()));
 		model.addAttribute("sectionsAll", sectionService.getAll());
 		
 		if(id == null) {

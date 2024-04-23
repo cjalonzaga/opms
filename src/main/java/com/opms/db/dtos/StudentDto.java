@@ -3,6 +3,7 @@ package com.opms.db.dtos;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.opms.db.entities.Section;
 import com.opms.enums.CouncilType;
 import com.opms.enums.CourseLevel;
 import com.opms.enums.SignupStatus;
@@ -53,6 +54,8 @@ public class StudentDto implements Serializable{
 	private String sectionName;
 	
 	private String fullName;
+	
+	private Section studentSection;
 
 	public Long getId() {
 		return id;
@@ -220,6 +223,14 @@ public class StudentDto implements Serializable{
 
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
+	}
+
+	public Section getStudentSection() {
+		return studentSection;
+	}
+
+	public void setStudentSection(Section studentSection) {
+		this.studentSection = studentSection;
 	}
 	
 }

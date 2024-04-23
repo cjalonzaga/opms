@@ -8,6 +8,7 @@ import com.opms.enums.CourseLevel;
 import com.opms.enums.Semester;
 
 import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,6 +17,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -63,12 +65,24 @@ public class Subject extends BaseEntity{
 	private Course course;
 	
 	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "teacherId",
+            referencedColumnName = "id"
+    )
+	private Teacher teacher;
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "subject", fetch = FetchType.LAZY)
 	private List<Activity> activities;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "subject", fetch = FetchType.LAZY)
 	private List<Assignment> assignment;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "subject", fetch = FetchType.LAZY)
+	private List<Modules> modules;
 	
 	public String getCode() {
 		return code;
@@ -124,5 +138,21 @@ public class Subject extends BaseEntity{
 	
 	public void setAssignment(List<Assignment> assignment) {
 		this.assignment = assignment;
+	}
+
+	public List<Modules> getModules() {
+		return modules;
+	}
+
+	public void setModules(List<Modules> modules) {
+		this.modules = modules;
+	}
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
 	}
 }

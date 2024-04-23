@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}"></head>
+<body>
+	<div th:replace="~{includes/sidebar2 :: sidebar2}"></div>
+	<div class="wrapper d-flex flex-column min-vh-100 bg-light">
+      
+      <div th:replace="~{includes/subheader2 :: subheader2}"></div>
+      <div class="body flex-grow-1 px-3">
+		<div class="container-lg">
+			<div class="card mb-4 col-md-12 ">
+				<div class="card-body">
+				
+					<table class="table text-start table-striped table-bordered mt-3">
+						<thead>
+						    <tr>
+						      <th scope="col">Module Title</th>
+						      <th scope="col">Subject</th>
+						      <th scope="col" class="text-center">Action</th>
+						    </tr>
+						</thead>
+						
+						<tbody>
+  								<tr th:each="dto: ${modules}">
+							    <td th:text="${dto.name}" />
+							    <td th:text="${dto.subjectName}" />
+								<td class="text-center">
+									<a th:href="@{/student/module-view?id={id}(id=${dto.id})}" class="text-decoration-none">
+						      			<i class="fa-regular fa-eye"></i>
+						      		</a>
+								</td>
+							</tr>
+							
+							<tr th:unless="${modules.size() > 0}">
+								<td colspan="3" class="text-center">No modules found.</td>
+							</tr>
+  							</tbody>
+					</table>
+					
+					<div class="col-md-12 m-2 d-flex justify-content-end">
+						<nav aria-label="Pagination" th:replace="~{ includes/nav-paging :: nav-paging}"></nav>
+					</div>
+				</div>
+			</div>
+		</div>
+	   </div>
+	</div>
+	
+	<footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>

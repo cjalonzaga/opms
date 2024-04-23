@@ -49,7 +49,7 @@ public class SubjectController extends BaseController{
 		Page<SubjectDto> paging;
 		
 		if(keyword == null && createdOn == null && semester == null && courseLevel == null ) {
-			paging = subjectService.findAll(pageable);
+			paging = subjectService.findAllByUserWithPaging( this.getCurrentUser().getId() ,  pageable);
 		}else {
 			final String createdDate = (createdOn == null || createdOn.isEmpty() ) ? null : createdOn;
 			final String level = (courseLevel == null || courseLevel.isEmpty() ) ? null : courseLevel;

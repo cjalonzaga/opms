@@ -30,6 +30,42 @@
 							</nav>
 						</div>
 						
+						<div class="col-md-12 d-flex justify-content-end">
+							<a class="btn btn-primary col-md-2" th:href="@{/admin/module-form}">Add Module</a>
+						</div>
+						
+						
+						<table class="table text-start table-striped table-bordered mt-3">
+								<thead>
+								    <tr>
+								      <th scope="col">Module Title</th>
+								      <th scope="col">Subject</th>
+								      <th scope="col" class="text-center">Action</th>
+								    </tr>
+								</thead>
+								
+								<tbody>
+    								<tr th:each="dto: ${modules}">
+									    <td th:text="${dto.name}" />
+									    <td th:text="${dto.subjectName}" />
+										<td class="text-center">
+											<a th:href="@{/admin/module-form?id={id}(id=${dto.id})}" class="text-decoration-none">
+								      			<i class="far fa-edit"></i>
+								      		</a>
+								      		<a class="ms-2 text-decoration-none" href="#" data-coreui-toggle="modal" 
+								      			th:attr="data-coreui-target='#confirmDeleteModal'+${dto.id}"><i class="far fa-trash-alt"></i></a>
+										</td>
+									</tr>
+									
+									<tr th:unless="${modules.size() > 0}">
+										<td colspan="3" class="text-center">No modules found.</td>
+									</tr>
+    							</tbody>
+							</table>
+							
+							<div class="col-md-12 m-2 d-flex justify-content-end">
+								<nav aria-label="Pagination" th:replace="~{ includes/nav-paging :: nav-paging}"></nav>
+							</div>
 						
 					</div>
 				</div>
@@ -37,6 +73,28 @@
 			</div>
 		</div>
 		
+	</div>
+	
+	<div th:each="dto: ${modules}" >
+		<div class="modal" tabindex="-1" th:attr="id='confirmDeleteModal'+${dto.id}" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Delete Module?</h5>
+		        <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		      	<form method="post" th:action="@{/admin/module/delete?id={id}(id=${dto.id})}" >
+		      		 <p th:text="${'Sure to delete '+dto.name+' ?'}"></p>
+		      		 <div class="row justify-content-end">
+			      		 <button type="button" class="btn btn-secondary col-md-2" data-coreui-dismiss="modal">Close</button>
+			      		 <input type="submit" class="btn btn-primary col-md-2 ms-2" value="Delete" />
+		      		 </div>
+		      	</form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	</div>
 
 	<footer th:replace="~{includes/footer :: footer}"></footer>

@@ -16,10 +16,10 @@ public interface SubjectRepository extends JpaRepository<Subject, Long>{
 			+ " END FROM Subject s JOIN Course c ON s.course.id = c.id WHERE s.code = :code AND c.teacher.id = :userId ")
 	Boolean ifSubjectExist(String code , Long userId);
 	
-	@Query( value = "SELECT s FROM Subject s JOIN Course c ON s.course.id = c.id WHERE c.teacher.id = :userId")
+	@Query( value = "SELECT s FROM Subject s WHERE s.teacher.id = :userId")
 	List<Subject> findAllByUser(Long userId);
 	
-	@Query( value = "SELECT s.* FROM subjects s JOIN courses c ON s.course_id = c.id WHERE c.teacher_id = :userId "
+	@Query( value = "SELECT s.* FROM subjects s WHERE s.teacher_id = :userId "
 			+ " ORDER BY s.created_on DESC LIMIT :size OFFSET :page " , nativeQuery = true)
 	List<Subject> findAllByUserWithPaging(Long userId , int page , int size);
 	

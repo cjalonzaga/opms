@@ -177,4 +177,16 @@ public class SuperAdminController extends SuperAdminBaseController{
 		return "superadmin/edit";
 	}
 	
+	@PostMapping("/delete")
+	public String delete(@RequestParam(required = false) Long id , @RequestParam(required = false) String mode) {
+		String msg = "";
+		if(mode.equals("students")) {
+			msg = studentService.delete(id);
+		}else if(mode.equals("parents")) {
+			msg = parentService.delete(id);
+		}else if(mode.equals("teachers")) {
+			msg = teacherService.delete(id);
+		}
+		return "redirect:/superadmin/" + mode + "?success="+msg;
+	}
 }

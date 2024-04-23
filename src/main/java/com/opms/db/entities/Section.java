@@ -76,7 +76,7 @@ public class Section extends BaseEntity{
 	private List<Answer> answers;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "section", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "sections", cascade = CascadeType.MERGE , fetch = FetchType.LAZY)
 	private List<Modules> modules;
 
 	public String getName() {

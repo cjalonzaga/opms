@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}">
+</head>
+<body>
+	
+	<div th:replace="~{includes/sidebar :: sidebar}"></div>
+	
+	<div class="wrapper d-flex flex-column min-vh-100 bg-light">
+		<div th:replace="~{includes/subheader :: subheader}"></div>
+		
+		<div class="body flex-grow-1 px-3">
+			<div class="container-lg">
+				<div class="card mb-4 col-md-12 ">
+					<div class="card-body ">
+						<div class="col-md-12 m-0" >
+							<div class="row mb-3 text-start">
+								<div class="row align-items-center" th:if="${param.id != null}">
+									<h4>Edit Module</h4>
+								</div>
+								<div class="row align-items-center" th:if="${param.id == null}">
+									<h4>Add Module</h4>
+								</div>
+							</div>
+							
+							
+							<form th:object="${module}" enctype="multipart/form-data" method="post" id="moduleForm"
+									th:action="@{/admin/module-form/{action}(action=${action.getName})}">
+							
+									<div class="row align-items-center mb-3 mt-2" enctype="multipart/form-data">
+										<div class="col-sm-2 text-start">
+											<label for="code" class="form-label m-0 text-start">Title</label>
+										</div>
+										<div class="col-md-6">
+		 									<input type="text" class="form-control"
+		 									placeholder="Module Title" th:value="${module.name}" th:field="*{name}" required>
+					              		</div>
+									</div>
+									
+									<div class="row mb-3 mt-2 text-start">
+										<div class="col-sm-2">
+											<label for="code" class="form-label m-0 text-start">Notes</label>
+										</div>
+										<div class="col-md-6">
+											<textarea class="form-control d-none" id="instruct" 
+											th:field="*{note}" th:value="${module.note}" rows="7"></textarea>
+		 									<div id="editor" style="height: 300px">
+					              				[(${module.note})]
+					              			</div>
+					              		</div>
+									</div>
+									
+									<div class="row align-items-center mb-3 mt-2">
+										<div class="col-sm-2 text-start">
+											<label for="formFile" class="form-label">Attached file</label>
+										</div>
+										<div class="col-md-6" th:if="${param.id != null }">
+											<div th:if="${not #lists.isEmpty(module.moduleFiles)}" th:each="file : ${module.moduleFiles}">
+												<input class="form-control" type="file" name="file" id="formFile" th:value="${file.uri}">
+												<small><a th:href="${file.uri}" target="_blank">[[${file.fileName}]]</a></small>
+											</div>
+	  										<div th:if="${#lists.isEmpty(module.moduleFiles)}">
+	  											<input class="form-control" type="file" name="file" id="formFile">
+	  										</div>
+  										</div>
+  										<div class="col-md-6" th:if="${param.id == null && #lists.isEmpty(module.moduleFiles) }">
+	  										<input class="form-control" type="file" name="file" id="formFile">
+  										</div>
+									</div>
+									
+									<div class="row mb-3 mt-2">
+										<div class="col-sm-2">
+											<label for="courseLevel" class="form-label m-0">Add to Section</label>
+										</div>
+										<div class="col-md-6">
+		 									<select class="form-control form-select" id="multi-select" th:field="*{sectionId}">
+		 										<option value=""> -Select Section- </option>
+						                		<option th:each="sect : ${sectionsAll}"
+						                         th:value="${sect.id}" th:text="${sect.name}"></option>
+						               		</select>
+						               		<!-- id="multi-select" -->
+					              		</div>
+									</div>
+									
+									<div class="row align-items-center mb-3 mt-2">
+										<div class="col-sm-2">
+											<label for="courseLevel" class="form-label m-0">Subject</label>
+										</div>
+										<div class="col-md-6">
+		 									<select class="form-control form-select" th:field="*{subjectId}">
+		 										<option value="">Select Subject</option>
+						                		<option th:each="subject : ${subjects}"
+						                         th:value="${subject.id}" >[[${subject.code}]]</option>
+						               		</select>
+					              		</div>
+									</div>
+									
+									<div class="row align-items-center mb-3">
+										<div class="col-sm-2">
+					              		</div>
+					              		<div class="col-sm-6 d-flex justify-content-end">
+					              			<input class="btn btn-block btn-primary text-capitalize" onclick="submitForm(event)"
+					              				type="submit" th:value="${action.getName}+' '+Module"/>
+					              		</div>
+									</div>
+							 </form>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript" th:inline="javascript">
+		const quill = new Quill('#editor', {
+		    theme: 'snow'
+		});
+		
+		function submitForm(e){
+	    	e.preventDefault();
+	    	document.getElementById('instruct').value = quill.root.innerHTML;
+	    	if(validate()){
+	    		return false;
+	    	}
+	    	document.getElementById('moduleForm').submit();
+	    }
+	    
+	    function validate(){
+	    	
+	    	var error = false;
+	    	var msg ="Please complet required fields \n";
+	    	
+	   		const courseTitle = jQuery('#name').val();
+	   		const subjectId = jQuery('#subjectId').val();
+	   		const section = jQuery('#multi-select').val();
+	   		
+	   		const requireFile = jQuery('#formFile').val();
+	   		
+	   		if(courseTitle == ""){
+	   			error = true;
+	   			msg += "*Module Title \n";
+	   		}
+	   		
+	   		if(subjectId == ""){
+	   			error = true;
+	   			msg += "*Subject \n";
+	   		}
+	   		
+	   		if(section == ""){
+	   			error = true;
+	   			msg += "*Section \n";
+	   		}
+	   		
+	   		if(requireFile == ""){
+	   			error = true;
+	   			msg += "*Upload file.";
+	   		}
+	   		
+	   		if(error){
+	   			alert(msg)
+	   		}
+	   		
+	   		return error;
+	    }
+		
+		jQuery(document).ready(function($){
+			$('#multi-select').select2();
+			
+			$('#editor').on('change')
+		});
+	</script>
+	<footer th:replace="~{includes/footer :: footer}"></footer>
+	
+</body>
+</html>

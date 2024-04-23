@@ -51,6 +51,14 @@ public class Teacher extends User{
 	@OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
 	private List<UserFile> files;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
+	private List<Modules> modules;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
+	private List<Subject> subjects;
+	
 	public Teacher(){
 		super();
 	}
@@ -103,6 +111,22 @@ public class Teacher extends User{
 		this.files = files;
 	}
 	
+	public List<Modules> getModules() {
+		return modules;
+	}
+
+	public void setModules(List<Modules> modules) {
+		this.modules = modules;
+	}
+	
+	public List<Subject> getSubjects() {
+		return subjects;
+	}
+
+	public void setSubjects(List<Subject> subjects) {
+		this.subjects = subjects;
+	}
+
 	@Transient
 	public String getFullName() {
 		return this.getFirstName() + " "+ this.getMiddleName() +" " + this.getLastName();
