@@ -11,6 +11,8 @@ public interface ModuleService {
 	
 	ModulesDto create(ModulesDto dto , MultipartFile file , Long teacherId);
 	
+	ModulesDto update(ModulesDto dto , MultipartFile file , Long teacherId);
+	
 	Page<ModulesDto> findAllByUserWithPaging(Long userId ,Pageable pageable);
 	Page<ModulesDto> searchAllByUser(Long userId , String createdOn , String keyword , Pageable pageable);
 	

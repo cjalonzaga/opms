@@ -86,7 +86,7 @@ public class ModuleServiceImpl extends ModuleMapper implements ModuleService{
 			String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
 			s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObject));
 			String uri = s3Client.getUrl(bucketName, fileName).toString();
-			
+
 			ModuleFile mf = new ModuleFile();
 			mf.setOriginalFileName(file.getOriginalFilename());
 			mf.setFileName(fileName);
@@ -95,6 +95,7 @@ public class ModuleServiceImpl extends ModuleMapper implements ModuleService{
 			
 			saved = moduleRepository.save(mod);
 			
+			mf.setModule(saved);
 			moduleFileRepository.save(mf);
 			
 			fileObject.delete();
@@ -121,7 +122,10 @@ public class ModuleServiceImpl extends ModuleMapper implements ModuleService{
 
 	@Override
 	public void delete(Long id) {
-		moduleRepository.deleteById(id);
+		Modules module = moduleRepository.findById(id).get();
+		module.setIsValid(false);
+		
+		moduleRepository.save(module);
 	}
 
 	@Override
@@ -130,6 +134,49 @@ public class ModuleServiceImpl extends ModuleMapper implements ModuleService{
 		List<ModulesDto> activityList = toDtoList( moduleRepository.findAllByStudentSection(sectionId , offset, pageable.getPageSize()) );
 		int totalSize = moduleRepository.totalSizeBySection(sectionId);
 		return new PageImpl<>(activityList , pageable , totalSize);
+	}
+
+	@Override
+	public ModulesDto update(ModulesDto dto, MultipartFile file, Long teacherId) {
+		Modules mod = moduleRepository.findById(dto.getId()).get();
+		
+		mod.setName(dto.getName());
+		mod.setNote(dto.getNote());
+		
+		List<Section> sections = this.sectionRepository.findAllById(List.of( dto.getSectionId() ));
+		
+		Subject subject = subjectRepository.findById(dto.getSubjectId()).get();
+		mod.setSubject(subject);
+		mod.setSections(sections);
+		
+		mod.setTeacher(teacherRepository.findById(teacherId).get());
+		
+		Modules saved = null;
+		
+		if(!file.isEmpty()) {
+			
+			File fileObject = FileUtil.convertMultiPartFileToFile(file);
+			String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+			s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObject));
+			String uri = s3Client.getUrl(bucketName, fileName).toString();
+			
+			ModuleFile mf = new ModuleFile();
+			mf.setOriginalFileName(file.getOriginalFilename());
+			mf.setFileName(fileName);
+			mf.setUri(uri);
+			mf.setType(FileUtil.getFileType(fileName));
+			
+			saved = moduleRepository.save(mod);
+			
+			mf.setModule(saved);
+			moduleFileRepository.save(mf);
+			
+			fileObject.delete();
+		}else {
+			saved = moduleRepository.save(mod);
+		}
+		
+		return toDto(saved);
 	}
 	
 }

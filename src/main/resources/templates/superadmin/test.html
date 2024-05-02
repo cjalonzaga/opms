@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{includes/header :: header}"></head>
+<body>
+	
+	<div class="container flex-1">
+		  <form method="post" th:action="@{/superadmin/test/test-upload}" th:object="${file}" enctype="multipart/form-data">
+		  	<input type="file" name="file" />
+		  	<input type="submit" value="Submit">
+		  </form>
+	 </div>
+	 
+	 <div th:each="f : ${files}">
+	 	<a th:href="@{${f.uri +'/'+f.fileName}}">[[${f.fileName}]]</a>
+	 </div>
+	
+<footer th:replace="~{includes/footer :: footer}"></footer>
+</body>
+</html>

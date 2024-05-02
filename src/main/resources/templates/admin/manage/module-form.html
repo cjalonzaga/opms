@@ -26,7 +26,7 @@
 							
 							<form th:object="${module}" enctype="multipart/form-data" method="post" id="moduleForm"
 									th:action="@{/admin/module-form/{action}(action=${action.getName})}">
-							
+									<input type="hidden" th:value="${module.id}" th:field="*{id}"/>
 									<div class="row align-items-center mb-3 mt-2" enctype="multipart/form-data">
 										<div class="col-sm-2 text-start">
 											<label for="code" class="form-label m-0 text-start">Title</label>
@@ -56,8 +56,9 @@
 										</div>
 										<div class="col-md-6" th:if="${param.id != null }">
 											<div th:if="${not #lists.isEmpty(module.moduleFiles)}" th:each="file : ${module.moduleFiles}">
-												<input class="form-control" type="file" name="file" id="formFile" th:value="${file.uri}">
+												<input class="form-control" type="file" name="file" id="formFile">
 												<small><a th:href="${file.uri}" target="_blank">[[${file.fileName}]]</a></small>
+												<a href="javascript:void(0)" class="p-left text-dark" th:attr="onclick='deleteFile('+${file.id}+')'">Delete</a>
 											</div>
 	  										<div th:if="${#lists.isEmpty(module.moduleFiles)}">
 	  											<input class="form-control" type="file" name="file" id="formFile">
@@ -74,7 +75,7 @@
 										</div>
 										<div class="col-md-6">
 		 									<select class="form-control form-select" id="multi-select" th:field="*{sectionId}">
-		 										<option value=""> -Select Section- </option>
+						                		<option value="">-Select Section-</option>
 						                		<option th:each="sect : ${sectionsAll}"
 						                         th:value="${sect.id}" th:text="${sect.name}"></option>
 						               		</select>
@@ -117,16 +118,26 @@
 		    theme: 'snow'
 		});
 		
+		var action = [[${action.getName}]];
+		
 		function submitForm(e){
 	    	e.preventDefault();
 	    	document.getElementById('instruct').value = quill.root.innerHTML;
-	    	if(validate()){
+	    	
+    		if( validate(action)){
 	    		return false;
 	    	}
+	    	
 	    	document.getElementById('moduleForm').submit();
 	    }
+		
+		/*<![CDATA[*/
+		var allList = [];
+	    var list = JSON.parse(`[[${sectionsAll}]]`); //neglect the error data is direct from controller
+	    var section = `[[${sections}]]`;
+       /*]]>*/
 	    
-	    function validate(){
+	    function validate(action){
 	    	
 	    	var error = false;
 	    	var msg ="Please complet required fields \n";
@@ -152,7 +163,7 @@
 	   			msg += "*Section \n";
 	   		}
 	   		
-	   		if(requireFile == ""){
+	   		if(requireFile == "" && action != 'update'){
 	   			error = true;
 	   			msg += "*Upload file.";
 	   		}
@@ -163,11 +174,57 @@
 	   		
 	   		return error;
 	    }
+       
+       function deleteFile(id){
+    	   
+    	   if(confirm('Sure to delete attached file? ')){
+    		  
+	    	   jQuery.ajax({
+	    		   type: "GET",
+					contentType : 'application/json; charset=utf-8',
+					dataType : 'json',
+					url : window.location.origin +'/ajax/delete-file/',
+					data : {
+						id : id
+					},
+					success : function(res){
+						if(res.success){
+							setTimeout(()=>{
+								location.reload();
+							} , 2000);
+						}else{
+							setTimeout(()=>{
+								location.reload();
+							} , 2000);
+						}
+					},
+					error : function(er){
+						setTimeout(()=>{
+							location.reload();
+						} , 2000);
+					}
+	    	   });
+    	   
+    	   }
+       }
 		
 		jQuery(document).ready(function($){
 			$('#multi-select').select2();
 			
-			$('#editor').on('change')
+			const select = document.getElementById("multi-select");
+			//console.log(section)
+			for (i = 0; i < select.options.length; ++i){
+			    if ( section.includes( select.options[i].value ) ){
+			    	//console.log(select.options[i].value)
+			    	select.options[i].selected = true;
+			    }
+			}
+			
+			$('#editor').on('change');
+			
+			$('#multi-select').trigger('change');
+			
+			
 		});
 	</script>
 	<footer th:replace="~{includes/footer :: footer}"></footer>

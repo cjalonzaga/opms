@@ -107,6 +107,15 @@ public class ModuleController extends BaseController{
 		return "redirect:/admin/modules?success="+success;
 	}
 	
+	@PostMapping("/module-form/update")
+	public String update(@ModelAttribute("module") ModulesDto dto , @RequestParam("file") MultipartFile file) {
+		
+		ModulesDto obj = moduleService.update(dto, file , this.getCurrentUser().getId());
+		System.out.println(file.getOriginalFilename());
+		String success = ( obj != null ) ? "true" : "false";
+		return "redirect:/admin/modules?success="+success;
+	}
+	
 	@PostMapping("/module/delete")
 	public String delete(@RequestParam(required = false , name="id") Long id ) {
 		moduleService.delete(id);

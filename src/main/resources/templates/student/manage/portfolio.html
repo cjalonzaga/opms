@@ -47,7 +47,6 @@
 					  <thead>
 					    <tr>
 					      <th scope="col">Name</th>
-					      <th scope="col">Owner</th>
 					      <th scope="col">Upload Date</th>
 					      <th scope="col" class="text-center">Action</th>
 					    </tr>
@@ -55,11 +54,10 @@
 					  <tbody>
 					    <tr th:each="folder : ${folders}">
 					      <th><i class="fas fa-folder"></i> <a th:href="@{/student/folder?folderId={id}(id=${folder.id})}">[[${folder.name}]]</a></th>
-					      <td>Mark</td>
 					      <td>[[${#temporals.format(folder.createdOn, 'dd/MM/yyyy HH:mm a')}]]</td>
 					      <td class="text-center">
 				      			
-				      		<a href="#" class="ms-2 text-decoration-none">
+				      		<a th:href="@{/student/downloadzip}+'?folderId='+${folder.id}" class="ms-2 text-decoration-none">
 				      			<i class="fa-solid fa-download"></i></a>
 				      			
 				      		<a class="ms-2 text-decoration-none" href="#" data-coreui-toggle="modal">
@@ -86,7 +84,7 @@
 					      <td>[[${#temporals.format(file.createdOn, 'dd/MM/yyyy HH:mm a')}]]</td>
 					      <td class="text-center">
 				      			
-				      		<a href="#" class="ms-2 text-decoration-none">
+				      		<a href="javascript:void(0);" th:data-uri="${file.fileName}" class='ms-2 text-decoration-none' >
 				      			<i class="fa-solid fa-download"></i></a>
 				      			
 				      		<a class="ms-2 text-decoration-none" href="#" data-coreui-toggle="modal">
@@ -125,6 +123,7 @@
 	</div>
    
    <script>
+   
    	jQuery(document).ready(function($){
    		$('#createFolder').click(function(e){
    			e.preventDefault();
@@ -135,6 +134,8 @@
    			}
    		});
    	});
+   	
+   	
    </script>
    <footer th:replace="~{includes/footer :: footer}"></footer>
 </body>

@@ -11,14 +11,14 @@ import com.opms.db.entities.Modules;
 @Repository
 public interface ModuleRepository extends JpaRepository<Modules, Long> {
 	@Query(
-	value= "SELECT a.* FROM modules a WHERE a.teacher_id = :userId ORDER BY a.created_on DESC LIMIT :size OFFSET :page ", nativeQuery = true)
+	value= "SELECT a.* FROM modules a WHERE a.teacher_id = :userId AND a.is_valid = TRUE ORDER BY a.created_on DESC LIMIT :size OFFSET :page ", nativeQuery = true)
 	List<Modules> findAllModulesByUserPaging(Long userId , int page , int size);
 	
 	@Query("SELECT COUNT(a) FROM Modules a WHERE a.teacher.id = :userId")
 	Integer totalSize(Long userId);
 	
 	@Query( value = "SELECT a.* FROM modules a JOIN module_section ass ON a.id = ass.module_id "
-			+ " WHERE ass.section_id = :sectionId ORDER BY a.created_on DESC LIMIT :size OFFSET :page ", nativeQuery = true)
+			+ " WHERE ass.section_id = :sectionId AND a.is_valid = TRUE ORDER BY a.created_on DESC LIMIT :size OFFSET :page ", nativeQuery = true)
 	List<Modules> findAllByStudentSection(Long sectionId , int page , int size);
 	
 	@Query( value = "SELECT a.* FROM modules a "

@@ -1,5 +1,7 @@
 package com.opms.controllers.student;
 
+import java.io.IOException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,8 @@ import com.opms.db.dtos.StudentDto;
 import com.opms.db.dtos.UserFileDto;
 import com.opms.services.FileService;
 import com.opms.services.FolderService;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/student")
@@ -127,5 +131,11 @@ public class StudentPorfolioController extends StudentBaseController{
 	public String deleteFile(@RequestParam("fileId") Long fileId , @RequestParam("folderId") Long folderId) {
 		fileService.delete(fileId);
 		return "redirect:/student/folder?folderId="+folderId;
+	}
+	
+	@GetMapping(value="/downloadzip", produces="application/zip")
+	public void downloadZip(@RequestParam("folderId") Long folderId, HttpServletResponse response) throws IOException {
+		
+		this.fileService.dowloadFolderFiles(1L, response);
 	}
 }

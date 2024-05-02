@@ -37,7 +37,7 @@ public class AppConfiguration {
         http.authorizeHttpRequests((authorizeHttpRequests) ->
 			authorizeHttpRequests
 				.requestMatchers(HttpMethod.GET ,"/signup" ,"/ajax/**", 
-						"/signup/**", "/css/**" , "/js/**" , "/vendors/**", "/assets/**" , "/images/**").permitAll()
+						"/signup/**", "/css/**" , "/js/**" , "/vendors/**", "/assets/**" , "/images/**" , "/uploads/**").permitAll()
 				.requestMatchers(HttpMethod.POST , "/signup/**").permitAll()
 				.anyRequest()
 				.authenticated()

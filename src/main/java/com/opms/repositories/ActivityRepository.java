@@ -26,4 +26,6 @@ public interface ActivityRepository extends JpaRepository<Activity , Long>{
 	@Query( value = "SELECT a.* FROM activities a JOIN activity_section ass ON a.id = ass.activity_id JOIN student_section ss ON "
 			+ " ass.section_id = ss.section_id WHERE ss.student_id = :studentId", nativeQuery = true)
 	List<Activity> findAllByStudent(Long studentId);
+	
+	
 }
