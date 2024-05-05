@@ -16,6 +16,7 @@ import com.opms.db.dtos.ParentDto;
 import com.opms.db.dtos.StudentDto;
 import com.opms.db.dtos.SuperAdminDto;
 import com.opms.db.dtos.TeacherDto;
+import com.opms.enums.SignupStatus;
 import com.opms.services.ParentService;
 import com.opms.services.StudentService;
 import com.opms.services.SuperAdminService;
@@ -159,6 +160,7 @@ public class SuperAdminController extends SuperAdminBaseController{
 			@RequestParam(required = false) String mode) {
 		
 		model.addAttribute("user", this.getCurrentUser() );
+		model.addAttribute("status", SignupStatus.values() );
 		Object obj = null;
 		if(mode.equals("student")) {
 			obj = studentService.getById(id);

@@ -1,7 +1,7 @@
 package com.opms.enums;
 
 public enum SignupStatus {
-	NEW("New" , "badge text-bg-primary"),
+	NEW("Pending for Approval" , "badge text-bg-primary"),
 	APPROVED("Approved" , "badge text-bg-success"),
 	REJECTED("Rejected" , "badge text-bg-danger");
 	

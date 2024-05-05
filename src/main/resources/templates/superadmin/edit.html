@@ -93,8 +93,8 @@
 		    			</div>
 		    			<div class="col-md-6">
 		    				<select class="form-select" name="status" id="status" th:field="*{status}">
-		            			<option th:each="c : ${T(com.opms.enums.SignupStatus).values()}" 
-		            			th:value="${c}">[[${c}]]</option>
+		            			<option th:each="c : ${status}" 
+		            			th:value="${c}">[[${c.getName}]]</option>
 							</select>
 		    			</div>
 		    		</div>
