@@ -15,10 +15,10 @@
                   <p class="text-medium-emphasis">Sign In to your account</p>
                   <form th:action="@{/login_process}" method="post" th:object="${user}">
 	                  <div class="input-group mb-3">
-	                    <input class="form-control" name="username" type="email" placeholder="Email" th:field="*{username}">
+	                    <input class="form-control" name="username" autocomplete="off" type="email" placeholder="Email" th:field="*{username}">
 	                  </div>
 	                  <div class="input-group mb-4">
-	                    <input class="form-control" name="password" type="password" placeholder="Password" th:field="*{password}">
+	                    <input class="form-control" name="password" autocomplete="off" type="password" placeholder="Password" th:field="*{password}">
 	                  </div>
 	                  <div class="row">
 	                    <div class="col-6">

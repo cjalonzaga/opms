@@ -50,7 +50,7 @@
 						<div class="card-body width-min-content justify-self-center bg-white circle">
 							<div class="col-md-12 text-center m-0" >
 								
-		                		<img class="profile-image" th:src="${user.imageUri != null ? user.imageUri : '/images/1.jpg' }" width="100%" height="100%">
+		                		<img class="profile-image" th:src="${user.imageUri != null ? user.imageUri : '/images/user.png' }" width="100%" height="100%">
 		          				<input type="file" name="file" id="profileImg" th:value="${user.fileName}" class="btn btn-primary" hidden accept=".png,.jpg,.jpeg"/>
 			                	<label for="profileImg" class="text-center cursor-pointer edit-profile">
 			                		<i class="fa-solid fa-pen"></i>
