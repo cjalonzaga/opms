@@ -44,7 +44,7 @@
                 </div>
                 	<a class="dropdown-item" th:href="@{/admin/profile}">Profile</a>
                 <div class="dropdown-divider"></div>
-                <form th:action="@{/perform_logout}" method="post">
+                <form th:action="@{/perform_logout}" method="post" id="logoutForm">
                 	<input type="submit" class="dropdown-item" th:href="@{/perform_logout}" value="Logout">
                 </form>
               </div>

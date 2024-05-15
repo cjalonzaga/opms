@@ -10,16 +10,82 @@
       <div th:replace="~{includes/subheader :: subheader}"></div>
       
       <div class="body flex-grow-1 px-3">
-        
-      </div>
+        	<div class="row">
+            <div class="col-md-12">
+              <div class="card mb-4">
+              
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="row">
+                        <div class="col-3" th:each="section :${sections}">
+                          <div class="border-start border-start-4 border-start-info px-3 mb-3"><small class="text-medium-emphasis">[[${section.name}]]</small>
+                            <div class="fs-5">Total Students: </div>
+                          </div>
+                        </div>
+                      </div>
+                   </div>
+                 </div>
+                 
+                </div>
+              </div>  	
+              
+              <div class="card mb-4">
+              	<div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="row">
+                     		<div class="fs-2 mb-3">Recent Tasks</div>
+                     		<div class="col-3" th:each="sum , iter : ${summary}">
+                     			<canvas th:attr="id='pie'+${iter.index}"></canvas>
+                     		</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+       		</div>
+        	</div>
+        </div>
+                 
       
       <div class="footer">
-        <div><a href="https://coreui.io">CoreUI </a><a href="https://coreui.io">Bootstrap Admin Template</a> © 2023 creativeLabs.</div>
-        <div class="ms-auto">Powered by&nbsp;<a href="https://coreui.io/docs/">CoreUI UI Components</a></div>
+        <div><a href="#"></a><a href="#"></a> © 2024 OPMS V.1</div>
+        <div class="ms-auto">Online Portfolio Management System</div>
       </div>
     </div>
     
     <footer th:replace="~{includes/footer :: footer}"></footer>
     
+    <script>
+    	const data = `[[${summary}]]`;
+    	let summary = JSON.parse(data.replace(/&quot;/g,'"'));
+    	const labels = ["Total Submitted", "Total Unsubmitted"];
+  		summary.forEach( (el , index) => {
+  			let pie = document.getElementById('pie'+index);
+  			
+  			new Chart( pie , {
+  			  type: "pie",
+  			  data: {
+  			    labels: labels,
+  			    datasets: [{
+  			      backgroundColor: ['#b91d47' , '#00aba9'],
+  			      data: [el.totalChecked , el.totalUnchecked]
+  			    }]
+  			  },
+  			  options: {
+  				plugins: {
+  			      legend: {
+  			        position: 'top',
+  			      },
+  			      title: {
+  			        display: true,
+  			        text: el.name
+  			      }
+  			    }
+  			  }
+  			});
+  		});
+    </script>
 </body>
 </html>

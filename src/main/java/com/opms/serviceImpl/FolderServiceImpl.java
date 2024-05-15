@@ -13,9 +13,11 @@ import com.opms.db.dtos.FolderDto;
 import com.opms.db.dtos.StudentDto;
 import com.opms.db.entities.Folder;
 import com.opms.db.entities.Student;
+import com.opms.db.entities.UserFile;
 import com.opms.db.mappers.FolderMapper;
 import com.opms.repositories.FolderRepository;
 import com.opms.repositories.StudentRepository;
+import com.opms.repositories.UserFileRepository;
 import com.opms.services.FolderService;
 
 @Service
@@ -23,11 +25,14 @@ public class FolderServiceImpl extends FolderMapper implements FolderService {
 	
 	private final FolderRepository folderRepository;
 	private final StudentRepository studentRepository;
+	private final UserFileRepository userFileRepository;
 
-	public FolderServiceImpl(ModelMapper modelMapper , FolderRepository folderRepository , StudentRepository studentRepository) {
+	public FolderServiceImpl(ModelMapper modelMapper , FolderRepository folderRepository , StudentRepository studentRepository , 
+			UserFileRepository userFileRepository) {
 		super(modelMapper);
 		this.folderRepository = folderRepository;
 		this.studentRepository = studentRepository;
+		this.userFileRepository = userFileRepository;
 	}
 
 	@Override
@@ -53,6 +58,20 @@ public class FolderServiceImpl extends FolderMapper implements FolderService {
 		int offset = pageable.getPageNumber() * pageable.getPageSize();
 		List<FolderDto> list = toDtoList(folderRepository.findAllPageable(offset, pageable.getPageSize() , studentId ));
 		return new PageImpl<>(list , pageable , list.size() );
+	}
+
+	@Override
+	public void delete(Long id) {
+		Folder folder = folderRepository.findById(id).get();
+		folder.setIsValid(Boolean.FALSE);
+		
+		List<UserFile> list = userFileRepository.findAllByFolder(folder.getId());
+		for(UserFile file : list) {
+			file.setIsValid(false);
+			userFileRepository.save(file);
+		}
+		
+		folderRepository.save(folder);
 	}
 	
 }

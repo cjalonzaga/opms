@@ -34,4 +34,8 @@ public interface StudentRepository extends JpaRepository<Student , Long>{
 	
 	@Query(value="SELECT s.* FROM students s WHERE s.is_valid = TRUE ORDER BY s.created_on DESC LIMIT :size OFFSET :page " , nativeQuery = true)
 	List<Student> findAllPageable(int page , int size);
+	
+	@Query( value = "SELECT COUNT(a.id) FROM students a JOIN student_section ss ON "
+			+ " a.id = ss.student_id WHERE ss.section_id = :sectionId", nativeQuery = true)
+	Integer countStudent(Long sectionId);
 }

@@ -91,6 +91,28 @@
 		</div>
 		
 	</div>
+	
+	<div th:each="a : ${activities}" >
+		<div class="modal" tabindex="-1" th:attr="id='confirmDeleteModal'+${a.id}" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Delete Activity?</h5>
+		        <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		      	<form method="post" th:action="@{/admin/activity/delete?id={id}(id=${a.id})}" >
+		      		 <p th:text="${'Sure to delete '+a.title+' ?'}"></p>
+		      		 <div class="row justify-content-end">
+			      		 <button type="button" class="btn btn-secondary col-md-2" data-coreui-dismiss="modal">Close</button>
+			      		 <input type="submit" class="btn btn-primary col-md-2 ms-2" value="Delete" />
+		      		 </div>
+		      	</form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	</div>
 
 	<footer th:replace="~{includes/footer :: footer}"></footer>
 </body>

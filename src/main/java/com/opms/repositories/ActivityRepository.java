@@ -13,19 +13,22 @@ public interface ActivityRepository extends JpaRepository<Activity , Long>{
 	
 	@Query("SELECT CASE WHEN COUNT(s) > 0 THEN TRUE "
 			+ "ELSE FALSE "
-			+ "END FROM Activity s WHERE s.title = :title")
+			+ "END FROM Activity s WHERE s.title = :title and s.isValid = TRUE ")
 	Boolean ifActivityExist(String title);
 	
 	@Query(
-	value= "SELECT a.* FROM activities a WHERE a.teacher_id = :userId ORDER BY a.created_on DESC LIMIT :size OFFSET :page ", nativeQuery = true)
+	value= "SELECT a.* FROM activities a WHERE a.teacher_id = :userId AND a.is_valid = TRUE "
+			+ " ORDER BY a.created_on DESC LIMIT :size OFFSET :page ", nativeQuery = true)
 	List<Activity> findAllActivitiesByUserPaging(Long userId , int page , int size);
 	
 	@Query("SELECT COUNT(a) FROM Activity a WHERE a.teacher.id = :userId")
 	Integer totalSize(Long userId);
 	
 	@Query( value = "SELECT a.* FROM activities a JOIN activity_section ass ON a.id = ass.activity_id JOIN student_section ss ON "
-			+ " ass.section_id = ss.section_id WHERE ss.student_id = :studentId", nativeQuery = true)
+			+ " ass.section_id = ss.section_id WHERE ss.student_id = :studentId AND a.is_valid = TRUE ", nativeQuery = true)
 	List<Activity> findAllByStudent(Long studentId);
 	
-	
+	@Query(
+	value= "SELECT a.* FROM activities a WHERE a.teacher_id = :userId AND a.is_valid = TRUE ORDER BY a.created_on DESC LIMIT 4 ", nativeQuery = true)
+	List<Activity> findAllActivitiesByTeacher(Long userId );
 }

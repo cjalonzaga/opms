@@ -130,4 +130,10 @@ public class ActivityController extends BaseController{
 		
 		return "redirect:/admin/activities?success="+success;
 	}
+	
+	@PostMapping("/activity/delete")
+	public String delete(@RequestParam(required = false , name="id") Long id ) {
+		activityService.delete(id);
+		return "redirect:/admin/activities";
+	}
 }

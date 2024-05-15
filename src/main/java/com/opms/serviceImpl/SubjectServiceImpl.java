@@ -67,7 +67,9 @@ public class SubjectServiceImpl extends SubjectMapper implements SubjectService{
 
 	@Override
 	public void delete(Long id) {
-		subjectRepository.deleteById(id);
+		Subject sub = subjectRepository.findById(id).get();
+		sub.setIsValid(Boolean.FALSE);
+		subjectRepository.save(sub);
 	}
 
 	@Override

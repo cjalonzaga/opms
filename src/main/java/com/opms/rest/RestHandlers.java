@@ -1,5 +1,7 @@
 package com.opms.rest;
 
+import java.util.List;
+
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.opms.db.dtos.ParentDto;
 import com.opms.db.dtos.StudentDto;
 import com.opms.db.dtos.TeacherDto;
+import com.opms.services.ActivityService;
 import com.opms.services.AnswerService;
 import com.opms.services.CourseService;
 import com.opms.services.ModuleFileService;
@@ -19,6 +22,7 @@ import com.opms.services.ParentService;
 import com.opms.services.StudentService;
 import com.opms.services.TeacherService;
 import com.opms.test.TestObject;
+import com.opms.utils.DashboardSummary;
 import com.opms.utils.JsonResponse;
 
 @RestController
@@ -31,23 +35,34 @@ public class RestHandlers {
 	private final ParentService parentService;
 	private final AnswerService answerService;
 	private final ModuleFileService moduleFileService;
-	private final SimpMessagingTemplate template;
+	private final ActivityService activityService;
 	
 	RestHandlers(TeacherService teacherService , CourseService courseService, 
 			StudentService studentService, ParentService parentService,
-			AnswerService answerService , ModuleFileService moduleFileService , SimpMessagingTemplate template){
+			AnswerService answerService , ModuleFileService moduleFileService,
+			ActivityService activityService){
 		this.teacherService = teacherService;
 		this.courseService = courseService;
 		this.studentService = studentService;
 		this.parentService = parentService;
 		this.answerService = answerService;
 		this.moduleFileService = moduleFileService;
-		this.template = template;
+		this.activityService = activityService;
 	}
 	
 	@GetMapping("verifyPassword/")
 	public boolean verifyPassword(@RequestParam("password") String password, @RequestParam("userid") Long userId) {
 		return teacherService.verifyPassword(password, userId);
+	}
+	
+	@GetMapping("verifyPasswordParent/")
+	public boolean verifyPasswordParent(@RequestParam("password") String password, @RequestParam("userid") Long userId) {
+		return parentService.verifyPassword(password, userId);
+	}
+	
+	@GetMapping("verifyPasswordStudent/")
+	public boolean verifyPasswordStudent(@RequestParam("password") String password, @RequestParam("userid") Long userId) {
+		return studentService.verifyPassword(password, userId);
 	}
 	
 	@GetMapping("findStudent/")
@@ -111,6 +126,10 @@ public class RestHandlers {
 		return response;
 	}
 	
+	@GetMapping("admin-dasboard/")
+	public List<DashboardSummary> getSummary() {
+		return null; 
+	}
 	
 //	@MessageMapping("/notify.connect")
 //    public void connect(@Payload TestObject testObject, SimpMessageHeaderAccessor headerAccessor){

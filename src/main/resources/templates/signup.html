@@ -48,23 +48,23 @@
               <div class="card-body p-4">
                 <h1>Register</h1>
                 <p class="text-medium-emphasis">Create your account</p>
-                <form th:action="@{/signup/save/teacher}" method="post" th:object="${teacher}" autocomplete="off">
+                <form th:action="@{/signup/save/teacher}" method="post" th:object="${teacher}" autocomplete="off" onsubmit="validatePass(event);">
 	              <div class="row"> 
 	              	<div class="col-md-4">
 		                <div class="input-group mb-3">
-		                  <input class="form-control" type="text" placeholder="First Name" th:field="*{firstName}">
+		                  <input class="form-control" type="text" placeholder="First Name" th:field="*{firstName}" required>
 		                </div>
 		            </div>
 	              
 	                <div class="col-md-4">
 		                <div class="input-group mb-3">
-		                  <input class="form-control" type="text" placeholder="Middle Name" th:field="*{middleName}">
+		                  <input class="form-control" type="text" placeholder="Middle Name" th:field="*{middleName}" required> 
 		                </div>
 		            </div>
 		            
 	                <div class="col-md-4">
 		                <div class="input-group mb-3">
-		                  <input class="form-control" type="text" placeholder="Last Name" th:field="*{lastName}">
+		                  <input class="form-control" type="text" placeholder="Last Name" th:field="*{lastName}" required>
 		                </div>
 		            </div>
 		            
@@ -73,19 +73,19 @@
 	               <div class="row">
 		                <div class="col-md-4">
 			                <div class="input-group mb-3">
-			                  <input class="form-control" type="text" placeholder="Address" th:field="*{address}">
+			                  <input class="form-control" type="text" placeholder="Address" th:field="*{address}" required>
 			                </div>
 		                </div>
 	               
 		               <div class="col-md-4">
 			                <div class="input-group mb-3">
-			                  <input class="form-control" type="text" placeholder="City/Municipality" th:field="*{userData.city}">
+			                  <input class="form-control" type="text" placeholder="City/Municipality" th:field="*{userData.city}" required>
 			                </div>
 			            </div>
 			            
 			            <div class="col-md-4">
 			                <div class="input-group mb-3">
-			                  <input class="form-control" type="text" placeholder="Zip Code" th:field="*{userData.zipCode}">
+			                  <input class="form-control" type="text" placeholder="Zip Code" th:field="*{userData.zipCode}" required>
 			                </div>
 			            </div>
 		            </div>
@@ -93,13 +93,13 @@
 		            <div class="row">
 		                <div class="col-md-6">
 			                <div class="input-group mb-3">
-			                  <input class="form-control" type="text" placeholder="State/Province" th:field="*{userData.province}">
+			                  <input class="form-control" type="text" placeholder="State/Province" th:field="*{userData.province}" required>
 			                </div>
 		                </div>
 	               
 		               <div class="col-md-6">
 			                <div class="input-group mb-3">
-			                  <input class="form-control" type="text" placeholder="Country" th:field="*{userData.country}">
+			                  <input class="form-control" type="text" placeholder="Country" th:field="*{userData.country}" required>
 			                </div>
 			            </div>
 		            </div>
@@ -125,27 +125,27 @@
 		            	
 		            	<div class="col-md-4">
 		            		<div class="input-group mb-3">
-	                  			<input class="form-control" id="email" type="email" placeholder="Email" 
+	                  			<input class="form-control" id="email" type="email" placeholder="Email" required
 	                  				th:field="*{email}" autocomplete="new-email">
 	                		</div>
 		            	</div>
 		            
 		            	<div class="col-md-4">
 		            		<div class="input-group mb-3">
-	                  			<input class="form-control" id="password" type="password" placeholder="Password" 
+	                  			<input class="form-control" id="password" type="password" placeholder="Password" required
 	                  				th:field="*{password}" autocomplete="new-password">
 	                		</div>
 		            	</div>
 		            	<div class="col-md-4">
 		            		<div class="input-group mb-4">
-	                  			<input class="form-control" type="password" name="repeatpass" placeholder="Repeat password">
+	                  			<input class="form-control" type="password" name="repeatpass" placeholder="Repeat password" required>
 	                		</div>
 		            	</div>
 		            	
 		            </div>
 		            
 	                <div class="d-flex mb-4 justify-content-end">
-	                	<input class="btn btn-block btn-primary " type="submit" value="Create Account"/>
+	                	<input class="btn btn-block btn-primary " type="submit" value="Create Account" />
 	                	<a class="btn btn-block btn-secondary ms-2" href="/signup">Back</a>
 	                </div>
 	             </form>
@@ -157,23 +157,23 @@
               <div class="card-body p-4">
                 <h1>Register</h1>
                 <p class="text-medium-emphasis">Create your account</p>
-                <form th:action="@{/signup/save/student}" method="post" th:object="${student}" autocomplete="off">
+                <form th:action="@{/signup/save/student}" method="post" th:object="${student}" autocomplete="off" onsubmit="validatePass(event)">
 	              <div class="row"> 
 	              	<div class="col-md-4">
 		                <div class="input-group mb-3">
-		                  <input class="form-control" type="text" placeholder="First Name" th:field="*{firstName}">
+		                  <input class="form-control" type="text" placeholder="First Name" th:field="*{firstName}" required>
 		                </div>
 		            </div>
 	              
 	                <div class="col-md-4">
 		                <div class="input-group mb-3">
-		                  <input class="form-control" type="text" placeholder="Middle Name" th:field="*{middleName}">
+		                  <input class="form-control" type="text" placeholder="Middle Name" th:field="*{middleName}" required>
 		                </div>
 		            </div>
 		            
 	                <div class="col-md-4">
 		                <div class="input-group mb-3">
-		                  <input class="form-control" type="text" placeholder="Last Name" th:field="*{lastName}">
+		                  <input class="form-control" type="text" placeholder="Last Name" th:field="*{lastName}" required>
 		                </div>
 		            </div>
 		            
@@ -188,13 +188,13 @@
 	               
 		               <div class="col-md-4">
 			                <div class="input-group mb-3">
-			                  <input class="form-control" type="text" placeholder="City/Municipality" th:field="*{userData.city}">
+			                  <input class="form-control" type="text" placeholder="City/Municipality" th:field="*{userData.city}" required>
 			                </div>
 			            </div>
 			            
 			            <div class="col-md-4">
 			                <div class="input-group mb-3">
-			                  <input class="form-control" type="text" placeholder="Zip Code" th:field="*{userData.zipCode}">
+			                  <input class="form-control" type="text" placeholder="Zip Code" th:field="*{userData.zipCode}" required>
 			                </div>
 			            </div>
 		            </div>
@@ -202,13 +202,13 @@
 		            <div class="row">
 		                <div class="col-md-6">
 			                <div class="input-group mb-3">
-			                  <input class="form-control" type="text" placeholder="State/Province" th:field="*{userData.province}">
+			                  <input class="form-control" type="text" placeholder="State/Province" th:field="*{userData.province}" required>
 			                </div>
 		                </div>
 	               
 		               <div class="col-md-6">
 			                <div class="input-group mb-3">
-			                  <input class="form-control" type="text" placeholder="Country" th:field="*{userData.country}">
+			                  <input class="form-control" type="text" placeholder="Country" th:field="*{userData.country}" required>
 			                </div>
 			            </div>
 		            </div>
@@ -296,7 +296,7 @@
 		            </div>
 		            
 	                <div class="d-flex mb-4 justify-content-end">
-	                	<input class="btn btn-block btn-primary " type="submit" value="Create Account"/>
+	                	<input class="btn btn-block btn-primary " type="submit" value="Create Account" />
 	                	<a class="btn btn-block btn-secondary ms-2" href="/signup">Back</a>
 	                </div>
 	             </form>
@@ -309,23 +309,23 @@
               <div class="card-body p-4">
                 <h1>Register</h1>
                 <p class="text-medium-emphasis">Create your account</p>
-                <form th:action="@{/signup/save/parent}" method="post" th:object="${parent}" autocomplete="off">
+                <form th:action="@{/signup/save/parent}" method="post" th:object="${parent}" autocomplete="off" onsubmit="validatePass(event)">
 	              <div class="row"> 
 	              	<div class="col-md-4">
 		                <div class="input-group mb-3">
-		                  <input class="form-control" type="text" placeholder="First Name" th:field="*{firstName}">
+		                  <input class="form-control" type="text" placeholder="First Name" th:field="*{firstName}" required>
 		                </div>
 		            </div>
 	              
 	                <div class="col-md-4">
 		                <div class="input-group mb-3">
-		                  <input class="form-control" type="text" placeholder="Middle Name" th:field="*{middleName}">
+		                  <input class="form-control" type="text" placeholder="Middle Name" th:field="*{middleName}" required>
 		                </div>
 		            </div>
 		            
 	                <div class="col-md-4">
 		                <div class="input-group mb-3">
-		                  <input class="form-control" type="text" placeholder="Last Name" th:field="*{lastName}">
+		                  <input class="form-control" type="text" placeholder="Last Name" th:field="*{lastName}" required>
 		                </div>
 		            </div>
 		            
@@ -340,13 +340,13 @@
 	               
 		               <div class="col-md-4">
 			                <div class="input-group mb-3">
-			                  <input class="form-control" type="text" placeholder="City/Municipality" th:field="*{userData.city}">
+			                  <input class="form-control" type="text" placeholder="City/Municipality" th:field="*{userData.city}" required>
 			                </div>
 			            </div>
 			            
 			            <div class="col-md-4">
 			                <div class="input-group mb-3">
-			                  <input class="form-control" type="text" placeholder="Zip Code" th:field="*{userData.zipCode}">
+			                  <input class="form-control" type="text" placeholder="Zip Code" th:field="*{userData.zipCode}" required>
 			                </div>
 			            </div>
 		            </div>
@@ -354,13 +354,13 @@
 		            <div class="row">
 		                <div class="col-md-6">
 			                <div class="input-group mb-3">
-			                  <input class="form-control" type="text" placeholder="State/Province" th:field="*{userData.province}">
+			                  <input class="form-control" type="text" placeholder="State/Province" th:field="*{userData.province}" required>
 			                </div>
 		                </div>
 	               
 		               <div class="col-md-6">
 			                <div class="input-group mb-3">
-			                  <input class="form-control" type="text" placeholder="Country" th:field="*{userData.country}">
+			                  <input class="form-control" type="text" placeholder="Country" th:field="*{userData.country}" required>
 			                </div>
 			            </div>
 		            </div>
@@ -420,14 +420,14 @@
 		            	</div>
 		            	<div class="col-md-4">
 		            		<div class="input-group mb-4">
-	                  			<input class="form-control" type="password" name="repeatpass" placeholder="Repeat password">
+	                  			<input class="form-control" type="password" name="repeatpass" id="repeatpass" placeholder="Repeat password">
 	                		</div>
 		            	</div>
 		            	
 		            </div>
 		            
 	                <div class="d-flex mb-4 justify-content-end">
-	                	<input class="btn btn-block btn-primary " type="submit" value="Create Account"/>
+	                	<input class="btn btn-block btn-primary " type="submit" value="Create Account" />
 	                	<a class="btn btn-block btn-secondary ms-2" href="/signup">Back</a>
 	                </div>
 	             </form>
@@ -498,9 +498,11 @@
 					    dataType:'json',
 					    success : function(data) {
 					        let html = '';
+					        var imgSrc = data.imageUri != null ? data.imageUri : '/images/user.png';
+					        console.log(data)
 					        html = `<span class="student-btn mb-3 stud-${data.id}">
 					        			<input type="hidden" name="studentIds" value="${data.id}">
-			            				<img src="/images/1.jpg" class="s-img"/>
+			            				<img src="${imgSrc}" class="s-img"/>
 			            				<span>${data.firstName + '' + data.lastName}</span>
 			            				<i class="far fa-times-circle remove-this" data-id="${data.id}"></i>
 		            				</span>`;
@@ -579,6 +581,20 @@
     		return false;
     	}
     	
+    	
+    	
+    	function validatePass(e){
+    		e.preventDefault();
+    		if( jQuery(passOrig).val() != jQuery(repeatPass).val() ){
+    			
+    			jQuery(passOrig).addClass('is-invalid');
+    			jQuery(repeatPass).addClass('is-invalid');
+    			
+    			return false;
+    		}else{
+    			return true;
+    		}
+    	}
     </script>
 </body>
 </html>

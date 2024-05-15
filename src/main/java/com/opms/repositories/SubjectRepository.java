@@ -16,14 +16,14 @@ public interface SubjectRepository extends JpaRepository<Subject, Long>{
 			+ " END FROM Subject s JOIN Course c ON s.course.id = c.id WHERE s.code = :code AND c.teacher.id = :userId ")
 	Boolean ifSubjectExist(String code , Long userId);
 	
-	@Query( value = "SELECT s FROM Subject s WHERE s.teacher.id = :userId")
+	@Query( value = "SELECT s FROM Subject s WHERE s.teacher.id = :userId AND s.isValid = TRUE ")
 	List<Subject> findAllByUser(Long userId);
 	
-	@Query( value = "SELECT s.* FROM subjects s WHERE s.teacher_id = :userId "
+	@Query( value = "SELECT s.* FROM subjects s WHERE s.teacher_id = :userId AND s.is_valid = TRUE"
 			+ " ORDER BY s.created_on DESC LIMIT :size OFFSET :page " , nativeQuery = true)
 	List<Subject> findAllByUserWithPaging(Long userId , int page , int size);
 	
-	@Query( value = "SELECT s.* FROM subjects s JOIN courses c ON s.course_id = c.id "
+	@Query( value = "SELECT s.* FROM subjects s JOIN courses c ON s.course_id = c.id WHERE AND s.is_valid = TRUE "
 			+ " ORDER BY s.created_on DESC LIMIT :size OFFSET :page " , nativeQuery = true)
 	List<Subject> findAll( int page , int size );
 	
@@ -32,7 +32,7 @@ public interface SubjectRepository extends JpaRepository<Subject, Long>{
 	
 	@Query(value="SELECT s.* FROM subjects s JOIN courses c ON s.course_id = c.id WHERE ( c.teacher_id = :userId ) "
 					+ " AND ( LOWER(s.code) LIKE %:keyword% ) "
-					+ " AND (:createdOn IS NULL OR DATE(s.created_on) = :createdOn ) "
+					+ " AND (:createdOn IS NULL OR DATE(s.created_on) = :createdOn ) AND s.is_valid = TRUE "
 					+ "	AND (:semester IS NULL OR s.semester = :semester) "
 					+ " AND (:courseLevel IS NULL OR s.course_level = :courseLevel) "
 					+ " ORDER BY s.created_on DESC LIMIT :size OFFSET :page ",
@@ -41,13 +41,13 @@ public interface SubjectRepository extends JpaRepository<Subject, Long>{
 	
 	@Query(value="SELECT s.* FROM subjects s JOIN courses c ON s.course_id = c.id WHERE "
 			+ " ( LOWER(s.code) LIKE %:keyword% ) "
-			+ " AND (:createdOn IS NULL OR DATE(s.created_on) = :createdOn ) "
+			+ " AND (:createdOn IS NULL OR DATE(s.created_on) = :createdOn ) AND s.is_valid = TRUE "
 			+ "	AND (:semester IS NULL OR s.semester = :semester) "
 			+ " AND (:courseLevel IS NULL OR s.course_level = :courseLevel) "
 			+ " ORDER BY s.created_on DESC LIMIT :size OFFSET :page ",
 	nativeQuery = true)
 List<Subject> searchAll(String createdOn , String keyword , String courseLevel , String semester , int page , int size);
 
-	@Query("SELECT s FROM Subject s WHERE s.course.id = :courseId")
+	@Query("SELECT s FROM Subject s WHERE s.course.id = :courseId AND s.isValid = TRUE ")
 	List<Subject> searchAllByStudents(Long courseId);
 }

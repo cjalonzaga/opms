@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{includes/header :: header}">
-</head>
-<body>
-
-	<div th:replace="~{includes/sidebar2 :: sidebar2}"></div>
-	
-	<div class="wrapper d-flex flex-column min-vh-100 bg-light">
-	
-		<div th:replace="~{includes/subheader2 :: subheader2}"></div>
-		
-		<div class="body flex-grow-1 px-3">
+<head th:replace="~{includes/header :: header}"></head>
+<body th:object="${user}" class="d-flex flex-column h-100vh">
+	  
+    <header th:replace="~{parent/header :: header}"></header>
+	 
+	<div class="container flex-1">
+		  <div class="row h-100 justify-content-center">
+		    	<div class="body flex-grow-1 px-3">
 			<div class="container-lg">
 				<div class="row">
 					<div class="card col-md-12 border-0 p-0">
-						<div class="card-body bg-light border-0">
+						<div class="card-body border-0">
 							<nav>
 		                      <div class="nav nav-tabs d-flex" id="nav-tab" role="tablist">
 		                        <button class="nav-link custom-tab active border-0" id="nav-home-tab" data-coreui-toggle="tab" 
@@ -36,7 +33,7 @@
 					
 					<div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile" tabindex="0">
 					
-					<form th:action="@{/student/profile/update/{id}(id=${user.id})}" method="post" th:object="${user}" enctype="multipart/form-data">
+					<form th:action="@{/parent/profile/update/{id}(id=${user.id})}" method="post" th:object="${user}" enctype="multipart/form-data">
 					<input type="hidden" th:field="*{id}" th:value="${user.id}">
 					<div class="card mb-4 p-0 col-md-12 height-min-content">
 						<div class="card-body p-0 m-0">
@@ -146,7 +143,7 @@
 					
 					
 					<div class="tab-pane fade show" id="nav-pass" role="tabpanel" aria-labelledby="nav-pass-tab" tabindex="0">
-						<form th:action="@{/student/profile/update-password}" id="updatePassForm" method="post" th:object="${user}">
+						<form th:action="@{/parent/profile/update-password}" id="updatePassForm" method="post" th:object="${user}">
 						<input type="hidden" th:value="${user.id}" th:field="*{id}" id="userid"/>
 						<div class="card mb-4 col-md-12">
 							<div class="card-body">
@@ -190,42 +187,42 @@
 				
 			</div>
 		</div>
-		
-	</div>
-	
-	<script>
-		jQuery(document).ready(function($){
+		  </div>
+	 </div>
+	 
+	 <script>
+	 	jQuery(document).ready(function($){
 			$('#savePassword').click(function(e){
 				e.preventDefault();
 				
 				const oldPass = $('#old-password').val();
 				const id =$('#userid').val();
-				console.log(window.location.origin +'/ajax/verifyPassword/')
+				console.log(window.location.origin +'/ajax/verifyPasswordParent/')
 				if(oldPass != '' && id != ''){
 					$.ajax({
-                        url : window.location.origin +'/ajax/verifyPasswordStudent/',
-                        type : 'GET',
-                        data : {
-                        	password : oldPass,
-                        	userid : id
-                        },
-                        async: true,
-                        dataType: 'json',
-                        success : function(res){
-                            if(res){
-                            	if(validate()){
-                            		showError();
-                            	}else{
-                            		$('#updatePassForm').submit();
-                            	}
-                            }else{
-                            	jQuery('#old-password').addClass('is-invalid');
-                            	if(validate()){
-                            		showError();
-                            	}
-                            }
-                        }
-                    });
+                     url : window.location.origin +'/ajax/verifyPasswordParent/',
+                     type : 'GET',
+                     data : {
+                     	password : oldPass,
+                     	userid : id
+                     },
+                     async: true,
+                     dataType: 'json',
+                     success : function(res){
+                         if(res){
+                         	if(validate()){
+                         		showError();
+                         	}else{
+                         		$('#updatePassForm').submit();
+                         	}
+                         }else{
+                         	jQuery('#old-password').addClass('is-invalid');
+                         	if(validate()){
+                         		showError();
+                         	}
+                         }
+                     }
+                 });
 				}else{
 					jQuery('#old-password').addClass('is-invalid');
 					showError();
@@ -261,9 +258,9 @@
 			
 			return error;
 		}
-		
-	</script>
-	
+	 
+	 </script>
+	  
 	<footer th:replace="~{includes/footer :: footer}"></footer>
 </body>
 </html>

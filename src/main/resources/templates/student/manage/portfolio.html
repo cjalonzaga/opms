@@ -17,6 +17,9 @@
 					<div class="alert alert-danger" role="alert" th:if="${param.error != null}">
 					  [[${param.msg}]]
 					</div>
+					<div class="alert alert-success" role="alert" th:if="${param.msg != null}">
+					  [[${param.msg}]]
+					</div>
 					
 					<div class="row">
 						<div class="col-md-12 d-flex justify-content-between">
@@ -36,14 +39,20 @@
 								
 								<ul class="dropdown-menu">
 								    <li><a class="dropdown-item" data-coreui-toggle="modal" data-coreui-target="#newFolder" href="#"><i class="fa-solid fa-folder"></i> New Folder</a></li>
-								    <li><a class="dropdown-item" href="#"><i class="fa-solid fa-file"></i> New File</a></li>
+								    <li>
+								    <form id="file-upload" th:action="@{/student/uploadDirect}" enctype="multipart/form-data" method="post">
+								    	<input type="file" name="file" id="fileUpload" class="d-none"/>
+								    
+							    	<label for="fileUpload" class="dropdown-item">
+							    	<i class="fa-solid fa-file"></i> New File</label></form></li>
 								</ul>
 								
 							</div>
 						</div>
 					</div>
 
-					<table class="table" th:if="${ #strings.toString(param.mode) == 'folders'}">
+					<div th:if="${ #strings.toString(param.mode) == 'folders'}">
+					<table class="table" >
 					  <thead>
 					    <tr>
 					      <th scope="col">Name</th>
@@ -60,19 +69,30 @@
 				      		<a th:href="@{/student/downloadzip}+'?folderId='+${folder.id}" class="ms-2 text-decoration-none">
 				      			<i class="fa-solid fa-download"></i></a>
 				      			
-				      		<a class="ms-2 text-decoration-none" href="#" data-coreui-toggle="modal">
-				      			<i class="far fa-trash-alt"></i></a>
+				      		<a class="ms-2 text-decoration-none" href="#" data-coreui-toggle="modal" 
+								      			th:attr="data-coreui-target='#confirmDeleteModalFolder'+${folder.id}">
+								      			<i class="far fa-trash-alt"></i>
+								      		</a>
 				      			
 					      </td>
 					    </tr>
+					    
+					    <tr th:unless="${folders.size() > 0}">
+										<td colspan="3" class="text-center">No Folders found.</td>
+									</tr>
 					  </tbody>
 					</table>
+					<div class="col-md-12 m-2 d-flex justify-content-end">
+								<nav aria-label="Pagination" th:replace="~{ includes/nav-paging :: nav-paging}"></nav>
+							</div>	
 					
-					<table class="table" th:if="${ #strings.toString(param.mode) == 'files'}">
+					</div>
+					
+					<div th:if="${ #strings.toString(param.mode) == 'files'}">
+					<table class="table" >
 					  <thead>
 					    <tr>
 					      <th scope="col">Name</th>
-					      <th scope="col">Owner</th>
 					      <th scope="col">Upload Date</th>
 					      <th scope="col" class="text-center">Action</th>
 					    </tr>
@@ -80,20 +100,33 @@
 					  <tbody>
 					    <tr th:each="file : ${files}">
 					      <th><i th:attr="class=${file.type.icon}"></i> [[${file.fileName}]]</th>
-					      <td>Mark</td>
 					      <td>[[${#temporals.format(file.createdOn, 'dd/MM/yyyy HH:mm a')}]]</td>
 					      <td class="text-center">
 				      			
-				      		<a href="javascript:void(0);" th:data-uri="${file.fileName}" class='ms-2 text-decoration-none' >
+				      		<a th:href="@{${file.uri}}" target="_blank" th:data-uri="${file.fileName}" class='ms-2 text-decoration-none' >
 				      			<i class="fa-solid fa-download"></i></a>
 				      			
-				      		<a class="ms-2 text-decoration-none" href="#" data-coreui-toggle="modal">
-				      			<i class="far fa-trash-alt"></i></a>
+				      		<a class="ms-2 text-decoration-none" href="#" data-coreui-toggle="modal" 
+								      			th:attr="data-coreui-target='#confirmDeleteModalFile'+${file.id}">
+								      			<i class="far fa-trash-alt"></i>
+								      		</a>
 				      			
 					      </td>
+					      
 					    </tr>
+					    
+					    <tr th:unless="${files.size() > 0}">
+										<td colspan="3" class="text-center">No Files found.</td>
+									</tr>
 					  </tbody>
 					</table>
+					
+					<div class="col-md-12 m-2 d-flex justify-content-end">
+								<nav aria-label="Pagination" th:replace="~{ includes/nav-paging :: nav-paging}"></nav>
+							</div>	
+					
+					</div>
+					
 				</div>
 			</div>
 		</div>
@@ -121,6 +154,52 @@
 	    </div>
 	  </div>
 	</div>
+	
+	
+	<div th:each="e : ${folders}" >
+		<div class="modal" tabindex="-1" th:attr="id='confirmDeleteModalFolder'+${e.id}" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Delete Folder?</h5>
+		        <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		      	<form method="post" th:action="@{/student/portfolio/delete?id={id}(id=${e.id})}" >
+		      		 <p th:text="${'Sure to delete '+e.name+' ?'}"></p>
+		      		 <div class="row justify-content-end">
+			      		 <button type="button" class="btn btn-secondary col-md-2" data-coreui-dismiss="modal">Close</button>
+			      		 <input type="submit" class="btn btn-primary col-md-2 ms-2" value="Delete" />
+		      		 </div>
+		      	</form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	</div>
+	
+	<div th:each="e : ${files}" >
+		<div class="modal" tabindex="-1" th:attr="id='confirmDeleteModalFile'+${e.id}" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">Delete File?</h5>
+		        <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		      	<form method="post" th:action="@{/student/portfolio/deletefile?id={id}(id=${e.id})}" >
+		      		 <p th:text="${'Sure to delete '+e.fileName+' ?'}"></p>
+		      		 <div class="row justify-content-end">
+			      		 <button type="button" class="btn btn-secondary col-md-2" data-coreui-dismiss="modal">Close</button>
+			      		 <input type="submit" class="btn btn-primary col-md-2 ms-2" value="Delete" />
+		      		 </div>
+		      	</form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	</div>
+	
    
    <script>
    
@@ -135,6 +214,11 @@
    		});
    	});
    	
+   	jQuery('#fileUpload').on('change' , function(){
+   		if(jQuery(this).val() != ""){
+   			jQuery('#file-upload').submit();
+   		}
+   	});
    	
    </script>
    <footer th:replace="~{includes/footer :: footer}"></footer>

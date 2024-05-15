@@ -110,7 +110,8 @@ public class FileServiceImpl extends UserFileMapper implements FileService{
 	@Override
 	public void delete(Long fileId) {
 		UserFile file = userFileRepository.findById(fileId).get();
-		userFileRepository.deleteById(file.getId());
+		file.setIsValid(Boolean.FALSE);
+		userFileRepository.save(file);
 	}
 
 	@Override
@@ -181,5 +182,34 @@ public class FileServiceImpl extends UserFileMapper implements FileService{
 	        e.printStackTrace();
 	    }
 	    return null;
+	}
+
+	@Override
+	public UserFileDto directUpload(Long userId, MultipartFile file) {
+		if(file.isEmpty()) {
+			return null;
+		}
+		
+		UserFile entity = new UserFile();
+		Student s = studentRepository.findById(userId).get();
+		entity.setStudent(s);
+		entity.setOriginalFileName(file.getOriginalFilename());
+		entity.setCreatedOn(LocalDateTime.now());
+		entity.setUpdatedOn(LocalDateTime.now());
+		
+		if(!file.isEmpty()) {
+			File fileObject = FileUtil.convertMultiPartFileToFile(file);
+			String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+			s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObject));
+			String uri = s3Client.getUrl(bucketName, fileName).toString();
+			
+			entity.setFileName(fileName);
+			entity.setType(FileUtil.getFileType(fileName));
+			entity.setUri(uri);
+			
+			fileObject.delete();
+		}
+		
+		return toDto(userFileRepository.save(entity));
 	}
 }

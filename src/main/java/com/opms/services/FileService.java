@@ -21,4 +21,6 @@ public interface FileService extends FileAware<UserFileDto , UserFile>{
 	UserFileDto uploadLocal(UserFileDto dto , MultipartFile file);
 	
 	void dowloadFolderFiles(Long folderId, HttpServletResponse response) throws IOException;
+	
+	UserFileDto directUpload(Long userId , MultipartFile file);
 }

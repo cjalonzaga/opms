@@ -136,6 +136,25 @@ public class StudentPorfolioController extends StudentBaseController{
 	@GetMapping(value="/downloadzip", produces="application/zip")
 	public void downloadZip(@RequestParam("folderId") Long folderId, HttpServletResponse response) throws IOException {
 		
-		this.fileService.dowloadFolderFiles(1L, response);
+		this.fileService.dowloadFolderFiles(folderId, response);
+	}
+	
+	@PostMapping("/uploadDirect")
+	public String uploadDirect(@RequestParam("file") MultipartFile file) {
+		UserFileDto ufile = fileService.directUpload( this.getCurrentUser().getId() , file);
+		String msg = (ufile != null) ? "&msg=Added new file "+ufile.getFileName() : "&msg=Failed to upload file";
+		return "redirect:/student/portfolio?mode=files"+msg;
+	}
+	
+	@PostMapping("/portfolio/delete")
+	public String delete(@RequestParam(required = false , name="id") Long id ) {
+		folderService.delete(id);
+		return "redirect:/student/portfolio?mode=folders";
+	}
+	
+	@PostMapping("/portfolio/deletefile")
+	public String deleteFile(@RequestParam(required = false , name="id") Long id ) {
+		fileService.delete(id);
+		return "redirect:/student/portfolio?mode=files";
 	}
 }

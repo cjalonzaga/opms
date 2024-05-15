@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.opms.db.dtos.ActivityDto;
 import com.opms.db.entities.Activity;
+import com.opms.utils.DashboardSummary;
 import com.opms.utils.PaginationUtil;
 
 public interface ActivityService extends CrudBaseService<ActivityDto, Activity>{
@@ -23,4 +24,5 @@ public interface ActivityService extends CrudBaseService<ActivityDto, Activity>{
 	
 	ActivityDto update(ActivityDto dto , Long userId , MultipartFile file);
 	
+	List<DashboardSummary> getSummary(Long userId);
 }
