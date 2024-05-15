@@ -246,4 +246,9 @@ public class StudentServiceImpl extends StudentMapper implements StudentService{
 		
 		return "User successfully deleted.";
 	}
+
+	@Override
+	public Integer countStudentBySection(Long sectionId) {
+		return studentRepository.countStudent(sectionId);
+	}
 }

@@ -38,4 +38,8 @@ public interface StudentRepository extends JpaRepository<Student , Long>{
 	@Query( value = "SELECT COUNT(a.id) FROM students a JOIN student_section ss ON "
 			+ " a.id = ss.student_id WHERE ss.section_id = :sectionId", nativeQuery = true)
 	Integer countStudent(Long sectionId);
+	
+	@Query( value = "SELECT s.* FROM students a JOIN student_section ss ON "
+			+ " a.id = ss.student_id WHERE ss.section_id = :sectionId", nativeQuery = true)
+	List<Student> countStudentBySection(Long sectionId);
 }

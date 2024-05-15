@@ -131,12 +131,4 @@ public class RestHandlers {
 		return null; 
 	}
 	
-//	@MessageMapping("/notify.connect")
-//    public void connect(@Payload TestObject testObject, SimpMessageHeaderAccessor headerAccessor){
-//        headerAccessor.getSessionAttributes().put("user" , testObject.getSender());
-//        
-//        
-//        
-//        template.convertAndSend("/api/notif" , testObject );
-//    }
 }

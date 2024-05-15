@@ -22,4 +22,6 @@ public interface StudentService {
 	StudentDto updateCredentials(StudentDto dto);
 	
 	String delete(Long id);
+	
+	Integer countStudentBySection(Long sectionId);
 }
