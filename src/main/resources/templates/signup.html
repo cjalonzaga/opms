@@ -48,7 +48,7 @@
               <div class="card-body p-4">
                 <h1>Register</h1>
                 <p class="text-medium-emphasis">Create your account</p>
-                <form th:action="@{/signup/save/teacher}" method="post" th:object="${teacher}" autocomplete="off" onsubmit="validatePass(event);">
+                <form th:action="@{/signup/save/teacher}" method="post" th:object="${teacher}" autocomplete="off" onsubmit="return validatePass(event);">
 	              <div class="row"> 
 	              	<div class="col-md-4">
 		                <div class="input-group mb-3">
@@ -157,7 +157,7 @@
               <div class="card-body p-4">
                 <h1>Register</h1>
                 <p class="text-medium-emphasis">Create your account</p>
-                <form th:action="@{/signup/save/student}" method="post" th:object="${student}" autocomplete="off" onsubmit="validatePass(event)">
+                <form th:action="@{/signup/save/student}" method="post" th:object="${student}" autocomplete="off" onsubmit="return validatePass(event)">
 	              <div class="row"> 
 	              	<div class="col-md-4">
 		                <div class="input-group mb-3">
@@ -309,7 +309,7 @@
               <div class="card-body p-4">
                 <h1>Register</h1>
                 <p class="text-medium-emphasis">Create your account</p>
-                <form th:action="@{/signup/save/parent}" method="post" th:object="${parent}" autocomplete="off" onsubmit="validatePass(event)">
+                <form th:action="@{/signup/save/parent}" method="post" th:object="${parent}" autocomplete="off" onsubmit="return validatePass(event)">
 	              <div class="row"> 
 	              	<div class="col-md-4">
 		                <div class="input-group mb-3">
@@ -584,9 +584,7 @@
     	
     	
     	function validatePass(e){
-    		e.preventDefault();
     		if( jQuery(passOrig).val() != jQuery(repeatPass).val() ){
-    			
     			jQuery(passOrig).addClass('is-invalid');
     			jQuery(repeatPass).addClass('is-invalid');
     			
