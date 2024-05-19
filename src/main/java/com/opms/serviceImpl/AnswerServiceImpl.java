@@ -1,6 +1,7 @@
 package com.opms.serviceImpl;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -56,12 +57,17 @@ public class AnswerServiceImpl extends AnswerMapper implements AnswerService{
 		
 		Answer answer = new Answer();
 		answer.setFileUri(dto.getFileUri());
-		answer.setStatus(AnswerStatus.SUBMITTED);
+		
 		
 		Activity activity = null;
 		if(dto.getActivityId() != null) {
 			activity = activityRepository.findById(Long.valueOf( dto.getActivityId() ) ).get();
 			answer.setActivity(activity);
+			if (!activity.getDueDate().isBefore(LocalDateTime.now())){
+				answer.setStatus(AnswerStatus.SUBMITTED);
+			}else {
+				answer.setStatus(AnswerStatus.LATE);
+			}
 		}
 		
 		Student student = null;

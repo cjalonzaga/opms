@@ -60,6 +60,7 @@
 									         
 									         <span th:if="${#strings.toString(a.status) == 'SUBMITTED'}" class="badge text-bg-primary ms-2">New</span>
 									         <span th:if="${#strings.toString(a.status) == 'CHECKED'}" class="badge text-bg-success ms-2 text-white">[[${a.status.name}]]</span>
+									         <span th:if="${#strings.toString(a.status) == 'LATE'}" th:attr="class='badge ms-2 text-white'+${a.status.badge} ">[[${a.status.name}]]</span>
 									      </button>
 									    </h2>
 									    <div th:attr="id=flush-collapseOne+${a.id}" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-coreui-parent="#accordionFlushExample">

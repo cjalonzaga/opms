@@ -20,7 +20,7 @@
 									<h6 class="text-secondary ml-1" th:text="${#temporals.format(activity.dueDate , 'dd/MM/yyyy HH:mm a')}"></h6>
 									&nbsp;
 									<div th:if="${answer != null}">
-										<span class="badge text-bg-primary">[[${answer.status.name}]]</span>
+										<span th:attr="class='badge '+${answer.status.badge}">[[${answer.status.name}]]</span>
 									</div>
 								</div>
 							</div>
