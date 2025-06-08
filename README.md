@@ -49,7 +49,7 @@ Teachers can create subjects and tasks, set due dates, and instantly notify stud
 |--------------|----------------------------------------|
 | Backend      | Java, Spring Boot, Spring Security, JPA |
 | Frontend     | Thymeleaf, Bootstrap, jQuery, HTML5, CSS3 |
-| Database     | (Specify here: e.g., MySQL, PostgreSQL) |
+| Database     | MySQL |
 | Storage      | (Optional) Local storage (was AWS S3)    |
 | Other        | AJAX for dynamic content rendering      |
 
